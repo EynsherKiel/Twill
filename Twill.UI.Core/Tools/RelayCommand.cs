@@ -15,12 +15,29 @@ namespace Twill.UI.Core.Tools
         }
 
         private readonly Action _handler;
-   
+
 
         public bool CanExecute(object parameter) => true;
 
         public event EventHandler CanExecuteChanged = delegate { };
 
         public void Execute(object parameter) => _handler();
+    }
+
+    public class RelayCommand<T> : ICommand where T : class
+    {
+        public RelayCommand(Action<T> handler)
+        {
+            _handler = handler;
+        }
+
+        private readonly Action<T> _handler;
+
+
+        public bool CanExecute(object parameter) => true;
+
+        public event EventHandler CanExecuteChanged = delegate { };
+
+        public void Execute(object parameter) => _handler(parameter as T);
     }
 }

@@ -62,10 +62,6 @@
     <Folder Include="Implementation\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Twill.UI.Core\Twill.UI.Core.csproj">
-      <Project>{26970e49-3b8a-49ab-b959-8f0dff33da74}</Project>
-      <Name>Twill.UI.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Twill.UI\Twill.UI.csproj">
       <Project>{b36df20a-37bb-4821-826c-dcae075aadc4}</Project>
       <Name>Twill.UI</Name>

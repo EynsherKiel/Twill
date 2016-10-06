@@ -20,7 +20,20 @@ namespace Twill
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent(); 
+        }
+
+        private void WindowLoadedEvent(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void StateChangedEvent(object sender, EventArgs e)
+        {
+            if (this.WindowState != WindowState.Minimized)
+                return;
+
+            this.ShowInTaskbar = false; 
         }
     }
 }

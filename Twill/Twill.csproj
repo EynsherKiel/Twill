@@ -105,6 +105,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Twill.UI.Core\Twill.UI.Core.csproj">
+      <Project>{d5e67f88-3db5-4b48-8964-50590d2dd801}</Project>
+      <Name>Twill.UI.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Twill.UI\Twill.UI.csproj">
       <Project>{b36df20a-37bb-4821-826c-dcae075aadc4}</Project>
       <Name>Twill.UI</Name>
