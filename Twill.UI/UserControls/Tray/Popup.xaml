@@ -5,6 +5,7 @@
              xmlns:local="clr-namespace:Twill.UI.UserControls.Tray"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              Width="150"
+             DataContext="{Binding TrayPopupModel}"
              mc:Ignorable="d">
     <Grid>
         <Border Margin="10"

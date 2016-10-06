@@ -29,16 +29,13 @@
 
 
         <tb:TaskbarIcon x:Name="TaskbarIcon"
+                        DataContext="{Binding IconBehaviorModel}"
                         DoubleClickCommand="{Binding DoubleClickNotifyIcon}"
                         DoubleClickCommandParameter="{Binding Mode=OneWay,
                                                               RelativeSource={RelativeSource FindAncestor,
                                                                                              AncestorType={x:Type Window}}}"
                         IconSource="Resources/Graphicloads-100-Flat-Check.ico"
                         ToolTipText="Twill">
-
-            <tb:TaskbarIcon.DataContext>
-                <Binding Path="IconBehaviorModel" />
-            </tb:TaskbarIcon.DataContext>
 
             <tb:TaskbarIcon.TrayToolTip>
                 <tray:ToolTip TrayToolTipModel="{Binding TrayToolTipModel}" />
