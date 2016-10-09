@@ -13,24 +13,23 @@ namespace Twill.UI.Core.Models.Tray
     {
         public IconBehaviorModel()
         {
-            DoubleClickNotifyIcon = new RelayCommand<object>(DoubleClickNotifyIconEvent);
+            ShowWindowCommand = new RelayCommand<Window>(ShowWindowMethod);
+            TrayPopupModel.IconBehaviorModel = this;
         }
 
-
-        public TrayPopupModel TrayPopupModel { get; set; } = new TrayPopupModel();
+        
         public TrayToolTipModel TrayToolTipModel { get; set; } = new TrayToolTipModel();
+        public TrayPopupModel TrayPopupModel { get; set; } = new TrayPopupModel();
 
 
-        public ICommand DoubleClickNotifyIcon { get; }
+        public ICommand ShowWindowCommand { get; }
 
 
-        private void DoubleClickNotifyIconEvent(object obj)
+        public void ShowWindowMethod(Window window)
         {
-            if (obj == null)
+            if (window == null)
                 return;
-
-
-            var window = obj as Window;
+             
 
             if (window.WindowState != WindowState.Minimized)
                 return;

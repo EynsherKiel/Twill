@@ -4,25 +4,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Twill.UI.UserControls.Tray"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             d:DesignHeight="300"
-             d:DesignWidth="300"
+             xmlns:traymodel="clr-namespace:Twill.UI.Core.Models.Tray;assembly=Twill.UI.Core"
+             d:DataContext="{d:DesignInstance traymodel:TrayToolTipModel,
+                                              IsDesignTimeCreatable=True}"
              DataContext="{Binding TrayToolTipModel}"
              mc:Ignorable="d">
+
     <Grid>
+
         <Border Margin="10"
                 Background="White"
-                BorderBrush="#FF8924EB"
-                BorderThickness="0.7"
+                BorderBrush="#FF956EBB"
+                BorderThickness="0.6"
                 CornerRadius="2">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="8"
                                   ShadowDepth="0"
-                                  Color="#FF8924EB" />
+                                  Color="Gray" />
             </Border.Effect>
-            <TextBlock HorizontalAlignment="Center"
+            <TextBlock Margin="2,2,17,2"
+                       HorizontalAlignment="Center"
                        VerticalAlignment="Center"
+                       FontFamily="pack://application:,,,/Twill.UI;component/fonts/VLADIMIR.TTF#Vladimir Script"
+                       FontSize="30"
                        Foreground="#FF8924EB"
-                       Padding="15,8,15,8"
                        Text="{Binding Text,
                                       Mode=TwoWay,
                                       UpdateSourceTrigger=PropertyChanged}" />

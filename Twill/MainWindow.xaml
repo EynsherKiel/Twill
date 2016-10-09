@@ -9,10 +9,11 @@
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:tray="clr-namespace:Twill.UI.UserControls.Tray;assembly=Twill.UI"
         xmlns:usercontrols="clr-namespace:Twill.UI.UserControls;assembly=Twill.UI"
+        Name="x"
         Title="Twill"
         Width="525"
         Height="350"
-        Icon="Resources/Graphicloads-100-Flat-Check.ico"
+        Icon="icons/tray.ico"
         Loaded="WindowLoadedEvent"
         StateChanged="StateChangedEvent"
         WindowStartupLocation="CenterScreen"
@@ -27,14 +28,15 @@
     </Window.Resources>
     <Grid>
 
+        <usercontrols:Menu MenuModel="{Binding MenuModel}" />
 
         <tb:TaskbarIcon x:Name="TaskbarIcon"
                         DataContext="{Binding IconBehaviorModel}"
-                        DoubleClickCommand="{Binding DoubleClickNotifyIcon}"
+                        DoubleClickCommand="{Binding ShowWindowCommand}"
                         DoubleClickCommandParameter="{Binding Mode=OneWay,
                                                               RelativeSource={RelativeSource FindAncestor,
                                                                                              AncestorType={x:Type Window}}}"
-                        IconSource="Resources/Graphicloads-100-Flat-Check.ico"
+                        IconSource="icons/tray.ico"
                         ToolTipText="Twill">
 
             <tb:TaskbarIcon.TrayToolTip>

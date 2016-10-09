@@ -45,6 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\ToListConverter.cs" />
+    <Compile Include="Models\Content\SettingsPageModel.cs" />
+    <Compile Include="Models\Content\HomePageModel.cs" />
+    <Compile Include="Models\MenuModel.cs" />
     <Compile Include="Models\Tray\IconBehaviorModel.cs" />
     <Compile Include="Models\ManagerModel.cs" />
     <Compile Include="Models\Tray\TrayPopupModel.cs" />

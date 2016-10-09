@@ -13,16 +13,25 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using model = Twill.UI.Core.Models.MenuModel;
+
 namespace Twill.UI.UserControls
 {
-    /// <summary>
-    /// Логика взаимодействия для Menu.xaml
-    /// </summary>
     public partial class Menu : UserControl
     {
         public Menu()
         {
             InitializeComponent();
+        }
+
+        private static Type thisType = typeof(Menu);
+
+        public static readonly DependencyProperty MenuModelProperty =
+            DependencyProperty.Register(nameof(MenuModel), typeof(model), thisType);
+        public model MenuModel
+        {
+            get { return (model)GetValue(MenuModelProperty); }
+            set { SetValue(MenuModelProperty, value); }
         }
     }
 }

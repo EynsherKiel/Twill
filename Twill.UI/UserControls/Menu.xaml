@@ -1,12 +1,54 @@
 ﻿<UserControl x:Class="Twill.UI.UserControls.Menu"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:contetncontrols="clr-namespace:Twill.UI.UserControls.Content"
+             xmlns:contetncontrolsmodels="clr-namespace:Twill.UI.Core.Models.Content;assembly=Twill.UI.Core"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Twill.UI.UserControls"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:Twill.UI.Core.Models;assembly=Twill.UI.Core"
+             d:DataContext="{d:DesignInstance models:MenuModel,
+                                              IsDesignTimeCreatable=True}"
+             d:DesignHeight="300"
+             d:DesignWidth="500"
+             DataContext="{Binding MenuModel}"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+
+        <DataTemplate DataType="{x:Type contetncontrolsmodels:HomePageModel}">
+            <contetncontrols:HomePage />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type contetncontrolsmodels:SettingsPageModel}">
+            <contetncontrols:SettingsPage />
+        </DataTemplate>
+
+
+    </UserControl.Resources>
+
     <Grid>
-            
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Menu Background="Transparent">
+            <Menu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel />
+                </ItemsPanelTemplate>
+            </Menu.ItemsPanel>
+
+            <MenuItem Command="{Binding HomePageViewCommand}" Header="Home" />
+
+            <MenuItem HorizontalAlignment="Right"
+                      Command="{Binding SettingsPageViewCommand}"
+                      FlowDirection="RightToLeft"
+                      Header="Settings" />
+        </Menu>
+
+        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}" />
+
     </Grid>
 </UserControl>

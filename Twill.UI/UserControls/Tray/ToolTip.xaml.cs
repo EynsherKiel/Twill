@@ -13,22 +13,24 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using model = Twill.UI.Core.Models.Tray.TrayToolTipModel;
+
 namespace Twill.UI.UserControls.Tray
 {
     public partial class ToolTip : UserControl
     {
         public ToolTip()
         {
-            InitializeComponent();
+            InitializeComponent(); 
         }
         
         private static Type thisType = typeof(ToolTip);
 
         public static readonly DependencyProperty TrayToolTipModelProperty =
-            DependencyProperty.Register(nameof(TrayToolTipModel), typeof(Twill.UI.Core.Models.Tray.TrayToolTipModel), thisType);
-        public Twill.UI.Core.Models.Tray.TrayToolTipModel TrayToolTipModel
+            DependencyProperty.Register(nameof(TrayToolTipModel), typeof(model), thisType);
+        public model TrayToolTipModel
         {
-            get { return (Twill.UI.Core.Models.Tray.TrayToolTipModel)GetValue(TrayToolTipModelProperty); }
+            get { return (model)GetValue(TrayToolTipModelProperty); }
             set { SetValue(TrayToolTipModelProperty, value); }
         }
 

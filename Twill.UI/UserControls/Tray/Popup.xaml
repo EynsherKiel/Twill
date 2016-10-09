@@ -2,39 +2,91 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:Twill.UI.UserControls.Tray"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             Width="150"
+             xmlns:traymodel="clr-namespace:Twill.UI.Core.Models.Tray;assembly=Twill.UI.Core"
+             Width="120"
+             d:DataContext="{d:DesignInstance traymodel:TrayPopupModel,
+                                              IsDesignTimeCreatable=True}"
              DataContext="{Binding TrayPopupModel}"
              mc:Ignorable="d">
     <Grid>
         <Border Margin="10"
-                Background="White"
-                BorderBrush="#FF8924EB"
-                BorderThickness="0.7"
-                CornerRadius="2">
+                Background="Gray"
+                BorderBrush="#FF956EBB"
+                BorderThickness="1"
+                CornerRadius="3">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="8"
                                   ShadowDepth="0"
-                                  Color="#FF8924EB" />
+                                  Color="Gray" />
             </Border.Effect>
-            <Grid Margin="3">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
 
-                <Button Grid.Row="0"
-                        Background="White"
-                        BorderThickness="0"
-                        Content="Text"
-                        Padding="15,8,15,8" />
+            <Grid>
+                <Border>
+                    <Border.OpacityMask>
+                        <VisualBrush>
+                            <VisualBrush.Visual>
+                                <Border Width="{Binding ActualWidth,
+                                                        RelativeSource={RelativeSource FindAncestor,
+                                                                                       AncestorType=Border}}"
+                                        Height="{Binding ActualHeight,
+                                                         RelativeSource={RelativeSource FindAncestor,
+                                                                                        AncestorType=Border}}"
+                                        Background="Black"
+                                        CornerRadius="{Binding CornerRadius,
+                                                               RelativeSource={RelativeSource FindAncestor,
+                                                                                              AncestorLevel=2,
+                                                                                              AncestorType={x:Type Border}}}"
+                                        SnapsToDevicePixels="True" />
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Border.OpacityMask>
 
-                <Button Grid.Row="1"
-                        Background="White"
-                        BorderThickness="0"
-                        Content="Text"
-                        Padding="15,8,15,8" />
+                    <Grid DataContext="{Binding MenuModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Row="0"
+                                Background="White"
+                                BorderThickness="0"
+                                Click="ShowWindowEvent"
+                                Command="{Binding HomePageViewCommand,
+                                                  Mode=OneWay,
+                                                  UpdateSourceTrigger=PropertyChanged}"
+                                Content="Home"
+                                Padding="15,8,15,8">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction Command="{Binding DataContext.IconBehaviorModel.ShowWindowCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+
+
+                        <Button Grid.Row="1"
+                                Background="White"
+                                BorderThickness="0"
+                                Click="ShowWindowEvent"
+                                Command="{Binding SettingsPageViewCommand,
+                                                  Mode=OneWay,
+                                                  UpdateSourceTrigger=PropertyChanged}"
+                                Content="Settings"
+                                Padding="15,8,15,8">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction Command="{Binding DataContext.IconBehaviorModel.ShowWindowCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+
+                    </Grid>
+                </Border>
+
             </Grid>
         </Border>
     </Grid>

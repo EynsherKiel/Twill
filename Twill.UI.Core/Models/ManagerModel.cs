@@ -14,8 +14,13 @@ namespace Twill.UI.Core.Models
     {
         public ManagerModel()
         {
+            if (IconBehaviorModel.TrayPopupModel != null)
+                IconBehaviorModel.TrayPopupModel.MenuModel = MenuModel;
         }
 
+        public MenuModel MenuModel { get; set; } = new MenuModel();
         public IconBehaviorModel IconBehaviorModel { get; set; } = new IconBehaviorModel();
+
+        
     }
 }

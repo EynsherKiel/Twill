@@ -59,15 +59,5 @@ namespace Twill.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
-        /// </summary>
-        internal static System.Drawing.Icon Graphicloads_100_Flat_Check {
-            get {
-                object obj = ResourceManager.GetObject("Graphicloads_100_Flat_Check", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
     }
 }

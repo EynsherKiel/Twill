@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using model = Twill.UI.Core.Models.Tray.TrayPopupModel;
+
 namespace Twill.UI.UserControls.Tray
 {
     public partial class Popup : UserControl
@@ -25,12 +27,16 @@ namespace Twill.UI.UserControls.Tray
         private static Type thisType = typeof(Popup);
 
         public static readonly DependencyProperty TrayPopupModelProperty =
-            DependencyProperty.Register(nameof(TrayPopupModel), typeof(Twill.UI.Core.Models.Tray.TrayPopupModel), thisType);
-        public Twill.UI.Core.Models.Tray.TrayPopupModel TrayPopupModel
+            DependencyProperty.Register(nameof(TrayPopupModel), typeof(model), thisType);
+        public model TrayPopupModel
         {
-            get { return (Twill.UI.Core.Models.Tray.TrayPopupModel)GetValue(TrayPopupModelProperty); }
+            get { return (model)GetValue(TrayPopupModelProperty); }
             set { SetValue(TrayPopupModelProperty, value); }
         }
 
+        private void ShowWindowEvent(object sender, RoutedEventArgs e)
+        {
+            (DataContext as model)?.IconBehaviorModel.ShowWindowMethod(Application.Current.Windows[0]);
+        }
     }
 }
