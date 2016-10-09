@@ -17,18 +17,22 @@ namespace Twill.UI.Core.Models
 
             HomePageViewCommand = new RelayCommand(HomePageViewMethod);
             SettingsPageViewCommand = new RelayCommand(SettingsPageViewMethod);
+            AboutPageViewCommand = new RelayCommand(AboutPageViewMethod);
         }
 
 
         public HomePageModel HomePageModel { get; set; } = new HomePageModel();
         public SettingsPageModel SettingsPageModel { get; set; } = new SettingsPageModel();
+        public AboutPageModel AboutPageModel { get; set; } = new AboutPageModel();
 
 
         public ICommand HomePageViewCommand { get; }
         public ICommand SettingsPageViewCommand { get; }
+        public ICommand AboutPageViewCommand { get; }
 
         public void SettingsPageViewMethod() => CurrentViewModel = SettingsPageModel;
         public void HomePageViewMethod() => CurrentViewModel = HomePageModel;
+        public void AboutPageViewMethod() => CurrentViewModel = AboutPageModel;
 
 
         private Notify currentViewModel;

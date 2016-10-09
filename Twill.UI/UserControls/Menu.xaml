@@ -3,52 +3,75 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:contetncontrols="clr-namespace:Twill.UI.UserControls.Content"
              xmlns:contetncontrolsmodels="clr-namespace:Twill.UI.Core.Models.Content;assembly=Twill.UI.Core"
+             xmlns:converters="clr-namespace:Twill.UI.Core.Converters;assembly=Twill.UI.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Twill.UI.UserControls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Twill.UI.Core.Models;assembly=Twill.UI.Core"
              d:DataContext="{d:DesignInstance models:MenuModel,
                                               IsDesignTimeCreatable=True}"
-             d:DesignHeight="300"
-             d:DesignWidth="500"
+             d:DesignHeight="500"
+             d:DesignWidth="700"
              DataContext="{Binding MenuModel}"
              mc:Ignorable="d">
 
     <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Twill.UI;component/Styles/Menu.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-        <DataTemplate DataType="{x:Type contetncontrolsmodels:HomePageModel}">
-            <contetncontrols:HomePage />
-        </DataTemplate>
+            <converters:EqualsTypesConverter x:Key="EqualsTypesConverter" />
 
-        <DataTemplate DataType="{x:Type contetncontrolsmodels:SettingsPageModel}">
-            <contetncontrols:SettingsPage />
-        </DataTemplate>
+            <DataTemplate DataType="{x:Type contetncontrolsmodels:HomePageModel}">
+                <contetncontrols:HomePage />
+            </DataTemplate>
 
+            <DataTemplate DataType="{x:Type contetncontrolsmodels:SettingsPageModel}">
+                <contetncontrols:SettingsPage />
+            </DataTemplate>
 
+            <DataTemplate DataType="{x:Type contetncontrolsmodels:AboutPageModel}">
+                <contetncontrols:AboutPage />
+            </DataTemplate>
+
+        </ResourceDictionary>
     </UserControl.Resources>
-
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Menu Background="Transparent">
-            <Menu.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <DockPanel />
-                </ItemsPanelTemplate>
-            </Menu.ItemsPanel>
+        <Menu Width="200"
+              
+              FontSize="16"
+              Style="{DynamicResource TwillMenu}">
 
-            <MenuItem Command="{Binding HomePageViewCommand}" Header="Home" />
+            <MenuItem  Command="{Binding HomePageViewCommand}"
+                      Header="Home"
+                      IsChecked="{Binding CurrentViewModel,
+                                          Converter={StaticResource ResourceKey=EqualsTypesConverter},
+                                          ConverterParameter=HomePageModel}" />
 
-            <MenuItem HorizontalAlignment="Right"
-                      Command="{Binding SettingsPageViewCommand}"
-                      FlowDirection="RightToLeft"
-                      Header="Settings" />
+            <MenuItem Command="{Binding SettingsPageViewCommand}" 
+                      
+                      Header="Settings"
+                      IsChecked="{Binding CurrentViewModel,
+                                          Converter={StaticResource ResourceKey=EqualsTypesConverter},
+                                          ConverterParameter=SettingsPageModel}" />
+
+
+            <MenuItem Command="{Binding AboutPageViewCommand}" 
+                      
+                      Header="About"
+                      IsChecked="{Binding CurrentViewModel,
+                                          Converter={StaticResource ResourceKey=EqualsTypesConverter},
+                                          ConverterParameter=AboutPageModel}" />
+
         </Menu>
 
-        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}" />
+        <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}" />
 
     </Grid>
 </UserControl>

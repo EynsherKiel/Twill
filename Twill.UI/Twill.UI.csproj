@@ -53,6 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserControls\Content\AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Content\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
@@ -69,10 +72,16 @@
       <DependentUpon>ToolTip.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Styles\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Page Include="Styles\Menu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Content\AboutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Content\HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
