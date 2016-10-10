@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Generic; 
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twill.Processes.Tracking;
 using Twill.UI.Core.Tools;
 
 namespace Twill.UI.Core.Models.Content
@@ -11,9 +12,10 @@ namespace Twill.UI.Core.Models.Content
     {
         public HomePageModel()
         {
-
+            //Monitor.Data = data => Text = data;
         }
 
+        public Monitor Monitor = new Monitor();
 
         private string text = "Welcome";
         public string Text
@@ -24,8 +26,6 @@ namespace Twill.UI.Core.Models.Content
                 text = value;
                 RaisePropertyChanged(nameof(Text));
             }
-        }
-
-
+        } 
     }
 }

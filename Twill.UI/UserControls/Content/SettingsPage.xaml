@@ -13,7 +13,7 @@
     <Grid>
 
 
-        <TextBlock Margin="2,2,17,2"
+        <TextBlock  
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    FontFamily="pack://application:,,,/Twill.UI;component/fonts/VLADIMIR.TTF#Vladimir Script"

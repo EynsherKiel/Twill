@@ -844,13 +844,13 @@
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
                         </Trigger>
-                        <Trigger Property="IsFocused" Value="True">
+                        <!--<Trigger Property="IsFocused" Value="True">
                             <Setter Property="Visibility" Value="Visible" TargetName="Icon"/>
                             <Setter Property="Visibility" Value="Visible" TargetName="GlyphPanel"/>
                             <Setter Property="Foreground" Value="White" />
-                        </Trigger>
+                        </Trigger>-->
 
-                        <MultiTrigger>
+                        <!--<MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsHighlighted" Value="True" />
                                 <Condition Property="IsFocused" Value="True" />
@@ -860,7 +860,7 @@
                                 <Setter Property="Visibility" Value="Visible" TargetName="GlyphPanel"/>
                                 <Setter Property="Foreground" Value="#FF5C5EDC"/>
                             </MultiTrigger.Setters>
-                        </MultiTrigger>
+                        </MultiTrigger>-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

@@ -58,6 +58,12 @@
     <Compile Include="Tools\Notify.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Twill.Processes\Twill.Processes.csproj">
+      <Project>{dcb9453a-0d81-4d2a-bd07-eef81a40e6ff}</Project>
+      <Name>Twill.Processes</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

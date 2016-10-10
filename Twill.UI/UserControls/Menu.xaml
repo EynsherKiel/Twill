@@ -44,26 +44,23 @@
         </Grid.ColumnDefinitions>
 
         <Menu Width="200"
-              
               FontSize="16"
               Style="{DynamicResource TwillMenu}">
 
-            <MenuItem  Command="{Binding HomePageViewCommand}"
+            <MenuItem Command="{Binding HomePageViewCommand}"
                       Header="Home"
                       IsChecked="{Binding CurrentViewModel,
                                           Converter={StaticResource ResourceKey=EqualsTypesConverter},
                                           ConverterParameter=HomePageModel}" />
 
-            <MenuItem Command="{Binding SettingsPageViewCommand}" 
-                      
+            <MenuItem Command="{Binding SettingsPageViewCommand}"
                       Header="Settings"
                       IsChecked="{Binding CurrentViewModel,
                                           Converter={StaticResource ResourceKey=EqualsTypesConverter},
                                           ConverterParameter=SettingsPageModel}" />
 
 
-            <MenuItem Command="{Binding AboutPageViewCommand}" 
-                      
+            <MenuItem Command="{Binding AboutPageViewCommand}"
                       Header="About"
                       IsChecked="{Binding CurrentViewModel,
                                           Converter={StaticResource ResourceKey=EqualsTypesConverter},

@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fonts", "Fonts", "{9F28B896
 		Fonts\VLADIMIR.TTF = Fonts\VLADIMIR.TTF
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twill.Processes", "Twill.Processes\Twill.Processes.csproj", "{DCB9453A-0D81-4D2A-BD07-EEF81A40E6FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{D5E67F88-3DB5-4B48-8964-50590D2DD801}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5E67F88-3DB5-4B48-8964-50590D2DD801}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5E67F88-3DB5-4B48-8964-50590D2DD801}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCB9453A-0D81-4D2A-BD07-EEF81A40E6FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCB9453A-0D81-4D2A-BD07-EEF81A40E6FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCB9453A-0D81-4D2A-BD07-EEF81A40E6FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCB9453A-0D81-4D2A-BD07-EEF81A40E6FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
