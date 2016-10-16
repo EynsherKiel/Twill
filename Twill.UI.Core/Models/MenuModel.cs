@@ -13,26 +13,29 @@ namespace Twill.UI.Core.Models
     {
         public MenuModel()
         {
-            currentViewModel = HomePageModel;
+            currentViewModel = MonitorPageModel;
 
             HomePageViewCommand = new RelayCommand(HomePageViewMethod);
-            SettingsPageViewCommand = new RelayCommand(SettingsPageViewMethod);
             AboutPageViewCommand = new RelayCommand(AboutPageViewMethod);
+            MonitorPageViewCommand = new RelayCommand(MonitorPageViewMethod);
+            SettingsPageViewCommand = new RelayCommand(SettingsPageViewMethod);
         }
 
 
         public HomePageModel HomePageModel { get; set; } = new HomePageModel();
-        public SettingsPageModel SettingsPageModel { get; set; } = new SettingsPageModel();
         public AboutPageModel AboutPageModel { get; set; } = new AboutPageModel();
-
+        public MonitorPageModel MonitorPageModel { get; set; } = new MonitorPageModel();
+        public SettingsPageModel SettingsPageModel { get; set; } = new SettingsPageModel();
 
         public ICommand HomePageViewCommand { get; }
-        public ICommand SettingsPageViewCommand { get; }
         public ICommand AboutPageViewCommand { get; }
+        public ICommand MonitorPageViewCommand { get; }
+        public ICommand SettingsPageViewCommand { get; }
 
-        public void SettingsPageViewMethod() => CurrentViewModel = SettingsPageModel;
         public void HomePageViewMethod() => CurrentViewModel = HomePageModel;
         public void AboutPageViewMethod() => CurrentViewModel = AboutPageModel;
+        public void MonitorPageViewMethod() => CurrentViewModel = MonitorPageModel;
+        public void SettingsPageViewMethod() => CurrentViewModel = SettingsPageModel;
 
 
         private Notify currentViewModel;

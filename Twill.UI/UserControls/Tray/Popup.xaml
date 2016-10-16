@@ -51,6 +51,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
+
                         <Button Grid.Row="0"
                                 Background="White"
                                 BorderThickness="0"
@@ -67,8 +68,24 @@
                             </i:Interaction.Triggers>
                         </Button>
 
-
                         <Button Grid.Row="1"
+                                Background="White"
+                                BorderThickness="0"
+                                Click="ShowWindowEvent"
+                                Command="{Binding MonitorPageViewCommand,
+                                                  Mode=OneWay,
+                                                  UpdateSourceTrigger=PropertyChanged}"
+                                Content="Monitor"
+                                Padding="15,8,15,8">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction Command="{Binding DataContext.IconBehaviorModel.ShowWindowCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+
+
+                        <Button Grid.Row="2"
                                 Background="White"
                                 BorderThickness="0"
                                 Click="ShowWindowEvent"

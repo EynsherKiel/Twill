@@ -11,7 +11,6 @@ namespace Twill.UI.Core.Models.Content
     {
         public AboutPageModel()
         {
-
         }
 
 

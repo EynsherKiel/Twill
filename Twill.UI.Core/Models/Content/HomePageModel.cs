@@ -11,11 +11,9 @@ namespace Twill.UI.Core.Models.Content
     public class HomePageModel : Notify
     {
         public HomePageModel()
-        {
-            //Monitor.Data = data => Text = data;
+        { 
         }
-
-        public Monitor Monitor = new Monitor();
+         
 
         private string text = "Welcome";
         public string Text

@@ -25,7 +25,7 @@ namespace Twill
 
         private void WindowLoadedEvent(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            //this.WindowState = WindowState.Minimized;
         }
 
         private void StateChangedEvent(object sender, EventArgs e)

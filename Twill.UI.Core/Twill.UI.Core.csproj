@@ -45,8 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\EqualsTypesConverter.cs" />
+    <Compile Include="Converters\ReportsTimeIntervalToHeightConverter.cs" />
     <Compile Include="Converters\ToListConverter.cs" />
+    <Compile Include="Data\Report.cs" />
     <Compile Include="Models\Content\AboutPageModel.cs" />
+    <Compile Include="Models\Content\MonitorPageModel.cs" />
     <Compile Include="Models\Content\SettingsPageModel.cs" />
     <Compile Include="Models\Content\HomePageModel.cs" />
     <Compile Include="Models\MenuModel.cs" />
@@ -60,7 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Twill.Processes\Twill.Processes.csproj">
-      <Project>{dcb9453a-0d81-4d2a-bd07-eef81a40e6ff}</Project>
+      <Project>{5fb029aa-e411-4494-95b7-86db4e574fc0}</Project>
       <Name>Twill.Processes</Name>
     </ProjectReference>
   </ItemGroup>

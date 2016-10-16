@@ -35,6 +35,10 @@
                 <contetncontrols:AboutPage />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type contetncontrolsmodels:MonitorPageModel}">
+                <contetncontrols:MonitorPage />
+            </DataTemplate>
+
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -52,6 +56,14 @@
                       IsChecked="{Binding CurrentViewModel,
                                           Converter={StaticResource ResourceKey=EqualsTypesConverter},
                                           ConverterParameter=HomePageModel}" />
+
+
+            <MenuItem Command="{Binding MonitorPageViewCommand}"
+                      Header="Monitor"
+                      IsChecked="{Binding CurrentViewModel,
+                                          Converter={StaticResource ResourceKey=EqualsTypesConverter},
+                                          ConverterParameter=MonitorPageModel}" />
+
 
             <MenuItem Command="{Binding SettingsPageViewCommand}"
                       Header="Settings"
