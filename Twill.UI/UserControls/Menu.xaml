@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:contetncontrols="clr-namespace:Twill.UI.UserControls.Content"
              xmlns:contetncontrolsmodels="clr-namespace:Twill.UI.Core.Models.Content;assembly=Twill.UI.Core"
-             xmlns:converters="clr-namespace:Twill.UI.Core.Converters;assembly=Twill.UI.Core"
+             xmlns:converters="clr-namespace:Twill.UI.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Twill.UI.UserControls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"

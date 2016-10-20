@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using Twill.UI.Core.Data;
 
-namespace Twill.UI.Core.Converters
+namespace Twill.UI.Converters
 {
     public class ReportsTimeIntervalToHeightConverter : IMultiValueConverter
     {

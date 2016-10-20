@@ -2,171 +2,246 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:content="clr-namespace:Twill.UI.Core.Models.Content;assembly=Twill.UI.Core"
-             xmlns:converters="clr-namespace:Twill.UI.Core.Converters;assembly=Twill.UI.Core"
+             xmlns:converters="clr-namespace:Twill.UI.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:decorators="clr-namespace:Twill.UI.Decorators"
              xmlns:local="clr-namespace:Twill.UI.UserControls.Content"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              d:DataContext="{d:DesignInstance content:MonitorPageModel,
                                               IsDesignTimeCreatable=True}"
-             d:DesignHeight="200"
+             d:DesignHeight="{Binding ElementName=processes}"
              d:DesignWidth="500"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Twill.UI;component/Styles/Menu.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:TimeLineConverter x:Key="TimeLineConverter" />
             <converters:ReportsTimeIntervalToHeightConverter x:Key="ReportsTimeIntervalToHeightConverter" />
             <converters:ToListConverter x:Key="ToListConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <Grid Margin="57,38,37,17">
+        <Grid Margin="17">
 
-            <decorators:MouseTrackerDecorator>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="231*" />
-                        <ColumnDefinition Width="250*" />
-                    </Grid.ColumnDefinitions>
+            <ScrollViewer Style="{DynamicResource TwillMenuScrollViewer}">
+                <decorators:MouseTrackerDecorator>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="231*" />
+                            <ColumnDefinition Width="250*" />
+                        </Grid.ColumnDefinitions>
 
-                    <Button x:Name="rectangle"
-                            Grid.Column="0"
-                            Width="10"
-                            BorderThickness="0"
-                            Command="{Binding AddNewRecordCommand}">
-                        <Button.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <LinearGradientBrush.RelativeTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform CenterY="0.5" CenterX="0.5"/>
-                                        <SkewTransform CenterY="0.5" CenterX="0.5"/>
-                                        <RotateTransform Angle="-90" CenterY="0.5" CenterX="0.5"/>
-                                        <TranslateTransform/>
-                                    </TransformGroup>
-                                </LinearGradientBrush.RelativeTransform>
-                                <GradientStop Offset="0"/>
-                                <GradientStop Color="#FFA2CAF9" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Button.Background>
-                        <Button.CommandParameter>
-                            <MultiBinding Converter="{StaticResource ToListConverter}">
-                                <Binding ElementName="processes" Path="ActualHeight" />
-                                <Binding Path="MousePosition.Y" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type decorators:MouseTrackerDecorator}}" />
-                            </MultiBinding>
-                        </Button.CommandParameter>
-                        <Button.Style>
-                            <Style TargetType="{x:Type Button}">
-                                <Setter Property="Background" Value="#373737" />
-                                <Setter Property="Foreground" Value="White" />
-                                <Setter Property="FontSize" Value="15" />
-                                <Setter Property="SnapsToDevicePixels" Value="True" />
+                        <Button x:Name="rectangle"
+                                Grid.Column="0"
+                                Width="60"
+                                BorderThickness="0"
+                                Command="{Binding AddNewRecordCommand}">
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource ToListConverter}">
+                                    <Binding ElementName="processes" Path="ActualHeight" />
+                                    <Binding Path="MousePosition.Y" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type decorators:MouseTrackerDecorator}}" />
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Background" Value="#373737" />
+                                    <Setter Property="Foreground" Value="White" />
+                                    <Setter Property="FontSize" Value="15" />
+                                    <Setter Property="SnapsToDevicePixels" Value="True" />
 
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Border   Background="{TemplateBinding Background}">
-                                                <Grid>
-                                                    <ContentPresenter    Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
-                                                </Grid>
-                                            </Border>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border Background="{TemplateBinding Background}">
+                                                    <Grid>
+                                                        <ContentPresenter Margin="0,0,0,0"
+                                                                          HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center"
+                                                                          Content="{TemplateBinding Content}" />
+                                                    </Grid>
+                                                </Border>
 
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                </Trigger>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True" />
 
-                                                <Trigger Property="IsPressed" Value="True">
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-
-                    <ListView x:Name="processes"
-                              Grid.Column="1"
-                              Margin="0,0,0,10"
-                              ItemsSource="{Binding Texts}">
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                    </ListView>
-
-                    <ListBox x:Name="reports"
-                             Grid.Column="2"
-                             ItemsSource="{Binding Reports}"
-                             ScrollViewer.HorizontalScrollBarVisibility="Hidden">
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Vertical" />
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListBoxItem}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                            <ContentPresenter />
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                        <ListBox.ItemTemplate>
-                            <ItemContainerTemplate>
-                                <Grid Width="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}">
-                                    <Grid.Height>
-                                        <MultiBinding Converter="{StaticResource ReportsTimeIntervalToHeightConverter}">
-                                            <Binding />
-                                            <Binding ElementName="processes" Path="ActualHeight" />
-                                            <Binding Path="End" />
-                                        </MultiBinding>
-                                    </Grid.Height>
-                                    <TextBox AcceptsReturn="True"
-                                             BorderThickness="1"
-                                             Text="{Binding Text,
-                                                            Mode=TwoWay,
-                                                            UpdateSourceTrigger=PropertyChanged}"
-                                             TextWrapping="Wrap" />
-                                </Grid>
-                            </ItemContainerTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                                                    <Trigger Property="IsPressed" Value="True" />
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                            <Grid>
+                                <ListBox  ScrollViewer.VerticalScrollBarVisibility="Hidden"  ScrollViewer.HorizontalScrollBarVisibility="Hidden" Width="{Binding ActualWidth,
+                                                         Mode=OneWay,
+                                                         RelativeSource={RelativeSource FindAncestor,
+                                                                                        AncestorType={x:Type Button}}}"
+                                         Height="{Binding ActualHeight,
+                                                          ElementName=processes,
+                                                          Mode=OneWay}"
+                                         Background="AliceBlue"
+                                         ItemsSource="{Binding ActualHeight,
+                                                               Converter={StaticResource TimeLineConverter},
+                                                               Mode=OneWay,
+                                                               RelativeSource={RelativeSource FindAncestor,
+                                                                                              AncestorType={x:Type Button}}}"
+                                         Style="{DynamicResource TwillMenuListBox}">
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                        <ContentPresenter />
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel MaxWidth="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Orientation="Vertical">
+                                                <StackPanel.Resources>
 
 
-                    <Line Grid.Column="1"
-                          Grid.ColumnSpan="2"
-                          Stroke="Blue"
-                          StrokeThickness="1"
-                          X1="0"
-                          X2="{Binding ActualWidth,
-                                       Mode=OneWay,
-                                       RelativeSource={RelativeSource FindAncestor,
-                                                                      AncestorType={x:Type Grid}}}"
-                          Y1="{Binding MousePosition.Y,
-                                       RelativeSource={RelativeSource FindAncestor,
-                                                                      AncestorType={x:Type decorators:MouseTrackerDecorator}}}"
-                          Y2="{Binding MousePosition.Y,
-                                       RelativeSource={RelativeSource FindAncestor,
-                                                                      AncestorType={x:Type decorators:MouseTrackerDecorator}}}">
-                        <Line.Style>
-                            <Style TargetType="Line">
-                                <Setter Property="Visibility" Value="Hidden" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=rectangle, Mode=OneWay}" Value="True">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Line.Style>
-                    </Line>
+                                                    <HierarchicalDataTemplate DataType="{x:Type sys:DateTime}">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <Line Height="12"
+                                                              Stroke="Gray"
+                                                              StrokeThickness="1"
+                                                              Y1="0"
+                                                              Y2="0"
+                                                              X1="0"
+                                                              X2="14" />
+                                                            <TextBlock Grid.Column="1" Width="{Binding ActualWidth,
+                                                                                   Mode=OneWay,
+                                                                                   RelativeSource={RelativeSource FindAncestor,
+                                                                                                                  AncestorType={x:Type Button}}}"
+                                                                   Margin="0,-12,3,0"
+                                                                   HorizontalAlignment="Right"
+                                                                   FontFamily="Microsoft Himalaya"
+                                                                   FontSize="18"
+                                                                   Text="{Binding StringFormat=HH:mm}"
+                                                                   TextAlignment="Right" Height="12" />
+                                                        </Grid>
+                                                    </HierarchicalDataTemplate>
 
 
-                </Grid>
-            </decorators:MouseTrackerDecorator>
+                                                    <HierarchicalDataTemplate DataType="{x:Type sys:Boolean}">
+                                                        <Line Height="12"
+                                                              Stroke="Black"
+                                                              StrokeThickness="1"
+                                                              Y1="0"
+                                                              Y2="0"
+                                                              X1="0"
+                                                              X2="7" />
+                                                    </HierarchicalDataTemplate>
+
+                                                </StackPanel.Resources>
+                                            </StackPanel>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                </ListBox>
+                                <Grid Background="#19E8DBDB" />
+                            </Grid>
+                        </Button>
+
+                        <ListView x:Name="processes"
+                                  Grid.Column="1"
+                                  Height="5000"
+                                  ItemsSource="{Binding Texts}"
+                                  Style="{DynamicResource TwillMenuListBox}">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListView>
+
+
+                        <ListBox x:Name="reports"
+                                 Grid.Column="2"
+                                 ItemsSource="{Binding Reports}"
+                                 ScrollViewer.CanContentScroll="False"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                 Style="{DynamicResource TwillMenuListBox}">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                <ContentPresenter />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <ItemContainerTemplate>
+                                    <Grid Width="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}">
+                                        <Grid.Height>
+                                            <MultiBinding Converter="{StaticResource ReportsTimeIntervalToHeightConverter}">
+                                                <Binding />
+                                                <Binding ElementName="processes" Path="ActualHeight" />
+                                                <Binding Path="End" />
+                                            </MultiBinding>
+                                        </Grid.Height>
+                                        <TextBox AcceptsReturn="True"
+                                                 BorderThickness="0,1,0,1"
+                                                 Text="{Binding Text,
+                                                                Mode=TwoWay,
+                                                                UpdateSourceTrigger=PropertyChanged}"
+                                                 TextWrapping="Wrap" />
+                                    </Grid>
+                                </ItemContainerTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+
+                        <Line Grid.Column="1"
+                              Grid.ColumnSpan="2"
+                              Stroke="Blue"
+                              StrokeThickness="1"
+                              X1="0"
+                              X2="{Binding ActualWidth,
+                                           Mode=OneWay,
+                                           RelativeSource={RelativeSource FindAncestor,
+                                                                          AncestorType={x:Type Grid}}}"
+                              Y1="{Binding MousePosition.Y,
+                                           RelativeSource={RelativeSource FindAncestor,
+                                                                          AncestorType={x:Type decorators:MouseTrackerDecorator}}}"
+                              Y2="{Binding MousePosition.Y,
+                                           RelativeSource={RelativeSource FindAncestor,
+                                                                          AncestorType={x:Type decorators:MouseTrackerDecorator}}}">
+                            <Line.Style>
+                                <Style TargetType="Line">
+                                    <Setter Property="Visibility" Value="Hidden" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=rectangle, Mode=OneWay}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Line.Style>
+                        </Line>
+
+                    </Grid>
+                </decorators:MouseTrackerDecorator>
+
+            </ScrollViewer>
         </Grid>
     </Grid>
 </UserControl>

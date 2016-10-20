@@ -44,9 +44,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\EqualsTypesConverter.cs" />
-    <Compile Include="Converters\ReportsTimeIntervalToHeightConverter.cs" />
-    <Compile Include="Converters\ToListConverter.cs" />
     <Compile Include="Data\Report.cs" />
     <Compile Include="Models\Content\AboutPageModel.cs" />
     <Compile Include="Models\Content\MonitorPageModel.cs" />
