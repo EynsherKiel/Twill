@@ -9,40 +9,45 @@ using System.Windows.Input;
 using Twill.Processes.Tracking;
 using Twill.Processes.Windows;
 using Twill.UI.Core.Data;
-using Twill.UI.Core.Tools;
+using Twill.UI.Core.Models.Controls.TimeLine;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 
 namespace Twill.UI.Core.Models.Content
 {
-    public class MonitorPageModel : Notify
+    public class MonitorPageModel : ViewModelBase
     {
         public MonitorPageModel()
         {
             Investigator.NewMilieu += GetMilieu;
 
-
             AddNewRecordCommand = new RelayCommand<List<object>>(AddNewRecordMethod);
 
-        }
 
+            ProcessDayLabors = Controller.GetLabor<ObservableCollection<ProcessDayLaborModel>>(DateTime.Now); 
+        }
+         
+
+        public Storage.Barrier.Controller Controller = new Storage.Barrier.Controller();
 
         public Investigator Investigator = new Investigator();
 
         public ICommand AddNewRecordCommand { get; }
         
 
-        private ObservableCollection<string> texts = new ObservableCollection<string>();
-        public ObservableCollection<string> Texts
+        private ObservableCollection<ProcessDayLaborModel> processDayLabors = new ObservableCollection<ProcessDayLaborModel>();
+        public ObservableCollection<ProcessDayLaborModel> ProcessDayLabors
         {
-            get { return texts; }
+            get { return processDayLabors; }
             set
             {
-                texts = value;
-                RaisePropertyChanged(nameof(Texts));
+                processDayLabors = value;
+                RaisePropertyChanged(nameof(ProcessDayLabors));
             }
         }
 
-        private ObservableCollection<Report> reports = new ObservableCollection<Report>() { new Report() { Text = "Hello!" } };
-        public ObservableCollection<Report> Reports
+        private ObservableCollection<ReportModel> reports = new ObservableCollection<ReportModel>() { new ReportModel() { Text = "Hello!" } };
+        public ObservableCollection<ReportModel> Reports
         {
             get { return reports; }
             set
@@ -68,7 +73,7 @@ namespace Twill.UI.Core.Models.Content
                 return;
             var mouseY = (double)values[1];
 
-            var minutesInPixel = Report.MinetsInDay / height;
+            var minutesInPixel = Labor.MinetsInDay / height;
 
             var choisenMinute = mouseY * minutesInPixel;
 
@@ -81,26 +86,47 @@ namespace Twill.UI.Core.Models.Content
 
             var findIndexReport = Reports.IndexOf(findRepor);
 
-            Reports.Insert(findIndexReport + 1, new Report() { Start = choisenDateTime, End = findRepor.End } );
+            Reports.Insert(findIndexReport + 1, new ReportModel() { Start = choisenDateTime, End = findRepor.End } );
             findRepor.End = choisenDateTime;
         }
 
         private void GetMilieu(Milieu milieu) => AsyncAction(AddApplications, milieu.Applications);
 
-
         private void AddApplications(List<Application> applications)
         {
             var appNames = applications.Select(application => application.Name).ToList();
 
-            foreach (var appName in appNames)
-            {
-                if (!Texts.Contains(appName))
-                    Texts.Add(appName);
-            }
+            //foreach (var appName in appNames)
+            //{
+            //    if (!ProcessDayLabors.Contains(appName))
+            //        ProcessDayLabors.Add(appName);
+            //}
 
-            foreach (var deletext in Texts.Where(text => !appNames.Contains(text)).ToList())
+            //foreach (var deletext in ProcessDayLabors.Where(text => !appNames.Contains(text)).ToList())
+            //{
+            //    ProcessDayLabors.Remove(deletext);
+            //}
+        }
+
+        private SynchronizationContext Context = SynchronizationContext.Current;
+
+        protected void AsyncAction<T>(Action<T> action, T data) where T : class
+        {
+            if (SynchronizationContext.Current == Context)
             {
-                Texts.Remove(deletext);
+                action(data);
+            }
+            else
+            {
+                Context.Post((e) =>
+                {
+                    var asyncData = e as T;
+
+                    if (asyncData == null)
+                        return;
+
+                    action?.Invoke(asyncData); ;
+                }, data);
             }
         }
 

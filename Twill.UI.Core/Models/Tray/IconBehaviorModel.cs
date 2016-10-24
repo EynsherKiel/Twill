@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Twill.UI.Core.Tools;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+
 
 namespace Twill.UI.Core.Models.Tray
 {
-    public class IconBehaviorModel : Notify
+    public class IconBehaviorModel : ViewModelBase
     {
         public IconBehaviorModel()
         {

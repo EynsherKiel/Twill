@@ -1,14 +1,14 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using Twill.UI.Core.Tools;
+
 
 namespace Twill.UI.Core.Data
-{
-    public class Report : Notify
+{ 
+   public class Labor : ViewModelBase
     {
         public const double MinetsInDay = 1440.0;
 
@@ -31,18 +31,6 @@ namespace Twill.UI.Core.Data
             {
                 end = value;
                 RaisePropertyChanged(nameof(End));
-            }
-        }
-         
-
-        private string text = string.Empty;
-        public string Text
-        {
-            get { return text; }
-            set
-            {
-                text = value;
-                RaisePropertyChanged(nameof(Text));
             }
         }
 

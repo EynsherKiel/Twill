@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Twill.UI.Core.Tools;
+using GalaSoft.MvvmLight;
+
 
 namespace Twill.UI.Core.Models.Content
 {
-    public class SettingsPageModel : Notify
+    public class SettingsPageModel : ViewModelBase
     {
         public SettingsPageModel()
         {

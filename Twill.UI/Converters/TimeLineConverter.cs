@@ -20,25 +20,34 @@ namespace Twill.UI.Converters
                 return null;
             var height = (double)value;
 
-            var pixelsInMinute = height / Report.MinetsInDay;
+            var pixelsInMinute = (int)(height / Labor.MinetsInDay);
 
             var forconstr = height / DateTimeHeight;
 
-            var a = Report.MinetsInDay / forconstr;
+            var a = Labor.MinetsInDay / forconstr;
 
             var list = new List<object>();
 
             var now = DateTime.Now.Date;
 
-            for (double i = 0.0; i < Report.MinetsInDay; i+= (a * 5))
-            {
-                list.Add(now.AddMinutes(i));
+            double time = 0.0;
+            list.Add(now.AddMinutes(time));
+            time += a;
 
-                list.Add(false);
-                list.Add(false);
-                list.Add(false);
-                list.Add(false);
+            int len = (int)forconstr;
+            for (int i = 1; i < len; time += a, i++)
+            {
+                if (i % 5 == 0)
+                {
+                    list.Add(now.AddMinutes(time));
+                }
+                else
+                {
+                     list.Add(default(bool));
+                } 
             }
+
+
 
             return list;
         }

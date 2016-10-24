@@ -1,8 +1,10 @@
-﻿using Twill.UI.Core.Tools;
+﻿
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 
 namespace Twill.UI.Core.Models.Tray
 {
-    public class TrayToolTipModel : Notify
+    public class TrayToolTipModel : ViewModelBase
     {
         public TrayToolTipModel()
         {

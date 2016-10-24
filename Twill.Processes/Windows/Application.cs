@@ -94,7 +94,6 @@ namespace Twill.Processes.Windows
 
         #region IDisposable Support
         private bool disposedValue = false;
-        private object A;
 
         protected virtual void Dispose(bool disposing)
         {

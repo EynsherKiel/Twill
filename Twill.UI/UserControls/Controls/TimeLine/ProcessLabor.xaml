@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="Twill.UI.UserControls.Controls.TimeLine.ProcessLabor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Twill.UI.UserControls.Controls.TimeLine"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:timelinemodels="clr-namespace:Twill.UI.Core.Models.Controls.TimeLine;assembly=Twill.UI.Core"
+             d:DesignHeight="100"
+             d:DesignWidth="75"
+             Background="#FFEDFFE0"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Twill.UI;component/Styles/Menu.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid d:DataContext="{d:DesignInstance timelinemodels:ProcessLaborModel, IsDesignTimeCreatable=True}" DataContext="{Binding ProcessLaborModel, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+
+        <Border BorderBrush="Black" BorderThickness="1">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="7"
+                                  ShadowDepth="0"
+                                  Color="Black" />
+            </Border.Effect>
+        </Border>
+
+        <Grid Background="{Binding Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+            <Border BorderThickness="1">
+                <Border.BorderBrush>
+                    <RadialGradientBrush>
+                        <GradientStop Offset="0" Color="Black" />
+                        <GradientStop Offset="1" Color="#66FFFFFF" />
+                    </RadialGradientBrush>
+                </Border.BorderBrush>
+            </Border>
+
+            <ListBox Margin="1,1,1,1"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     ItemsSource="{Binding Headers,
+                                           UpdateSourceTrigger=PropertyChanged}"
+                     Style="{DynamicResource TwillMenuListBox}">
+
+                <ListBox.ItemTemplate>
+                    <ItemContainerTemplate>
+                        <TextBox AcceptsReturn="True"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 FontSize="5"
+                                 Text="{Binding .}"
+                                 TextWrapping="Wrap" />
+                    </ItemContainerTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+
+        </Grid>
+    </Grid>
+</UserControl>
+

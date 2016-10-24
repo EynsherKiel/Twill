@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="Twill.UI.UserControls.Controls.TimeLine.ProcessDayLabor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:Twill.UI.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Twill.UI.UserControls.Controls.TimeLine"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:timelinemodels="clr-namespace:Twill.UI.Core.Models.Controls.TimeLine;assembly=Twill.UI.Core"
+             d:DesignHeight="120"
+             d:DesignWidth="120"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Twill.UI;component/Styles/Menu.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:DateTimeToPixelsConverter x:Key="DateTimeToPixelsConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid d:DataContext="{d:DesignInstance timelinemodels:ProcessDayLaborModel, IsDesignTimeCreatable=True}" DataContext="{Binding ProcessDayLaborModel, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+        <ListBox x:Name="listbox" HorizontalContentAlignment="Stretch"
+                 VerticalContentAlignment="Stretch"
+                 Background="{Binding Background,
+                                      RelativeSource={RelativeSource FindAncestor,
+                                                                     AncestorType={x:Type UserControl}}}"
+                 BorderBrush="White"
+                 BorderThickness="0"
+                 Focusable="False"
+                 IsHitTestVisible="True"
+                 ItemsSource="{Binding ProcessLabors,
+                                       Mode=TwoWay,
+                                       UpdateSourceTrigger=PropertyChanged}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                 ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                 Style="{DynamicResource TwillMenuListBox}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Canvas.Left" Value="0" />
+                    <Setter Property="Canvas.Top">
+                        <Setter.Value>
+                            <MultiBinding Converter="{StaticResource DateTimeToPixelsConverter}">
+                                <Binding Path="Start" />
+                                <Binding Path="ActualHeight" ElementName="listbox" />
+                            </MultiBinding>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Canvas.Bottom">
+                        <Setter.Value>
+                            <MultiBinding Converter="{StaticResource DateTimeToPixelsConverter}">
+                                <Binding Path="End" />
+                                <Binding Path="ActualHeight" ElementName="listbox" />
+                            </MultiBinding>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Width" Value="{Binding ActualWidth, Mode=OneWay, ElementName=listbox}" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <ItemContainerTemplate>
+                    <Grid>
+                        <local:ProcessLabor Margin="2" ProcessLaborModel="{Binding Mode=OneWay}">
+                            <local:ProcessLabor.Background>
+                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                    <GradientStop Offset="0.01" Color="#FFFFE9E9" />
+                                    <GradientStop Offset="1" Color="#FFFFBCBC" />
+                                </LinearGradientBrush>
+                            </local:ProcessLabor.Background>
+                        </local:ProcessLabor>
+                    </Grid>
+                </ItemContainerTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>
+

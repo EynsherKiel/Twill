@@ -6,10 +6,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using Twill.Processes.Tools;
+using System.Threading.Tasks; 
 
-namespace Twill.Processes.Tools
+namespace Twill.Tools.Architecture
 {
     public class Timer : IDisposable
     {

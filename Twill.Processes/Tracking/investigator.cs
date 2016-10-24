@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Twill.Processes.Tools;
 using Twill.Processes.Windows;
+using Twill.Tools.Architecture;
 
 namespace Twill.Processes.Tracking
 {
@@ -23,7 +23,7 @@ namespace Twill.Processes.Tracking
 
         private void GettedData(Milieu obj) => NewMilieu(obj); 
 
-        public void Stop() => Singleton<Monitor>.Dispose();
+        //public void Stop() => Singleton<Monitor>.Dispose();
 
         ~Investigator()
         {

@@ -1,15 +1,16 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Twill.UI.Core.Models.Content;
-using Twill.UI.Core.Tools;
 
 namespace Twill.UI.Core.Models
 {
-    public class MenuModel : Notify
+    public class MenuModel : ViewModelBase
     {
         public MenuModel()
         {
@@ -38,8 +39,8 @@ namespace Twill.UI.Core.Models
         public void SettingsPageViewMethod() => CurrentViewModel = SettingsPageModel;
 
 
-        private Notify currentViewModel;
-        public Notify CurrentViewModel
+        private ViewModelBase currentViewModel;
+        public ViewModelBase CurrentViewModel
         {
             get { return currentViewModel; }
             set

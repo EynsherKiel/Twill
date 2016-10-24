@@ -1,9 +1,11 @@
 ﻿using System.Windows.Input;
-using Twill.UI.Core.Tools;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+
 
 namespace Twill.UI.Core.Models.Tray
 {
-    public class TrayPopupModel : Notify
+    public class TrayPopupModel : ViewModelBase
     {
         public TrayPopupModel()
         { 

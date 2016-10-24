@@ -1,21 +1,19 @@
-﻿using GalaSoft.MvvmLight;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twill.UI.Core.Data;
 
-
-namespace Twill.UI.Core.Models.Content
-{
-    public class AboutPageModel : ViewModelBase
+namespace Twill.UI.Core.Models.Controls.TimeLine
+{ 
+   public class ReportModel : Labor
     {
-        public AboutPageModel()
+        public ReportModel()
         {
-        }
+        } 
 
-
-        private string text = "About";
+        private string text = string.Empty;
         public string Text
         {
             get { return text; }
@@ -24,8 +22,7 @@ namespace Twill.UI.Core.Models.Content
                 text = value;
                 RaisePropertyChanged(nameof(Text));
             }
-        }
-
-
+        } 
     }
+
 }

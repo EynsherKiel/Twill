@@ -8,11 +8,8 @@
              xmlns:local="clr-namespace:Twill.UI.UserControls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Twill.UI.Core.Models;assembly=Twill.UI.Core"
-             d:DataContext="{d:DesignInstance models:MenuModel,
-                                              IsDesignTimeCreatable=True}"
              d:DesignHeight="500"
              d:DesignWidth="700"
-             DataContext="{Binding MenuModel}"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -41,7 +38,7 @@
 
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid d:DataContext="{d:DesignInstance models:MenuModel, IsDesignTimeCreatable=True}" DataContext="{Binding MenuModel, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Twill.Processes.Tracking;
-using Twill.UI.Core.Tools;
+using GalaSoft.MvvmLight;
+
 
 namespace Twill.UI.Core.Models.Content
 {
-    public class HomePageModel : Notify
+    public class HomePageModel : ViewModelBase
     {
         public HomePageModel()
         { 
