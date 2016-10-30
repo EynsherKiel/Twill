@@ -26,23 +26,32 @@ namespace Twill.UI.Core.Models.Content
             Investigator.ChangeWorkingApplication += GetChangeWorkingApplication;
 
             AddNewRecordCommand = new RelayCommand<List<object>>(AddNewRecordMethod);
-             
+            RemoveTopElementCommand = new RelayCommand<ReportModel>(RemoveTopElementMethod);
+            RemoveBottomElementCommand = new RelayCommand<ReportModel>(RemoveBottomElementMethod);
+
             ProcessDayLabors = Controller.GetLabor<SortableObservableCollection<ProcessDayLaborModel>>(DateTime.Now);
         }
 
         public MonitorPageModel(DateTime time)
         {
             ProcessDayLabors = Controller.GetLabor<SortableObservableCollection<ProcessDayLaborModel>>(time);
+
+            AddNewRecordCommand = new RelayCommand<List<object>>(AddNewRecordMethod);
+            RemoveTopElementCommand = new RelayCommand<ReportModel>(RemoveTopElementMethod);
+            RemoveBottomElementCommand = new RelayCommand<ReportModel>(RemoveBottomElementMethod);
         }
+
+        public Investigator Investigator = null;
 
         private object SyncRoot = new object();
 
         public Storage.Barrier.Controller Controller = new Storage.Barrier.Controller();
 
-        public Investigator Investigator = null;
 
         public ICommand AddNewRecordCommand { get; }
-        
+        public ICommand RemoveTopElementCommand { get; }
+        public ICommand RemoveBottomElementCommand { get; }
+
 
         private SortableObservableCollection<ProcessDayLaborModel> processDayLabors = new SortableObservableCollection<ProcessDayLaborModel>();
         public SortableObservableCollection<ProcessDayLaborModel> ProcessDayLabors
@@ -51,7 +60,7 @@ namespace Twill.UI.Core.Models.Content
             set
             {
                 processDayLabors = value;
-                RaisePropertyChanged(nameof(ProcessDayLabors));
+                RaisePropertyChanged(nameof(ProcessDayLabors)); 
             }
         }
 
@@ -64,6 +73,38 @@ namespace Twill.UI.Core.Models.Content
                 reports = value;
                 RaisePropertyChanged(nameof(Reports));
             }
+        }
+
+
+        private void RemoveTopElementMethod(ReportModel report)
+        {
+            if (report == null)
+                return;
+
+            var findIndexReport = Reports.IndexOf(report);
+
+            if (findIndexReport < 1)
+                return;
+
+            report.Start = Reports[findIndexReport - 1].Start;
+            report.End = report.End;
+            Reports.RemoveAt(findIndexReport - 1);
+
+        }
+
+        private void RemoveBottomElementMethod(ReportModel report)
+        {
+            if (report == null)
+                return;
+
+            var findIndexReport = Reports.IndexOf(report);
+
+            if (findIndexReport == Reports.Count - 1)
+                return;
+
+            report.End = Reports[findIndexReport + 1].End;
+            Reports.RemoveAt(findIndexReport + 1);
+
         }
 
         private void AddNewRecordMethod(List<object> values)
@@ -109,10 +150,12 @@ namespace Twill.UI.Core.Models.Content
             if (procdaylab == null)
                 return;
 
-            procdaylab.ProcessLabors.Last().Headers.Add(application.LastName);
+            procdaylab.ProcessLabors.Last().Headers.Add(new ReportModel() { Text = application.LastName, Start = DateTime.Now, End = DateTime.Now });
 
             if (!IsInDesignMode)
                 Controller.SaveLabor(ProcessDayLabors, DateTime.Now);
+
+            RaisePropertyChanged(nameof(ProcessDayLabors));
         } 
 
         private void GetMilieuInCurrentContext(List<Application> applications)
@@ -159,7 +202,7 @@ namespace Twill.UI.Core.Models.Content
                 ProcessDayLabors.Sort(procdaylabor => procdaylabor.ProcessLabors.Sum(processLabors => processLabors.Headers.Count), System.ComponentModel.ListSortDirection.Descending);
             }
             if (!IsInDesignMode)
-                Controller.SaveLabor(ProcessDayLabors, DateTime.Now);
+                Controller.SaveLabor(ProcessDayLabors, DateTime.Now); 
         }
 
         private SynchronizationContext Context = SynchronizationContext.Current;

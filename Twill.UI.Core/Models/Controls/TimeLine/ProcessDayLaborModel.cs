@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-
+using System.Windows.Media;
 
 namespace Twill.UI.Core.Models.Controls.TimeLine
 {
@@ -20,6 +20,8 @@ namespace Twill.UI.Core.Models.Controls.TimeLine
                 ProcessName = "Twill";
             }
         }
+
+        public Brush Brush { get; set; } = Twill.Tools.WPF.UniqueColorGenerator.Next();
 
         private string processName = string.Empty;
         public string ProcessName

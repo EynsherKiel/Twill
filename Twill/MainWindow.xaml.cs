@@ -35,5 +35,10 @@ namespace Twill
 
             this.ShowInTaskbar = false; 
         }
+
+        private void WindowClosingEvent(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            TaskbarIcon.HideBalloonTip();
+        }
     }
 }

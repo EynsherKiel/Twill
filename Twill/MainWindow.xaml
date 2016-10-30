@@ -15,6 +15,7 @@
         Icon="icons/tray.ico"
         Loaded="WindowLoadedEvent"
         StateChanged="StateChangedEvent"
+        Closing="WindowClosingEvent"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
     <Window.DataContext>

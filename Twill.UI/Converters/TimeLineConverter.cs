@@ -24,7 +24,7 @@ namespace Twill.UI.Converters
 
             var forconstr = height / DateTimeHeight;
 
-            var a = Labor.MinetsInDay / forconstr;
+            var additinaltime = Labor.MinetsInDay / forconstr;
 
             var list = new List<object>();
 
@@ -32,10 +32,10 @@ namespace Twill.UI.Converters
 
             double time = 0.0;
             list.Add(now.AddMinutes(time));
-            time += a;
+            time += additinaltime;
 
             int len = (int)forconstr;
-            for (int i = 1; i < len; time += a, i++)
+            for (int i = 1; i < len; time += additinaltime, i++)
             {
                 if (i % 5 == 0)
                 {
@@ -43,11 +43,9 @@ namespace Twill.UI.Converters
                 }
                 else
                 {
-                     list.Add(default(bool));
-                } 
+                    list.Add(default(bool));
+                }
             }
-
-
 
             return list;
         }

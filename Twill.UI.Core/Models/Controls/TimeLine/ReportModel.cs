@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using Twill.UI.Core.Data;
 
 namespace Twill.UI.Core.Models.Controls.TimeLine
-{ 
-   public class ReportModel : Labor
+{
+    public class ReportModel : Labor
     {
         public ReportModel()
         {
-        } 
+        }
 
         private string text = string.Empty;
         public string Text
@@ -22,7 +22,6 @@ namespace Twill.UI.Core.Models.Controls.TimeLine
                 text = value;
                 RaisePropertyChanged(nameof(Text));
             }
-        } 
+        }
     }
-
 }

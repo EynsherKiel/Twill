@@ -26,19 +26,14 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:ReportsTimeIntervalToHeightConverter x:Key="ReportsTimeIntervalToHeightConverter" />
             <converters:ToListConverter x:Key="ToListConverter" />
+            <converters:LabourActivityGraphicConverter x:Key="LabourActivityGraphicConverter" />
 
-            <sys:Double x:Key="LaborsHeight">20000</sys:Double>
+            <sys:Double x:Key="LaborsHeight">10000</sys:Double>
 
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
-        <!--<Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="auto" />
-        </Grid.RowDefinitions>-->
-
-
         <Border Grid.Row="0" BorderThickness="0,1,0,0">
             <Border.BorderBrush>
                 <LinearGradientBrush>
@@ -53,6 +48,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" SharedSizeGroup="firstcolumn" />
                             <ColumnDefinition />
+                            <ColumnDefinition Width="100" SharedSizeGroup="graphic" />
                             <ColumnDefinition Width="200" SharedSizeGroup="thirdcolumn" />
                         </Grid.ColumnDefinitions>
 
@@ -73,6 +69,7 @@
                         </Button>
 
                         <Border Grid.Column="1"
+                                Grid.ColumnSpan="2"
                                 Margin="2,0,3,0"
                                 HorizontalAlignment="Stretch"
                                 Background="Black"
@@ -149,7 +146,8 @@
 
 
                         <Line Grid.Column="1"
-                              Grid.ColumnSpan="2"
+                              Grid.ColumnSpan="3"
+                              Panel.ZIndex="4"
                               Stroke="#FFFF00F3"
                               StrokeThickness="1"
                               X1="0"
@@ -175,8 +173,54 @@
                             </Line.Style>
                         </Line>
 
+                        <ListBox Grid.Column="2"
+                                 Height="{StaticResource LaborsHeight}"
+                                 Background="White"
+                                 BorderBrush="#FFD0E4FB"
+                                 BorderThickness="1,0,0,0"
+                                 ItemContainerStyle="{DynamicResource TwillLaborViewerListBoxItemStyle}"
+                                 ScrollViewer.VerticalScrollBarVisibility="Hidden">
+
+                            <ListBox.ItemsSource>
+                                <MultiBinding Converter="{StaticResource LabourActivityGraphicConverter}">
+                                    <Binding Path="ProcessDayLabors" />
+                                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />
+                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
+                                </MultiBinding>
+                            </ListBox.ItemsSource>
+
+                            <i:Interaction.Behaviors>
+                                <behaviors:IgnoreMouseWheelBehavior />
+                            </i:Interaction.Behaviors>
+
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas Margin="0,0,-9,0" RenderTransformOrigin="0.5,0.5">
+                                        <Canvas.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleX="-1" ScaleY="1" />
+                                                <SkewTransform AngleX="0" AngleY="0" />
+                                                <RotateTransform Angle="0" />
+                                                <TranslateTransform />
+                                            </TransformGroup>
+                                        </Canvas.RenderTransform>
+                                    </Canvas>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+
+                            <ListBox.ItemTemplate>
+                                <ItemContainerTemplate>
+                                    <Polyline Fill="{x:Null}"
+                                              Points="{Binding Item2}"
+                                              Stroke="{Binding Item1}"
+                                              StrokeThickness="1" />
+                                </ItemContainerTemplate>
+                            </ListBox.ItemTemplate>
+
+                        </ListBox>
+
                         <ListBox x:Name="reports"
-                                 Grid.Column="2"
+                                 Grid.Column="3"
                                  Height="{StaticResource LaborsHeight}"
                                  Panel.ZIndex="-1"
                                  BorderBrush="#FFFD0000"
@@ -211,10 +255,57 @@
                                             </MultiBinding>
                                         </Grid.Height>
                                         <timeline:Report ReportModel="{Binding Mode=OneWay}" />
+                                        <Grid Margin="0,-8,31,0"
+                                              HorizontalAlignment="Right"
+                                              VerticalAlignment="Top">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Button Grid.Column="0"
+                                                    Grid.ColumnSpan="1"
+                                                    Width="15"
+                                                    Height="15"
+                                                    Background="White"
+                                                    Command="{Binding DataContext.RemoveTopElementCommand,
+                                                                      RelativeSource={RelativeSource FindAncestor,
+                                                                                                     AncestorType={x:Type UserControl}}}"
+                                                    CommandParameter="{Binding .}"
+                                                    Padding="0"
+                                                    Style="{DynamicResource ButtonWithoutStyle}">
+
+                                                <Viewbox>
+                                                    <Canvas Width="24" Height="24">
+                                                        <Path Data="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" Fill="#FFFF00F3" />
+                                                    </Canvas>
+                                                </Viewbox>
+                                            </Button>
+
+                                            <Button Grid.Column="1"
+                                                    Grid.ColumnSpan="1"
+                                                    Width="15"
+                                                    Height="15"
+                                                    Background="White"
+                                                    Command="{Binding DataContext.RemoveBottomElementCommand,
+                                                                      RelativeSource={RelativeSource FindAncestor,
+                                                                                                     AncestorType={x:Type UserControl}}}"
+                                                    CommandParameter="{Binding .}"
+                                                    Padding="0"
+                                                    Style="{DynamicResource ButtonWithoutStyle}">
+
+                                                <Viewbox>
+                                                    <Canvas Width="24" Height="24">
+                                                        <Path Data="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" Fill="#FFFF00F3" />
+                                                    </Canvas>
+                                                </Viewbox>
+                                            </Button>
+
+                                        </Grid>
                                     </Grid>
                                 </ItemContainerTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
+
 
 
                     </Grid>
@@ -235,6 +326,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition SharedSizeGroup="firstcolumn" />
                         <ColumnDefinition />
+                        <ColumnDefinition SharedSizeGroup="graphic" />
                         <ColumnDefinition SharedSizeGroup="thirdcolumn" />
                     </Grid.ColumnDefinitions>
 
@@ -280,7 +372,21 @@
                             <ListBox.ItemTemplate>
                                 <ItemContainerTemplate>
                                     <Grid Width="250">
-                                        <TextBlock Background="Transparent"
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border Grid.Column="0"
+                                                Width="12"
+                                                Height="12"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                Background="{Binding Brush}"
+                                                CornerRadius="3" />
+
+                                        <TextBlock Grid.Column="1"
+                                                   Background="Transparent"
                                                    FontSize="16"
                                                    FontStyle="Italic"
                                                    Foreground="#FF1C1D22"

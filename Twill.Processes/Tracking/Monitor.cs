@@ -41,7 +41,7 @@ namespace Twill.Processes.Tracking
 
                 if (application != null)
                 {
-                    if (application.LastName != dic["WindowTitleText"])
+                    //if (application.LastName != dic["WindowTitleText"])
                     {
                         application.LastName = dic["WindowTitleText"];
                         ChangeWorkingApplication(application);

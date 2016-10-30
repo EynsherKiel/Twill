@@ -72,6 +72,8 @@
     <Compile Include="Controls\ScrollSynchronizer.cs" />
     <Compile Include="Converters\DateTimeToPixelsConverter.cs" />
     <Compile Include="Converters\EqualsTypesConverter.cs" />
+    <Compile Include="Converters\HeadersFilterConverter.cs" />
+    <Compile Include="Converters\LabourActivityGraphicConverter.cs" />
     <Compile Include="Converters\ReportsTimeIntervalToHeightConverter.cs" />
     <Compile Include="Converters\TimeLineConverter.cs" />
     <Compile Include="Converters\ToListConverter.cs" />
