@@ -11,23 +11,24 @@ namespace Twill.Processes.Tracking
     // Needed only for create Singleton instance Monitor
     public class Investigator
     {
-        public Investigator()
-        {
-            Monitor.NewMilieu += GettedData;
-        }
 
         private Monitor Monitor = Singleton<Monitor>.Instance;
 
 
-        public Action<Milieu> NewMilieu = delegate { };
-
-        private void GettedData(Milieu obj) => NewMilieu(obj); 
-
-        //public void Stop() => Singleton<Monitor>.Dispose();
-
-        ~Investigator()
+        public event Action<Milieu> NewMilieu
         {
-            Monitor.NewMilieu -= GettedData;
+            add { Monitor.NewMilieu += value; }
+            remove { Monitor.NewMilieu -= value; }
         }
+
+        public event Action<Application> ChangeWorkingApplication
+        {
+            add { Monitor.ChangeWorkingApplication += value; }
+            remove { Monitor.ChangeWorkingApplication -= value; }
+        }
+
+
+        public void Stop() => Monitor.Dispose();
+
     }
 }

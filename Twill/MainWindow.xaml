@@ -22,7 +22,7 @@
     </Window.DataContext>
     <Grid>
 
-        <usercontrols:Menu MenuModel="{Binding MenuModel}" />
+        <usercontrols:Menu MenuModel="{Binding MenuModel}"  />
 
         <tb:TaskbarIcon x:Name="TaskbarIcon"
                         DataContext="{Binding IconBehaviorModel}"

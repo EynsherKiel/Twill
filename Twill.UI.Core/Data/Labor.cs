@@ -20,6 +20,7 @@ namespace Twill.UI.Core.Data
             {
                 start = value;
                 RaisePropertyChanged(nameof(Start));
+                RaisePropertyChanged(nameof(TotalMinutesInterval));
             }
         }
 
@@ -31,9 +32,10 @@ namespace Twill.UI.Core.Data
             {
                 end = value;
                 RaisePropertyChanged(nameof(End));
+                RaisePropertyChanged(nameof(TotalMinutesInterval));
             }
         }
 
-        public double GetInterval() => (End - Start).TotalMinutes;
+        public double TotalMinutesInterval => (End - Start).TotalMinutes;
     }
 }

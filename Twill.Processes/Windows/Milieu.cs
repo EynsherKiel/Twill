@@ -13,24 +13,18 @@ namespace Twill.Processes.Windows
         public List<Application> Applications { get; set; } = new List<Application>();
 
 
-        internal void Add(IntPtr handle)
-        {
-            var process = Process.GetProcesses();
+        internal void Add(Process process)
+        {  
 
-            var proc = process.FirstOrDefault(p => p.MainWindowHandle == handle);
-
-            if (proc == null)
-                return;
-
-            var application = Applications.FirstOrDefault(app => app.Name == proc.ProcessName);
+            var application = Applications.ToList().FirstOrDefault(app => app.Name == process.ProcessName);
 
             if (application == null)
             {
-                Applications.Add(new Application(proc) { Closed = (app) => Applications.Remove(app) });
+                Applications.Add(new Application(process) { Closed = (app) => Applications.Remove(app) });
             }
             else
             {
-                application.Add(proc);
+                application.Add(process);
             }
         }
 

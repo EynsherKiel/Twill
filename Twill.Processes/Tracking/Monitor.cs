@@ -23,14 +23,35 @@ namespace Twill.Processes.Tracking
         public readonly Searcher Seracher = new Searcher();
 
 
-        public Action<Milieu> NewMilieu = delegate { };
+        public event Action<Milieu> NewMilieu = delegate { };
+        public event Action<Application> ChangeWorkingApplication = delegate { };
 
 
         private void UpDate(object state)
         {
             Seracher.UpDateMilieu(Milieu);
             NewMilieu?.Invoke(Milieu);
+
+            var dic = Seracher.GetActiveProcess();
+            if (dic != null)
+            {
+                var application = Milieu.Applications.FirstOrDefault(app => app.Name == dic["ProcessName"]);
+
+                // Console.WriteLine($"{dic["ProcessName"]} : {dic["WindowTitleText"]}");
+
+                if (application != null)
+                {
+                    if (application.LastName != dic["WindowTitleText"])
+                    {
+                        application.LastName = dic["WindowTitleText"];
+                        ChangeWorkingApplication(application);
+                    }
+
+                }
+            }
         }
+
+
 
 
         #region IDisposable Support

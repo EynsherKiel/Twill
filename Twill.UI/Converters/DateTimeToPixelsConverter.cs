@@ -16,9 +16,16 @@ namespace Twill.UI.Converters
             if (values.Length < 2)
                 return 0;
 
-            if (values[0] is DateTime == false)
+            var totalMinutes = 0.0;
+
+            if (values[0] is DateTime)
+                totalMinutes = ((DateTime)values[0]).TimeOfDay.TotalMinutes;
+            else
+                if (values[0] is double)
+                totalMinutes = (double)values[0];
+            else
                 return 0;
-            var time = (DateTime)values[0];
+
 
             if (values[1] is double == false)
                 return 0;
@@ -26,7 +33,7 @@ namespace Twill.UI.Converters
 
             var pixelsInMinute = height / Labor.MinetsInDay;
 
-            return time.TimeOfDay.TotalMinutes * pixelsInMinute;
+            return totalMinutes * pixelsInMinute;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

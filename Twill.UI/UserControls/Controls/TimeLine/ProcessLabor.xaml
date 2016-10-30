@@ -5,8 +5,6 @@
              xmlns:local="clr-namespace:Twill.UI.UserControls.Controls.TimeLine"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:timelinemodels="clr-namespace:Twill.UI.Core.Models.Controls.TimeLine;assembly=Twill.UI.Core"
-             d:DesignHeight="100"
-             d:DesignWidth="75"
              Background="#FFEDFFE0"
              mc:Ignorable="d">
 
@@ -18,47 +16,41 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid d:DataContext="{d:DesignInstance timelinemodels:ProcessLaborModel, IsDesignTimeCreatable=True}" DataContext="{Binding ProcessLaborModel, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
 
-        <Border BorderBrush="Black" BorderThickness="1">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="7"
-                                  ShadowDepth="0"
-                                  Color="Black" />
-            </Border.Effect>
-        </Border>
-
-        <Grid Background="{Binding Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
-            <Border BorderThickness="1">
-                <Border.BorderBrush>
-                    <RadialGradientBrush>
-                        <GradientStop Offset="0" Color="Black" />
-                        <GradientStop Offset="1" Color="#66FFFFFF" />
-                    </RadialGradientBrush>
-                </Border.BorderBrush>
-            </Border>
-
-            <ListBox Margin="1,1,1,1"
-                     Background="Transparent"
+    <Border BorderBrush="#FF9AB4A7"
+            BorderThickness="1"
+            CornerRadius="1">
+        <Grid d:DataContext="{d:DesignInstance timelinemodels:ProcessLaborModel,
+                                               IsDesignTimeCreatable=True}"
+              Background="#FFF8FFF9"
+              DataContext="{Binding ProcessLaborModel,
+                                    RelativeSource={RelativeSource FindAncestor,
+                                                                   AncestorType={x:Type UserControl}}}">
+            <ListBox Background="Transparent"
                      BorderThickness="0"
                      ItemsSource="{Binding Headers,
                                            UpdateSourceTrigger=PropertyChanged}"
                      Style="{DynamicResource TwillMenuListBox}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
 
                 <ListBox.ItemTemplate>
                     <ItemContainerTemplate>
-                        <TextBox AcceptsReturn="True"
-                                 Background="Transparent"
-                                 BorderThickness="0"
-                                 FontSize="5"
-                                 Text="{Binding .}"
-                                 TextWrapping="Wrap" />
+
+                        <TextBlock Background="Transparent"
+                                   FontSize="10"
+                                   Text="{Binding .}"
+                                   TextWrapping="Wrap" />
                     </ItemContainerTemplate>
                 </ListBox.ItemTemplate>
 
             </ListBox>
 
         </Grid>
-    </Grid>
+    </Border>
+
 </UserControl>
 

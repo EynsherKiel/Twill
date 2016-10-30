@@ -31,7 +31,7 @@ namespace Twill.Tools.Architecture
                     tuple.Item2?.Set();
 
                     if (queue.Count == 0)
-                        MayDispose();
+                        MayDispose?.Invoke();
                 }
             }
         }

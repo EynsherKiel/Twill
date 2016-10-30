@@ -22,7 +22,7 @@ namespace Twill.Tools.Architecture
 
         private System.Threading.Timer STTimer;
 
-        private TimeSpan period = TimeSpan.FromSeconds(15);
+        private TimeSpan period = TimeSpan.FromSeconds(1);
 
         public TimeSpan Period
         {

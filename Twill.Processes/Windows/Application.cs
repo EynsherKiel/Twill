@@ -11,6 +11,7 @@ namespace Twill.Processes.Windows
     {
         public Application(Process process)
         {
+            Name = process.ProcessName;
             Add(process);
         }
 
@@ -18,7 +19,11 @@ namespace Twill.Processes.Windows
 
         public List<Process> Processes = new List<Process>();
 
-        public string Name { get { return Processes.FirstOrDefault()?.ProcessName; } }
+        public string Name { get; set; }
+
+        public string LastName { get; set; } = string.Empty;
+
+        public DateTime? StartWork { get { return Processes.ToList().Min(process => process?.StartTime); } }
 
 
         public void Add(Process process)
@@ -30,7 +35,7 @@ namespace Twill.Processes.Windows
 
         private void DeleteTerminatedProcess()
         {
-            var processes = Processes.Where(process =>
+            var processes = Processes.ToList().Where(process =>
             {
                 try { return process.HasExited; }
                 catch { return true; }
@@ -49,7 +54,7 @@ namespace Twill.Processes.Windows
                 return;
 
             try  {  process.EnableRaisingEvents = true; }
-            catch  {
+            catch (Exception ex) {
 
                 if (process == null)
                     return;

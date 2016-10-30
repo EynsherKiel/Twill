@@ -15,14 +15,11 @@ using System.Windows.Shapes;
 
 namespace Twill.UI.UserControls.Controls.TimeLine
 {
-    /// <summary>
-    /// Логика взаимодействия для Ruler.xaml
-    /// </summary>
     public partial class Ruler : UserControl
     {
         public Ruler()
         {
             InitializeComponent();
-        }
+        } 
     }
 }

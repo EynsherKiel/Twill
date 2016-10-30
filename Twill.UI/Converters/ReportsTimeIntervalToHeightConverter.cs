@@ -26,7 +26,7 @@ namespace Twill.UI.Converters
 
             var pixelsInMinute = height / Labor.MinetsInDay; 
 
-            return report.GetInterval() * pixelsInMinute;
+            return report.TotalMinutesInterval * pixelsInMinute;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
