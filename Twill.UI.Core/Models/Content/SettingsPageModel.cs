@@ -20,13 +20,7 @@ namespace Twill.UI.Core.Models.Content
         public string Text
         {
             get { return text; }
-            set
-            {
-                text = value;
-                RaisePropertyChanged(nameof(Text));
-            }
+            set { Set(nameof(Text), ref text, value); }
         }
-
-
     }
 } 

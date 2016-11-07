@@ -16,12 +16,8 @@ namespace Twill.UI.Core.Models.Tray
         private MenuModel menuModel;
         public MenuModel MenuModel
         {
-            get { return menuModel; }
-            set
-            {
-                menuModel = value;
-                RaisePropertyChanged(nameof(MenuModel));
-            }
+            get { return menuModel; } 
+            set { Set(nameof(MenuModel), ref menuModel, value); } 
         }
 
 
@@ -29,13 +25,7 @@ namespace Twill.UI.Core.Models.Tray
         public IconBehaviorModel IconBehaviorModel
         {
             get { return iconBehaviorModel; }
-            set
-            {
-                iconBehaviorModel = value;
-                RaisePropertyChanged(nameof(IconBehaviorModel));
-            }
+            set { Set(nameof(IconBehaviorModel), ref iconBehaviorModel, value); }
         }
-
-
     }
 }

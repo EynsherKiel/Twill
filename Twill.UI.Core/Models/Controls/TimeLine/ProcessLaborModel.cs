@@ -29,11 +29,7 @@ namespace Twill.UI.Core.Models.Controls.TimeLine
         public ObservableCollection<ReportModel> Headers
         {
             get { return headers; }
-            set
-            {
-                headers = value;
-                RaisePropertyChanged(nameof(Headers));
-            }
+            set { Set(nameof(Headers), ref headers, value); }
         }
     }
 

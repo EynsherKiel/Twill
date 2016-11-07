@@ -27,22 +27,14 @@ namespace Twill.UI.Core.Models.Controls.TimeLine
         public string ProcessName
         {
             get { return processName; }
-            set
-            {
-                processName = value;
-                RaisePropertyChanged(nameof(ProcessName));
-            }
+            set { Set(nameof(ProcessName), ref processName, value); }
         }
 
         private ObservableCollection<ProcessLaborModel> processLabors = new ObservableCollection<ProcessLaborModel>();
         public ObservableCollection<ProcessLaborModel> ProcessLabors
         {
             get { return processLabors; }
-            set
-            {
-                processLabors = value;
-                RaisePropertyChanged(nameof(ProcessLabors));
-            }
+            set { Set(nameof(ProcessLabors), ref processLabors, value); }
         }
     }
 }

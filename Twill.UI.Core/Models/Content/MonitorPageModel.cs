@@ -57,22 +57,14 @@ namespace Twill.UI.Core.Models.Content
         public SortableObservableCollection<ProcessDayLaborModel> ProcessDayLabors
         {
             get { return processDayLabors; }
-            set
-            {
-                processDayLabors = value;
-                RaisePropertyChanged(nameof(ProcessDayLabors)); 
-            }
+            set { Set(nameof(ProcessDayLabors), ref processDayLabors, value); }
         }
 
         private ObservableCollection<ReportModel> reports = new ObservableCollection<ReportModel>() { new ReportModel() };
         public ObservableCollection<ReportModel> Reports
         {
             get { return reports; }
-            set
-            {
-                reports = value;
-                RaisePropertyChanged(nameof(Reports));
-            }
+            set { Set(nameof(Reports), ref reports, value); }
         }
 
 
