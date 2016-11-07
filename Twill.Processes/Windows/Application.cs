@@ -15,6 +15,8 @@ namespace Twill.Processes.Windows
             Add(process);
         }
 
+        private object SyncRoot = new object();
+
         public Action<Application> Closed;
 
         public List<Process> Processes = new List<Process>();
@@ -28,69 +30,32 @@ namespace Twill.Processes.Windows
 
         public void Add(Process process)
         {
-            AddProcess(process);
-            UpDateProcesses();
-            DeleteTerminatedProcess();
-        }
-
-        private void DeleteTerminatedProcess()
-        {
-            var processes = Processes.ToList().Where(process =>
+            lock (SyncRoot)
             {
-                try { return process.HasExited; }
-                catch { return true; }
-            }).ToList();
-
-            foreach (var process in processes)
-                using(process)
-                    Processes.Remove(process);
-
-            CheckClose();
+                AddProcess(process);
+                UpDateProcesses();
+                CheckClose();
+            }
         }
 
         private void AddProcess(Process process)
         {
+
             if (Processes.Where(proc => proc.Id == process.Id).Count() > 0)
                 return;
 
-            try  {  process.EnableRaisingEvents = true; }
-            catch (Exception ex) {
-
-                if (process == null)
-                    return;
-
-                using (process)
-                    return;
-            }
-
-            process.Exited += CloseProcess;
-
             Processes.Add(process);
         }
+        
 
-        private void CloseProcess(object sender, EventArgs e)
-        {
-            var process = sender as Process;
-            if (process == null)
-                return;
-
-            process.Exited -= CloseProcess;
-
-            using (process)
-                Processes.Remove(process);
-
-            CheckClose();
-
-        }
-
-        private void CheckClose()
+        public void CheckClose()
         {
             if (Processes.Count == 0)
                 Closed?.Invoke(this);
         }
 
         private void UpDateProcesses()
-        { 
+        {
             foreach (var process in Process.GetProcessesByName(Name))
             {
                 AddProcess(process);

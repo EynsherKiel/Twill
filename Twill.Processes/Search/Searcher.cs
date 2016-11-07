@@ -42,6 +42,8 @@ namespace Twill.Processes.Search
                 {
                     milieu.Add(DesktopSearcher.GetActiveProcess(handle));
                 }
+
+                milieu.CheckApplications();
             }
         }
     }

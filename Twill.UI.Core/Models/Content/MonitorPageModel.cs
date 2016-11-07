@@ -188,13 +188,13 @@ namespace Twill.UI.Core.Models.Content
                         pdl.ProcessLabors.Add(processLaborModel);
                     }
 
-                    processLaborModel.End = DateTime.Now; 
+                    processLaborModel.End = DateTime.Now;
                 }
 
                 ProcessDayLabors.Sort(procdaylabor => procdaylabor.ProcessLabors.Sum(processLabors => processLabors.Headers.Count), System.ComponentModel.ListSortDirection.Descending);
             }
             if (!IsInDesignMode)
-                Controller.SaveLabor(ProcessDayLabors, DateTime.Now); 
+                Controller.SaveLabor(ProcessDayLabors, DateTime.Now);
         }
 
         private SynchronizationContext Context = SynchronizationContext.Current;

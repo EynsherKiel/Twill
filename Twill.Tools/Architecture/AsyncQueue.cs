@@ -19,6 +19,8 @@ namespace Twill.Tools.Architecture
 
         public Action MayDispose = null;
 
+        private object SyncRoot = new object();
+
         public int? Count => queue?.Count;
 
         private void RunConsumer()
@@ -30,23 +32,27 @@ namespace Twill.Tools.Architecture
                     tuple.Item1?.Invoke();
                     tuple.Item2?.Set();
 
-                    if (queue.Count == 0)
-                        MayDispose?.Invoke();
+                    lock (SyncRoot)
+                        if (queue.Count == 0)
+                            MayDispose?.Invoke();
                 }
             }
         }
 
         public void AsyncAdd(Action action)
         {
-            queue?.Add(new Tuple<Action, ManualResetEvent>(action, null));
+            lock (SyncRoot)
+                queue?.Add(new Tuple<Action, ManualResetEvent>(action, null));
         }
 
         public void Add(Action action)
         {
             using (var token = new ManualResetEvent(false))
             {
-                queue?.Add(new Tuple<Action, ManualResetEvent>(action, token));
+                lock (SyncRoot)
+                    queue?.Add(new Tuple<Action, ManualResetEvent>(action, token));
                 token.WaitOne();
+
             }
         }
 

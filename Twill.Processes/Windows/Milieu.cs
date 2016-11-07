@@ -15,7 +15,6 @@ namespace Twill.Processes.Windows
 
         internal void Add(Process process)
         {  
-
             var application = Applications.ToList().FirstOrDefault(app => app.Name == process.ProcessName);
 
             if (application == null)
@@ -25,6 +24,14 @@ namespace Twill.Processes.Windows
             else
             {
                 application.Add(process);
+            }
+        }
+
+        public void CheckApplications()
+        {
+            foreach (var application in Applications.ToList())
+            {
+                application.CheckClose();
             }
         }
 
