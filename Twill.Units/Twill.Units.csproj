@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Implementation\Processes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -58,13 +59,11 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Implementation\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Twill.UI\Twill.UI.csproj">
-      <Project>{b36df20a-37bb-4821-826c-dcae075aadc4}</Project>
-      <Name>Twill.UI</Name>
+    <ProjectReference Include="..\Twill.Processes\Twill.Processes.csproj">
+      <Project>{5fb029aa-e411-4494-95b7-86db4e574fc0}</Project>
+      <Name>Twill.Processes</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

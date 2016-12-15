@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PInvoke;
- 
+using Twill.Processes.Models;
 
 namespace Twill.Processes.Search
 {
@@ -74,13 +74,36 @@ namespace Twill.Processes.Search
             return true;
         }
 
+        public string GetTitle(IntPtr handle)
+        {
+            string windowTitleText;
+            if (!TryGetWindowText(handle, out windowTitleText))
+                return null;
+
+            return windowTitleText;
+        }
+
         public IntPtr GetActiveHandle() => User32.GetForegroundWindow(); 
 
-        public Process GetActiveProcess(IntPtr hwnd)
-        { 
+        public Process GetActiveProcess(IntPtr hwnd) => Process.GetProcessById(GetProcessId(hwnd).ToInt32());
+
+
+        public IntPtr GetProcessId(IntPtr hwnd)
+        {
             int pid;
             PInvoke.User32.GetWindowThreadProcessId(hwnd, out pid);
-            return Process.GetProcessById(pid);
+            return new IntPtr(pid);
+        }
+
+        public BaseProcess GetActiveWindow()
+        {
+            var handle = GetActiveHandle();
+
+            string WindowTitleText;
+            if (!TryGetWindowText(handle, out WindowTitleText))
+                return null;
+
+            return new BaseProcess(handle);
         }
     }
 }

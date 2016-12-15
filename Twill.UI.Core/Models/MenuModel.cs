@@ -15,11 +15,6 @@ namespace Twill.UI.Core.Models
         public MenuModel()
         {
             currentViewModel = MonitorPageModel;
-
-            HomePageViewCommand = new RelayCommand(HomePageViewMethod);
-            AboutPageViewCommand = new RelayCommand(AboutPageViewMethod);
-            MonitorPageViewCommand = new RelayCommand(MonitorPageViewMethod);
-            SettingsPageViewCommand = new RelayCommand(SettingsPageViewMethod);
         }
 
 
@@ -28,30 +23,17 @@ namespace Twill.UI.Core.Models
         public MonitorPageModel MonitorPageModel { get; set; } = new MonitorPageModel();
         public SettingsPageModel SettingsPageModel { get; set; } = new SettingsPageModel();
 
-        public ICommand HomePageViewCommand { get; }
-        public ICommand AboutPageViewCommand { get; }
-        public ICommand MonitorPageViewCommand { get; }
-        public ICommand SettingsPageViewCommand { get; }
-
-        public void HomePageViewMethod() => CurrentViewModel = HomePageModel;
-        public void AboutPageViewMethod() => CurrentViewModel = AboutPageModel;
-        public void MonitorPageViewMethod() => CurrentViewModel = MonitorPageModel;
-        public void SettingsPageViewMethod() => CurrentViewModel = SettingsPageModel;
-
+        public ICommand HomePageViewCommand => new RelayCommand(() => CurrentViewModel = HomePageModel);
+        public ICommand AboutPageViewCommand => new RelayCommand(() => CurrentViewModel = AboutPageModel);
+        public ICommand MonitorPageViewCommand => new RelayCommand(() => CurrentViewModel = MonitorPageModel);
+        public ICommand SettingsPageViewCommand => new RelayCommand(() => CurrentViewModel = SettingsPageModel);
+        
 
         private ViewModelBase currentViewModel;
         public ViewModelBase CurrentViewModel
         {
             get { return currentViewModel; }
-            set
-            {
-                if (currentViewModel == value)
-                    return;
-                currentViewModel = value;
-                RaisePropertyChanged(nameof(CurrentViewModel));
-            }
+            set { Set(ref currentViewModel, value); }
         }
-
-
     }
 }

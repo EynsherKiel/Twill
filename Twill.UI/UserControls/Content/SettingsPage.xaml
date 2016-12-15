@@ -1,10 +1,10 @@
 ﻿<UserControl x:Class="Twill.UI.UserControls.Content.SettingsPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:content="clr-namespace:Twill.UI.Core.Models.Content;assembly=Twill.UI.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Twill.UI.UserControls.Content"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:content="clr-namespace:Twill.UI.Core.Models.Content;assembly=Twill.UI.Core"
              d:DataContext="{d:DesignInstance content:SettingsPageModel,
                                               IsDesignTimeCreatable=True}"
              d:DesignHeight="200"

@@ -50,6 +50,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,14 +59,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\Monitor\IGroundWorkState.cs" />
+    <Compile Include="Interfaces\Monitor\IProcessDayActivity.cs" />
+    <Compile Include="Interfaces\Monitor\IProcessMonitor.cs" />
+    <Compile Include="Interfaces\Monitor\IProcessWork.cs" />
+    <Compile Include="Models\Monitor\GroundWorkState.cs" />
+    <Compile Include="Models\BaseProcess.cs" />
+    <Compile Include="Models\Monitor\ProcessDayActivity.cs" />
+    <Compile Include="Models\Monitor\ProcessMonitor.cs" />
+    <Compile Include="Models\Monitor\ProcessWork.cs" />
     <Compile Include="Search\DesktopSearcher.cs" />
     <Compile Include="Search\Searcher.cs" />
     <Compile Include="Search\TypeSearch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tracking\Investigator.cs" />
     <Compile Include="Tracking\Monitor.cs" />
-    <Compile Include="Windows\Application.cs" />
-    <Compile Include="Windows\Milieu.cs" />
+    <Compile Include="Tracking\MonitorPresenter.cs" />
+    <Compile Include="Tracking\BaseMonitor.cs" />
+    <Compile Include="Windows\Environ.cs" />
+    <Compile Include="Windows\Process.cs" />
+    <Compile Include="Interfaces\WMI\IWMIProcess.cs" />
+    <Compile Include="WMI\Manager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -76,6 +89,7 @@
       <Name>Twill.Tools</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

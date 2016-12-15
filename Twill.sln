@@ -12,9 +12,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Units", "Units", "{284E64FA-456F-47ED-8FA6-971C22E76B0B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twill.Units", "Twill.Units\Twill.Units.csproj", "{93E93613-F2ED-4B5C-82EE-1E2A77416223}"
-	ProjectSection(ProjectDependencies) = postProject
-		{85C1B724-2680-4BCA-BF38-527E82811D76} = {85C1B724-2680-4BCA-BF38-527E82811D76}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{F596DC9B-85BA-4F1C-8687-A8B0685F21E6}"
 	ProjectSection(SolutionItems) = preProject

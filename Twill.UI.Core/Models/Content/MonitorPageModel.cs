@@ -20,28 +20,28 @@ namespace Twill.UI.Core.Models.Content
     {
         public MonitorPageModel()
         {
-            Investigator = new Investigator();
+            //Investigator = new Investigator();
 
-            Investigator.NewMilieu += GetMilieu;
-            Investigator.ChangeWorkingApplication += GetChangeWorkingApplication;
+            //Investigator.NewMilieu += GetMilieu;
+            //Investigator.ChangeWorkingApplication += GetChangeWorkingApplication;
 
             AddNewRecordCommand = new RelayCommand<List<object>>(AddNewRecordMethod);
             RemoveTopElementCommand = new RelayCommand<ReportModel>(RemoveTopElementMethod);
             RemoveBottomElementCommand = new RelayCommand<ReportModel>(RemoveBottomElementMethod);
 
-            ProcessDayLabors = Controller.GetLabor<SortableObservableCollection<ProcessDayLaborModel>>(DateTime.Now);
+            //ProcessDayLabors = Controller.GetLabor<SortableObservableCollection<ProcessDayLaborModel>>(DateTime.Now);
         }
 
         public MonitorPageModel(DateTime time)
         {
-            ProcessDayLabors = Controller.GetLabor<SortableObservableCollection<ProcessDayLaborModel>>(time);
+            //ProcessDayLabors = Controller.GetLabor<SortableObservableCollection<ProcessDayLaborModel>>(time);
 
             AddNewRecordCommand = new RelayCommand<List<object>>(AddNewRecordMethod);
             RemoveTopElementCommand = new RelayCommand<ReportModel>(RemoveTopElementMethod);
             RemoveBottomElementCommand = new RelayCommand<ReportModel>(RemoveBottomElementMethod);
         }
 
-        public Investigator Investigator = null;
+        public MonitorPresenter Investigator = null;
 
         private object SyncRoot = new object();
 
@@ -131,72 +131,7 @@ namespace Twill.UI.Core.Models.Content
             Reports.Insert(findIndexReport + 1, new ReportModel() { Start = choisenDateTime, End = findRepor.End } );
             findRepor.End = choisenDateTime;
         }
-
-        private void GetMilieu(Milieu milieu) => AsyncAction(GetMilieuInCurrentContext, milieu.Applications);
-        private void GetChangeWorkingApplication(Application obj) => AsyncAction(GetChangeWorkingApplicationInCurrentContext, obj);
-
-
-        private void GetChangeWorkingApplicationInCurrentContext(Application application)
-        {
-            var procdaylab = ProcessDayLabors.FirstOrDefault(pdl => pdl.ProcessName == application.Name);
-            if (procdaylab == null)
-                return;
-
-            procdaylab.ProcessLabors.Last().Headers.Add(new ReportModel() { Text = application.LastName, Start = DateTime.Now, End = DateTime.Now });
-
-            if (!IsInDesignMode)
-                Controller.SaveLabor(ProcessDayLabors, DateTime.Now);
-
-            RaisePropertyChanged(nameof(ProcessDayLabors));
-        } 
-
-        private void GetMilieuInCurrentContext(List<Application> applications)
-        {
-            //return;
-            lock (SyncRoot)
-            {
-
-                foreach (var application in applications.ToList())
-                {
-                    var pdl = ProcessDayLabors.FirstOrDefault(daylabors => daylabors.ProcessName == application.Name);
-
-                    if (pdl == null)
-                    {
-                        ProcessDayLabors.Add(new ProcessDayLaborModel()
-                        {
-                            ProcessName = application.Name,
-                            ProcessLabors = new ObservableCollection<ProcessLaborModel>()
-                            {
-                                 new ProcessLaborModel()
-                                 {
-                                     Start = application.StartWork ?? DateTime.Now,
-                                     End = DateTime.Now
-                                 }
-                            }
-                        });
-                        continue;
-                    }
-
-
-                    ProcessLaborModel processLaborModel = null;
-
-                    if (pdl.ProcessLabors.Last().Start == application.StartWork)
-                        processLaborModel = pdl.ProcessLabors.Last();
-                    else
-                    {
-                        processLaborModel = new ProcessLaborModel() { Start = application.StartWork ?? DateTime.Now, End = DateTime.Now };
-                        pdl.ProcessLabors.Add(processLaborModel);
-                    }
-
-                    processLaborModel.End = DateTime.Now;
-                }
-
-                ProcessDayLabors.Sort(procdaylabor => procdaylabor.ProcessLabors.Sum(processLabors => processLabors.Headers.Count), System.ComponentModel.ListSortDirection.Descending);
-            }
-            if (!IsInDesignMode)
-                Controller.SaveLabor(ProcessDayLabors, DateTime.Now);
-        }
-
+        
         private SynchronizationContext Context = SynchronizationContext.Current;
 
         protected void AsyncAction<T>(Action<T> action, T data) where T : class
@@ -222,11 +157,11 @@ namespace Twill.UI.Core.Models.Content
 
         ~MonitorPageModel()
         {
-            if (Investigator != null)
-            {
-                Investigator.NewMilieu -= GetMilieu;
-                Investigator.ChangeWorkingApplication -= GetChangeWorkingApplication;
-            }
+            //if (Investigator != null)
+            //{
+            //    Investigator.NewMilieu -= GetMilieu;
+            //    Investigator.ChangeWorkingApplication -= GetChangeWorkingApplication;
+            //}
         }
     }
 }
