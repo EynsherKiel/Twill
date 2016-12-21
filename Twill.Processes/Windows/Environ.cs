@@ -12,18 +12,37 @@ namespace Twill.Processes.Windows
     {
         public Environ()
         {
-            Timer = new Timer(UpDate, null, 0, 1000);
+            Timer = new Timer(UpDate, null, TimeSpan.Zero, TimeUpdate);
         }
+
+        private object SyncRoot = new object();
 
         public readonly Timer Timer;
         public readonly Searcher Searcher = new Searcher();
 
-        public event Action<Environ> UpDateEvent = delegate { };
+        public event Action<Environ> UpdateEvent = delegate { };
 
         public List<Process> Processes { get; private set; } = new List<Process>();
-        public Process LeadProcess { get; set; }
+        public Process Lead { get; set; }
 
-        private object SyncRoot = new object();
+
+        private TimeSpan timeUpdate = TimeSpan.FromMilliseconds(1000);
+        public TimeSpan TimeUpdate
+        {
+            get { return timeUpdate; }
+            set
+            {
+                if (value == TimeSpan.Zero)
+                    return;
+
+                if (Timer == null)
+                    return;
+
+                Timer.Change(TimeSpan.Zero, value);
+
+                timeUpdate = value;
+            }
+        }
 
 
         private void UpDate(object state)
@@ -41,10 +60,10 @@ namespace Twill.Processes.Windows
                 handles.ForEach(handle => newList.Add(clonelist.FirstOrDefault(proc => proc.Handle == handle) ?? new Process(handle)));
 
                 Processes = newList;
-                LeadProcess = newList.First(proc => proc.Handle == selectedprocess.Handle);
+                Lead = newList.First(proc => proc.Handle == selectedprocess.Handle);
             }
 
-            UpDateEvent(this);
+            UpdateEvent(this);
         }
 
         ~Environ()

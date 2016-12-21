@@ -8,9 +8,11 @@ using Twill.Processes.Models.Monitor;
 namespace Twill.Processes.Tracking
 {
     public class Monitor : BaseMonitor<ProcessMonitor, ProcessDayActivity, ProcessWork, GroundWorkState>
-    {
+    { 
+
         public Monitor()
         {
         }
+         
     }
 }

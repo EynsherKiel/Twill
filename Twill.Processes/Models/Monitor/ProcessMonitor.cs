@@ -11,5 +11,6 @@ namespace Twill.Processes.Models.Monitor
     public class ProcessMonitor : IProcessMonitor<ProcessDayActivity, ProcessWork, GroundWorkState>
     {
         public ObservableCollection<ProcessDayActivity> Processes { get; set; }
+        public ProcessDayActivity Lead { get; set; }
     }
 }

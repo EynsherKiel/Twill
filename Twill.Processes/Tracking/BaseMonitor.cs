@@ -5,20 +5,51 @@ using System.Text;
 using System.Threading.Tasks;
 using Twill.Processes.Interfaces.Monitor;
 using Twill.Processes.Search;
-//using Twill.Processes.Windows;
+using Twill.Processes.Windows;
 using Twill.Tools.Architecture;
 
 namespace Twill.Processes.Tracking
 {
-    public class BaseMonitor<T1, T2, T3, T4> 
-        where T1 : IProcessMonitor<T2,T3,T4>
-        where T2 : IProcessDayActivity<T3, T4>
-        where T3 : IProcessWork<T4>
-        where T4 : IGroundWorkState
+    // abstract ?
+    public class BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState>
+        where TProcessMonitor : IProcessMonitor<TProcessDayActivity, TProcessWork, TGroundWorkState>, new()
+        where TProcessDayActivity : IProcessDayActivity<TProcessWork, TGroundWorkState>, new()
+        where TProcessWork : IProcessWork<TGroundWorkState>, new()
+        where TGroundWorkState : IGroundWorkState, new()
     {
 
-        public T1 ProcessMonitor { get; set; }
+        public BaseMonitor()
+        {
+            Environ.UpdateEvent += Environ_UpdateEvent;
+        }
+
+        public event Action<BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState>> UpDateEvent = delegate { };
+
+        private Environ Environ = new Environ();
 
 
+        public TProcessMonitor ProcessMonitor { get; private set; } = new TProcessMonitor();
+
+        public TimeSpan TimeUpdate
+        {
+            get { return Environ.TimeUpdate; }
+            set { Environ.TimeUpdate = value; }
+        }
+
+
+        private void Environ_UpdateEvent(Environ obj)
+        {
+
+
+
+            UpDateEvent(this);
+        }
+
+
+        ~BaseMonitor()
+        {
+            if (Environ != null)
+                Environ.UpdateEvent += Environ_UpdateEvent;
+        }
     }
 }

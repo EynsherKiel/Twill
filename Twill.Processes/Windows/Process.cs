@@ -24,5 +24,6 @@ namespace Twill.Processes.Windows
 
         public TimeSpan WorkTime => DateTime.Now - CreationDate;
 
+        public override string ToString() => $"{Name} - {Title} - {CreationDate} - {WorkTime}";
     }
 }
