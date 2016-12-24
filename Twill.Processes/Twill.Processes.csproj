@@ -48,6 +48,7 @@
       <HintPath>..\packages\PInvoke.Windows.ShellScalingApi.0.3.152\lib\net40\PInvoke.Windows.ShellScalingApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />

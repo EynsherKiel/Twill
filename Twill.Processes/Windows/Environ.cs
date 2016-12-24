@@ -59,8 +59,15 @@ namespace Twill.Processes.Windows
 
                 handles.ForEach(handle => newList.Add(clonelist.FirstOrDefault(proc => proc.Handle == handle) ?? new Process(handle)));
 
+                newList = newList.GroupBy(p => p.Name).Select(group => group.First()).ToList();
+
+                newList.ForEach(el => el.UpTitle());
+
                 Processes = newList;
-                Lead = newList.First(proc => proc.Handle == selectedprocess.Handle);
+
+                Lead = selectedprocess == null ? null : newList.FirstOrDefault(proc => proc.Handle == selectedprocess.Handle);
+
+                Lead?.UpTitle();
             }
 
             UpdateEvent(this);

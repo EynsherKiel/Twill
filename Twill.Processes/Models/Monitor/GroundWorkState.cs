@@ -9,8 +9,13 @@ namespace Twill.Processes.Models.Monitor
 {
     public class GroundWorkState : IGroundWorkState
     {
-        public string Title { get; set; }
 
-        public DateTime UsingTime { get; set; }
+        public DateTime? StartWork { get; set; }
+
+        public string Title { get; set; }
+        public DateTime? EndWork { get; set; }
+
+
+        public TimeSpan? UsingTime => StartWork == null || EndWork == null ? null : EndWork - StartWork;
     }
 }

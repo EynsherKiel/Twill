@@ -9,6 +9,10 @@ namespace Twill.Processes.Interfaces.Monitor
     public interface IGroundWorkState
     {
         string Title { get; set; }
-        DateTime UsingTime { get; set; }
+        TimeSpan? UsingTime { get; }
+
+        DateTime? StartWork { get; set; }
+        DateTime? EndWork { get; set; }
+
     }
 }

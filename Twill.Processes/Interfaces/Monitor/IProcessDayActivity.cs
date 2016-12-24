@@ -12,7 +12,7 @@ namespace Twill.Processes.Interfaces.Monitor
         where T2 : IGroundWorkState
     {
 
-        string ProcessName { get; }
+        string Name { get; set; }
 
         ObservableCollection<T1> Activities { get; set; }
 

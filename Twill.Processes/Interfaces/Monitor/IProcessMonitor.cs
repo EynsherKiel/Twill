@@ -14,5 +14,6 @@ namespace Twill.Processes.Interfaces.Monitor
     {
         ObservableCollection<T1> Processes { get; set; }
         T1 Lead { get; set; }
+        string LeadTitle { get; }
     }
 }
