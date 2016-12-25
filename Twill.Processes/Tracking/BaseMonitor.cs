@@ -60,7 +60,7 @@ namespace Twill.Processes.Tracking
             foreach (var process in ProcessMonitor.Processes)
             {
                 if(!FilterProcessNames.Contains(process.Name) &&
-                   FilterProcessMonitor.Processes.Count(p => p.Name == process.Name) == 0)
+                   !FilterProcessMonitor.Processes.Select(p => p.Name).Contains(process.Name))
                 {
                     FilterProcessMonitor.Processes.Add(process);
                 }
@@ -130,19 +130,14 @@ namespace Twill.Processes.Tracking
 
 
                 var lastGroundState = lastProcWork.GroundWorkStates.LastOrDefault();
-                if (lastGroundState == null)
+
+                if (lastGroundState != null)
                 {
-                    lastGroundState = new TGroundWorkState();
-                    lastGroundState.StartWork = now;
-                    lastGroundState.Title = process.Title;
-                    lastProcWork.GroundWorkStates.Add(lastGroundState);
+                    if (lastGroundState.Title == process.Title)
+                        continue;
+
+                    lastGroundState.EndWork = now;
                 }
-
-
-                if (lastGroundState.Title == process.Title)
-                    continue;
-
-                lastGroundState.EndWork = now;
 
                 lastGroundState = new TGroundWorkState();
                 lastGroundState.StartWork = now;
@@ -152,10 +147,7 @@ namespace Twill.Processes.Tracking
             }
 
             // delete was ended process
-            foreach (var process in ProcessMonitor.Processes.
-                Where(proc => 
-                environ.Processes.Count(p => p.Name == proc.Name) == 0
-                ))
+            foreach (var process in ProcessMonitor.Processes.Where(proc => !environ.Processes.Select(p => p.Name).Contains(proc.Name)))
             {
                 var lastActivity = process.Activities.LastOrDefault();
                 if(lastActivity == null)
@@ -178,7 +170,6 @@ namespace Twill.Processes.Tracking
             }
 
             Filtering();
-
         }
          
 
