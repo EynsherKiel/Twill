@@ -69,6 +69,11 @@
     <Compile Include="Models\Content\MonitorPageModel.cs" />
     <Compile Include="Models\Content\SettingsPageModel.cs" />
     <Compile Include="Models\Content\HomePageModel.cs" />
+    <Compile Include="Models\Controls\Processes\GroundWorkState.cs" />
+    <Compile Include="Models\Controls\Processes\Monitor.cs" />
+    <Compile Include="Models\Controls\Processes\ProcessDayActivity.cs" />
+    <Compile Include="Models\Controls\Processes\ProcessMonitor.cs" />
+    <Compile Include="Models\Controls\Processes\ProcessWork.cs" />
     <Compile Include="Models\Controls\TimeLine\ProcessDayLaborModel.cs" />
     <Compile Include="Models\Controls\TimeLine\ProcessLaborModel.cs" />
     <Compile Include="Models\Controls\TimeLine\ReportModel.cs" />

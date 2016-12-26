@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Twill.Tools.Architecture
+namespace Twill.Tools.Async
 {
     public class AsyncQueue : IDisposable
     {

@@ -91,6 +91,9 @@
     <Compile Include="UserControls\Content\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Controls\Processes\Monitor.xaml.cs">
+      <DependentUpon>Monitor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Controls\TimeLine\ProcessDayLabor.xaml.cs">
       <DependentUpon>ProcessDayLabor.xaml</DependentUpon>
     </Compile>
@@ -135,6 +138,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\Controls\Processes\Monitor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Controls\TimeLine\ProcessDayLabor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -170,6 +177,10 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Twill.Processes\Twill.Processes.csproj">
+      <Project>{5fb029aa-e411-4494-95b7-86db4e574fc0}</Project>
+      <Name>Twill.Processes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Twill.UI.Core\Twill.UI.Core.csproj">
       <Project>{d5e67f88-3db5-4b48-8964-50590d2dd801}</Project>
       <Name>Twill.UI.Core</Name>
