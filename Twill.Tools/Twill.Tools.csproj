@@ -45,6 +45,7 @@
     <Compile Include="Architecture\Singleton.cs" />
     <Compile Include="Architecture\Timer.cs" />
     <Compile Include="Async\SyncContext.cs" />
+    <Compile Include="Math\Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WPF\SortableObservableCollection.cs" />
     <Compile Include="WPF\UniqueColorGenerator.cs" />

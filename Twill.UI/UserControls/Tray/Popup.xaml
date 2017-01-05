@@ -8,10 +8,18 @@
              xmlns:traymodel="clr-namespace:Twill.UI.Core.Models.Tray;assembly=Twill.UI.Core"
              Width="120"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Twill.UI;component/Styles/Colors.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid x:Name="main" d:DataContext="{d:DesignInstance traymodel:TrayPopupModel, IsDesignTimeCreatable=True}" DataContext="{Binding TrayPopupModel, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
         <Border Margin="10"
                 Background="Gray"
-                BorderBrush="#FF956EBB"
+                BorderBrush="{DynamicResource TwillBrush}"
                 BorderThickness="1"
                 CornerRadius="3">
             <Border.Effect>

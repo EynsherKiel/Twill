@@ -9,9 +9,9 @@ namespace Twill.Processes.Interfaces.Monitor
 {
     public interface IProcessWork<T> where T : IGroundWorkState
     {
-        DateTime StartWork { get; set; }
-        DateTime? EndWork { get; set; }
-        
+        DateTime Start { get; set; }
+        DateTime End { get; set; }
+        bool IsAlive { get; set; }
         ObservableCollection<T> GroundWorkStates { get; set; }
     }
 }

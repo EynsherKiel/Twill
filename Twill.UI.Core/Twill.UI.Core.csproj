@@ -64,7 +64,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Labor.cs" />
+    <Compile Include="Data\Activity.cs" />
     <Compile Include="Models\Content\AboutPageModel.cs" />
     <Compile Include="Models\Content\MonitorPageModel.cs" />
     <Compile Include="Models\Content\SettingsPageModel.cs" />
@@ -74,9 +74,8 @@
     <Compile Include="Models\Controls\Processes\ProcessDayActivity.cs" />
     <Compile Include="Models\Controls\Processes\ProcessMonitor.cs" />
     <Compile Include="Models\Controls\Processes\ProcessWork.cs" />
-    <Compile Include="Models\Controls\TimeLine\ProcessDayLaborModel.cs" />
-    <Compile Include="Models\Controls\TimeLine\ProcessLaborModel.cs" />
     <Compile Include="Models\Controls\TimeLine\ReportModel.cs" />
+    <Compile Include="Models\Controls\TimeLine\ReportsModel.cs" />
     <Compile Include="Models\MenuModel.cs" />
     <Compile Include="Models\Tray\IconBehaviorModel.cs" />
     <Compile Include="Models\ManagerModel.cs" />

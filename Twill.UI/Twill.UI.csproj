@@ -71,14 +71,17 @@
     <Compile Include="Behaviors\IgnoreMouseWheelBehavior.cs" />
     <Compile Include="Controls\ScrollSynchronizer.cs" />
     <Compile Include="Converters\DateTimeToPixelsConverter.cs" />
+    <Compile Include="Converters\DateTimeToShortStringConverter.cs" />
     <Compile Include="Converters\EqualsTypesConverter.cs" />
     <Compile Include="Converters\HeadersFilterConverter.cs" />
     <Compile Include="Converters\LabourActivityGraphicConverter.cs" />
-    <Compile Include="Converters\ReportsTimeIntervalToHeightConverter.cs" />
     <Compile Include="Converters\TimeLineConverter.cs" />
     <Compile Include="Converters\ToListConverter.cs" />
     <Compile Include="Decorators\MouseTrackerDecorator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Controls\Menu.xaml.cs">
+      <DependentUpon>Menu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Content\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
@@ -94,14 +97,17 @@
     <Compile Include="UserControls\Controls\Processes\Monitor.xaml.cs">
       <DependentUpon>Monitor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Controls\TimeLine\ProcessDayLabor.xaml.cs">
-      <DependentUpon>ProcessDayLabor.xaml</DependentUpon>
+    <Compile Include="UserControls\Controls\Processes\ProcessDayActivity.xaml.cs">
+      <DependentUpon>ProcessDayActivity.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Controls\TimeLine\ProcessLabor.xaml.cs">
-      <DependentUpon>ProcessLabor.xaml</DependentUpon>
+    <Compile Include="UserControls\Controls\Processes\ProcessWork.xaml.cs">
+      <DependentUpon>ProcessWork.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Controls\TimeLine\Report.xaml.cs">
       <DependentUpon>Report.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Controls\TimeLine\Reports.xaml.cs">
+      <DependentUpon>Reports.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Controls\TimeLine\Ruler.xaml.cs">
       <DependentUpon>Ruler.xaml</DependentUpon>
@@ -118,7 +124,19 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Page Include="Styles\Menu.xaml">
+    <Page Include="Styles\Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\NullStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ScrollViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -142,15 +160,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Controls\TimeLine\ProcessDayLabor.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="UserControls\Controls\Processes\ProcessDayActivity.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Controls\TimeLine\ProcessLabor.xaml">
+    <Page Include="UserControls\Controls\Processes\ProcessWork.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Controls\TimeLine\Report.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Controls\TimeLine\Reports.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -180,6 +202,10 @@
     <ProjectReference Include="..\Twill.Processes\Twill.Processes.csproj">
       <Project>{5fb029aa-e411-4494-95b7-86db4e574fc0}</Project>
       <Name>Twill.Processes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Twill.Tools\Twill.Tools.csproj">
+      <Project>{ccbdd89f-86cf-4d95-89ef-c5c43ea3085a}</Project>
+      <Name>Twill.Tools</Name>
     </ProjectReference>
     <ProjectReference Include="..\Twill.UI.Core\Twill.UI.Core.csproj">
       <Project>{d5e67f88-3db5-4b48-8964-50590d2dd801}</Project>

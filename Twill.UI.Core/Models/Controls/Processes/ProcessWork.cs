@@ -6,30 +6,27 @@ using System.Text;
 using System.Threading.Tasks;
 using Twill.Processes.Interfaces.Monitor;
 using System.Collections.ObjectModel;
+using Twill.UI.Core.Data;
 
 namespace Twill.UI.Core.Models.Controls.Processes
 {
-    public class ProcessWork : ViewModelBase, IProcessWork<GroundWorkState>
+    public class ProcessWork : Activity, IProcessWork<GroundWorkState>
     {
-        private DateTime? endWork;
-        public DateTime? EndWork
-        {
-            get { return endWork; }
-            set{ Set(ref endWork, value);}
-        }
-
+        
         private ObservableCollection<GroundWorkState> groundWorkStates;
         public ObservableCollection<GroundWorkState> GroundWorkStates
         {
             get { return groundWorkStates; }
             set { Set(ref groundWorkStates, value); }
         }
+         
 
-        private DateTime startWork;
-        public DateTime StartWork
+        private bool isAlive;
+        public bool IsAlive
         {
-            get { return startWork; }
-            set { Set(ref startWork, value); }
+            get { return isAlive; }
+            set { Set(ref isAlive, value); }
         }
+         
     }
 }

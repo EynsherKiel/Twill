@@ -6,12 +6,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:traymodel="clr-namespace:Twill.UI.Core.Models.Tray;assembly=Twill.UI.Core" 
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Twill.UI;component/Styles/Colors.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
     <Grid d:DataContext="{d:DesignInstance traymodel:TrayToolTipModel, IsDesignTimeCreatable=True}" DataContext="{Binding TrayToolTipModel, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
 
         <Border Margin="10"
                 Background="White"
-                BorderBrush="#FF956EBB"
+                BorderBrush="{DynamicResource TwillBrush}"
                 BorderThickness="0.6"
                 CornerRadius="2">
             <Border.Effect>
@@ -24,7 +31,7 @@
                        VerticalAlignment="Center"
                        FontFamily="pack://application:,,,/Twill.UI;component/fonts/VLADIMIR.TTF#Vladimir Script"
                        FontSize="30"
-                       Foreground="#FF8924EB"
+                       Foreground="{DynamicResource TwillBrush}"
                        Text="{Binding Text,
                                       Mode=TwoWay,
                                       UpdateSourceTrigger=PropertyChanged}" />

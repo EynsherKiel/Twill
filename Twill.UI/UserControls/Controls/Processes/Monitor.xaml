@@ -1,27 +1,117 @@
 ﻿<UserControl x:Class="Twill.UI.UserControls.Controls.Processes.Monitor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behaviors="clr-namespace:Twill.UI.Behaviors"
+             xmlns:controls="clr-namespace:Twill.UI.Controls"
+             xmlns:converters="clr-namespace:Twill.UI.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:Twill.UI.UserControls.Controls.Processes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:monitor="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
-             d:DesignHeight="300"
+             d:DesignHeight="100"
              d:DesignWidth="700"
              mc:Ignorable="d">
-    <StackPanel d:DataContext="{d:DesignInstance monitor:Monitor, IsDesignTimeCreatable=True}" DataContext="{Binding MonitorModel, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Twill.UI;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="/Twill.UI;component/Styles/NullStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid d:DataContext="{d:DesignInstance monitor:Monitor, IsDesignTimeCreatable=True}" DataContext="{Binding MonitorModel, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
 
-        <TextBlock Text="{Binding ProcessMonitor.LeadTitle}" />
-        <TextBlock Text="{Binding ProcessMonitor.Lead.Name}" />
 
         <ListBox ItemsSource="{Binding ProcessMonitor.Processes}">
+            <ListBox.Style>
+                <Style BasedOn="{StaticResource TwillListBoxNullStyle}" TargetType="ListBox">
+                    <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
+                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBox}">
+                                <ScrollViewer controls:ScrollSynchronizer.ScrollGroup="Group1" Focusable="false">
+
+                                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.Style>
+            <i:Interaction.Behaviors>
+                <behaviors:IgnoreMouseWheelBehavior />
+            </i:Interaction.Behaviors>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <TextBlock Text="{Binding Name}" />
-                    </Grid>
-                </DataTemplate>
+                <ItemContainerTemplate>
+                    <local:ProcessDayActivity Width="250"
+                                              Height="{Binding ContentHeight,
+                                                               RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                              AncestorType=UserControl}}"
+                                              ProcessDayActivityModel="{Binding}" />
+                </ItemContainerTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
 
-    </StackPanel>
+
+        <!--<ScrollViewer HorizontalAlignment="Stretch"
+                      VerticalAlignment="Bottom"
+                      controls:ScrollSynchronizer.ScrollGroup="Group1"
+                      Background="Transparent"
+                      HorizontalScrollBarVisibility="Visible"
+                      VerticalScrollBarVisibility="Disabled">
+
+            <ListBox Background="Transparent"
+                     BorderBrush="White"
+                     BorderThickness="0"
+                     ItemsSource="{Binding ProcessMonitor.Processes}"
+                     Style="{DynamicResource TwillListBoxNullStyle}">
+
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <ItemContainerTemplate>
+                        <Grid Width="250">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0"
+                                    Width="12"
+                                    Height="12"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Background="{Binding Brush}"
+                                    CornerRadius="3" />
+
+                            <TextBlock Grid.Column="1"
+                                       Background="Transparent"
+                                       FontSize="16"
+                                       FontStyle="Italic"
+                                       Foreground="{DynamicResource ProcessNameForegroundBrush}"
+                                       SnapsToDevicePixels="True"
+                                       Text="{Binding Name}"
+                                       TextAlignment="Center" />
+
+                        </Grid>
+                    </ItemContainerTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </ScrollViewer>-->
+
+
+    </Grid>
 </UserControl>

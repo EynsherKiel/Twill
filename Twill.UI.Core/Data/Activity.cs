@@ -8,18 +8,15 @@ using System.Threading.Tasks;
 
 namespace Twill.UI.Core.Data
 { 
-   public class Labor : ViewModelBase
+   public class Activity : ViewModelBase
     {
-        public const double MinetsInDay = 1440.0;
-
         private DateTime start = DateTime.Now.Date;
         public DateTime Start
         {
             get { return start; }
             set
             {
-                start = value;
-                RaisePropertyChanged(nameof(Start));
+                Set(ref start, value);
                 RaisePropertyChanged(nameof(TotalMinutesInterval));
             }
         }
@@ -30,8 +27,7 @@ namespace Twill.UI.Core.Data
             get { return end; }
             set
             {
-                end = value;
-                RaisePropertyChanged(nameof(End));
+                Set(ref end, value);
                 RaisePropertyChanged(nameof(TotalMinutesInterval));
             }
         }

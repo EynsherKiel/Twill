@@ -26,7 +26,8 @@ namespace Twill.Processes.Windows
         public Process Lead { get; set; }
 
 
-        private TimeSpan timeUpdate = TimeSpan.FromMilliseconds(1000);
+        private TimeSpan timeUpdate = TimeSpan.FromMilliseconds(1000 );
+
         public TimeSpan TimeUpdate
         {
             get { return timeUpdate; }
@@ -47,7 +48,9 @@ namespace Twill.Processes.Windows
 
         private void UpDate(object state)
         {
-            lock (SyncRoot)
+            if (!Monitor.TryEnter(SyncRoot))
+                return;
+            try
             {
                 var results = Searcher.FindAllProcess();
 
@@ -68,9 +71,13 @@ namespace Twill.Processes.Windows
                 Lead = selectedprocess == null ? null : newList.FirstOrDefault(proc => proc.Handle == selectedprocess.Handle);
 
                 Lead?.UpTitle();
-            }
 
-            UpdateEvent(this);
+                UpdateEvent(this);
+            }
+            finally
+            {
+                Monitor.Exit(SyncRoot);
+            }
         }
 
         ~Environ()

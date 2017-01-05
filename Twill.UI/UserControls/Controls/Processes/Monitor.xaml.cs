@@ -34,5 +34,14 @@ namespace Twill.UI.UserControls.Controls.Processes
             set { SetValue(MonitorModelProperty, value); }
         }
 
+        public double ContentHeight
+        {
+            get { return (double)GetValue(ContentHeightProperty); }
+            set { SetValue(ContentHeightProperty, value); }
+        }
+        public static readonly DependencyProperty ContentHeightProperty =
+            DependencyProperty.Register(nameof(ContentHeight), typeof(double), thisType, new PropertyMetadata(1000.0));
+
+
     }
 }

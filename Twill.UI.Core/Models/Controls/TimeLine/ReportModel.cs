@@ -7,7 +7,7 @@ using Twill.UI.Core.Data;
 
 namespace Twill.UI.Core.Models.Controls.TimeLine
 {
-    public class ReportModel : Labor
+    public class ReportModel : Activity
     {
         public ReportModel()
         {
@@ -17,7 +17,7 @@ namespace Twill.UI.Core.Models.Controls.TimeLine
         public string Text
         {
             get { return text; }
-            set { Set(nameof(Text), ref text, value); }
+            set { Set(ref text, value); }
         }
     }
 }

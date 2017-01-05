@@ -106,7 +106,9 @@ namespace Twill.Processes.Tracking
                 if(currentProcessDayActivity == null)
                 {
                     var work = new TProcessWork();
-                    work.StartWork = now;
+                    work.IsAlive = true;
+                    work.Start = now;
+                    work.End = now;
                     currentProcessDayActivity = new TProcessDayActivity();
                     currentProcessDayActivity.Name = process.Name; // very bad, change to activator ? >_<
 
@@ -118,12 +120,15 @@ namespace Twill.Processes.Tracking
 
                 // work with current
                 var lastProcWork = currentProcessDayActivity.Activities.Last();
-                if (lastProcWork.EndWork != null)
+                if (!lastProcWork.IsAlive)
                 {
                     lastProcWork = new TProcessWork();
-                    lastProcWork.StartWork = now;
+                    lastProcWork.IsAlive = true;
+                    lastProcWork.Start = now;
                     currentProcessDayActivity.Activities.Add(lastProcWork);
                 }
+
+                lastProcWork.End = now;
 
                 if (lastProcWork.GroundWorkStates == null)
                     lastProcWork.GroundWorkStates = new ObservableCollection<TGroundWorkState>();
@@ -150,14 +155,15 @@ namespace Twill.Processes.Tracking
             foreach (var process in ProcessMonitor.Processes.Where(proc => !environ.Processes.Select(p => p.Name).Contains(proc.Name)))
             {
                 var lastActivity = process.Activities.LastOrDefault();
-                if(lastActivity == null)
+                if (lastActivity == null)
                 {
                     // miiistake (scrubs^_^)
                     MessageBox.Show(string.Format("{0} not work", "BaseMonitor"));
                     continue;
                 }
 
-                lastActivity.EndWork = now;
+                lastActivity.IsAlive = false;
+                lastActivity.End = now;
             }
 
             if(environ.Lead == null)
