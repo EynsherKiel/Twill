@@ -5,8 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Twill.Processes.Interfaces.Monitor;
-using System.Collections.ObjectModel;
-using Twill.UI.Core.Data;
+using System.Collections.ObjectModel; 
 
 namespace Twill.UI.Core.Models.Controls.Processes
 {
@@ -20,13 +19,13 @@ namespace Twill.UI.Core.Models.Controls.Processes
             set { Set(ref groundWorkStates, value); }
         }
          
-
-        private bool isAlive;
-        public bool IsAlive
-        {
-            get { return isAlive; }
-            set { Set(ref isAlive, value); }
-        }
          
+
+        private ObservableCollection<GroundWorkState> leadGroundWorkStates;
+        public ObservableCollection<GroundWorkState> LeadGroundWorkStates
+        {
+            get { return leadGroundWorkStates; }
+            set { Set(ref leadGroundWorkStates, value); }
+        }
     }
 }

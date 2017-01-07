@@ -7,27 +7,31 @@
                     mc:Ignorable="d">
 
 
-    <SolidColorBrush x:Key="TwillBrush" Color="#FF8924EB"/>
+    <SolidColorBrush x:Key="TwillBrush" Color="#FF8924EB" />
 
     <SolidColorBrush x:Key="MainMenuBrush" Color="#FF1D1E25" />
     <SolidColorBrush x:Key="MainMenuTitleBrush" Color="#FF3B3D4A" />
     <SolidColorBrush x:Key="MainMenuIsPressedTitleBrush" Color="#FF2E3040" />
     <SolidColorBrush x:Key="MainMenuDefaultForegroundBrush" Color="White" />
     <SolidColorBrush x:Key="MainMenuSelectedItemBrush" Color="#FFAA3D3D" />
-    
-    <SolidColorBrush x:Key="ProcessNameForegroundBrush" Color="#FF1C1D22"/>
-    <SolidColorBrush x:Key="ReportTimesForegroundBrush" Color="#FF88AEDA"/>
-    <SolidColorBrush x:Key="ReportTextForegroundBrush" Color="#FF0F021F"/>
 
+    <SolidColorBrush x:Key="ProcessNameForegroundBrush" Color="#FF1C1D22" />
+    <SolidColorBrush x:Key="ReportTimesForegroundBrush" Color="#FF88AEDA" />
+    <SolidColorBrush x:Key="ReportTextForegroundBrush" Color="#FF0F021F" />
+
+    <SolidColorBrush x:Key="UserLogActivityForegroundBrush" Color="#FF88AEDA" />
+    <SolidColorBrush x:Key="UserLogActivityBackgroundBrush" Color="#FF0F021F" /> 
+    
+    
     <Color x:Key="SelectedColor">#FFFF00F3</Color>
     <SolidColorBrush x:Key="SelectedBrush" Color="{DynamicResource SelectedColor}" />
 
-    <SolidColorBrush x:Key="MonitorBorderBrush" Color="WhiteSmoke"/>
-    <LinearGradientBrush x:Key="MonitorBackgroundBrush" EndPoint="1,0.025" StartPoint="0.5,0">
-        <GradientStop Color="WhiteSmoke" Offset="1"/>
-        <GradientStop Color="White"/>
+    <SolidColorBrush x:Key="MonitorBorderBrush" Color="WhiteSmoke" />
+    <LinearGradientBrush x:Key="MonitorBackgroundBrush" StartPoint="0.5,0" EndPoint="1,0.025">
+        <GradientStop Offset="1" Color="WhiteSmoke" />
+        <GradientStop Color="White" />
     </LinearGradientBrush>
-    
+
     <LinearGradientBrush x:Key="RulerBackgroundBrush" StartPoint="0.5,0" EndPoint="0.5,1">
         <LinearGradientBrush.RelativeTransform>
             <TransformGroup>
@@ -41,9 +45,12 @@
         <GradientStop Offset="1" Color="#FF24A1F4" />
         <GradientStop Offset="0.088" Color="#FF7ECBFF" />
     </LinearGradientBrush>
-    
-    <SolidColorBrush x:Key="RulerForegroundBrush" Color="White"/>
-    <SolidColorBrush x:Key="SelectedIsMouseOverBrush" Color="#FF8A2DE8"/>
-    <SolidColorBrush x:Key="SelectedIsPressedBrush" Color="Red"/>
+
+    <SolidColorBrush x:Key="RulerForegroundBrush" Color="White" />
+    <SolidColorBrush x:Key="SelectedIsMouseOverBrush" Color="#FF8A2DE8" />
+    <SolidColorBrush x:Key="SelectedIsPressedBrush" Color="Red" />
+    <SolidColorBrush x:Key="ReportsBackgroundBrush" Color="White"/>
+
+ 
 
 </ResourceDictionary>

@@ -31,5 +31,12 @@ namespace Twill.UI.Core.Models.Controls.Processes
             get { return processes; }
             set { Set(ref processes, value); }
         }
+
+        private ObservableCollection<Tuple<ProcessDayActivity, GroundWorkState>> userLogActivities;
+        public ObservableCollection<Tuple<ProcessDayActivity, GroundWorkState>> UserLogActivities
+        {
+            get { return userLogActivities; }
+            set { Set(ref userLogActivities, value); }
+        }
     }
 }

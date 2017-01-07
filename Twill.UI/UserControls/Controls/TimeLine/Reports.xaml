@@ -24,10 +24,16 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid x:Name="main" d:DataContext="{d:DesignInstance timelinemodels:ReportsModel, IsDesignTimeCreatable=True}" DataContext="{Binding ReportsModel, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+    <Grid x:Name="main"
+          d:DataContext="{d:DesignInstance timelinemodels:ReportsModel,
+                                           IsDesignTimeCreatable=True}"
+          DataContext="{Binding ReportsModel,
+                                RelativeSource={RelativeSource FindAncestor,
+                                                               AncestorType={x:Type UserControl}}}">
 
 
-        <ListBox ItemsSource="{Binding Reports}"
+        <ListBox Background="{DynamicResource ReportsBackgroundBrush}"
+                 ItemsSource="{Binding Reports}"
                  ScrollViewer.CanContentScroll="False"
                  ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                  Style="{DynamicResource TwillListBoxNullStyle}">
@@ -79,7 +85,7 @@
                                             <Setter Property="Foreground" Value="{StaticResource SelectedIsMouseOverBrush}" />
                                         </Trigger>
 
-                                        <Trigger Property="IsPressed" Value="true" >
+                                        <Trigger Property="IsPressed" Value="true">
                                             <Setter Property="Foreground" Value="{StaticResource SelectedIsPressedBrush}" />
                                         </Trigger>
 
@@ -95,7 +101,8 @@
                                     Grid.ColumnSpan="1"
                                     Width="15"
                                     Height="15"
-                                    Command="{Binding DataContext.RemoveTopElementCommand, ElementName=main}"
+                                    Command="{Binding DataContext.RemoveTopElementCommand,
+                                                      ElementName=main}"
                                     CommandParameter="{Binding .}"
                                     Padding="0">
                                 <Grid Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=Background}">
@@ -111,7 +118,8 @@
                                     Grid.ColumnSpan="1"
                                     Width="15"
                                     Height="15"
-                                    Command="{Binding DataContext.RemoveBottomElementCommand, ElementName=main}"
+                                    Command="{Binding DataContext.RemoveBottomElementCommand,
+                                                      ElementName=main}"
                                     CommandParameter="{Binding .}"
                                     Padding="0">
 

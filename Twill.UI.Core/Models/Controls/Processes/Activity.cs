@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twill.Processes.Interfaces.Monitor;
 
-
-namespace Twill.UI.Core.Data
+namespace Twill.UI.Core.Models.Controls.Processes
 { 
-   public class Activity : ViewModelBase
+   public class Activity : ViewModelBase, IActivity
     {
-        private DateTime start = DateTime.Now.Date;
+        private DateTime start;
         public DateTime Start
         {
             get { return start; }
@@ -21,7 +21,7 @@ namespace Twill.UI.Core.Data
             }
         }
 
-        private DateTime end = DateTime.Now.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+        private DateTime end;
         public DateTime End
         {
             get { return end; }
@@ -33,5 +33,13 @@ namespace Twill.UI.Core.Data
         }
 
         public double TotalMinutesInterval => (End - Start).TotalMinutes;
+
+
+        private bool isAlive;
+        public bool IsAlive
+        {
+            get { return isAlive; }
+            set { Set(ref isAlive, value); }
+        }
     }
 }

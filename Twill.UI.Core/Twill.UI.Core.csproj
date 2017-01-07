@@ -64,7 +64,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Activity.cs" />
+    <Compile Include="Models\Controls\Processes\Activity.cs" />
     <Compile Include="Models\Content\AboutPageModel.cs" />
     <Compile Include="Models\Content\MonitorPageModel.cs" />
     <Compile Include="Models\Content\SettingsPageModel.cs" />

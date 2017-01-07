@@ -26,15 +26,14 @@
             </ResourceDictionary.MergedDictionaries>
 
             <converters:ToListConverter x:Key="ToListConverter" />
-            <converters:LabourActivityGraphicConverter x:Key="LabourActivityGraphicConverter" />
 
             <sys:Double x:Key="LaborsHeight">20000</sys:Double>
 
         </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <Grid d:DataContext="{d:DesignInstance processesmodel:MonitorPageModel, IsDesignTimeCreatable=True}">
-        
+
         <Border BorderBrush="{DynamicResource MonitorBorderBrush}" BorderThickness="0,1,1,0">
             <Grid Grid.IsSharedSizeScope="True">
                 <ScrollViewer>
@@ -57,7 +56,24 @@
                                         <Binding Path="MousePosition.Y" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type decorators:MouseTrackerDecorator}}" />
                                     </MultiBinding>
                                 </Button.CommandParameter>
-                                <timeline:Ruler />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <timeline:Ruler Grid.ColumnSpan="2" />
+                                    <timeline:UserActivity Grid.Column="1" ProcessMonitorModel="{Binding Monitor.ProcessMonitor}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Click">
+                                                <i:InvokeCommandAction Command="{Binding Command, ElementName=timeline}" CommandParameter="{Binding CommandParameter, ElementName=timeline}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:IgnoreMouseWheelBehavior />
+                                        </i:Interaction.Behaviors>
+                                    </timeline:UserActivity>
+
+                                </Grid>
                             </Button>
 
 
@@ -139,7 +155,7 @@
                                 </ListBox.ItemsPanel>
                                 <ListBox.ItemTemplate>
                                     <ItemContainerTemplate>
-                                        <processes:ProcessDayActivity Width="250"
+                                        <processes:ProcessDayActivity Padding="2" Width="250"
                                                                       Height="{DynamicResource LaborsHeight}"
                                                                       Background="Transparent"
                                                                       ProcessDayActivityModel="{Binding}" />
@@ -210,410 +226,7 @@
                         </ListBox>
                     </ScrollViewer>
                 </Grid>
-
-
-
-                <!--<Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition />
-            <ColumnDefinition Width="auto" />
-        </Grid.ColumnDefinitions>
-        <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Disabled" controls:ScrollSynchronizer.ScrollGroup="Group1" >
-
-            <timeline:Ruler Height="{DynamicResource LaborsHeight}" />
-        </ScrollViewer>
-
-        <processes:Monitor Grid.Column="1"
-                           VerticalAlignment="Stretch"
-                           ContentHeight="{DynamicResource LaborsHeight}"
-                           MonitorModel="{Binding Monitor}"
-                           ScrollViewer.VerticalScrollBarVisibility="Visible">
-            <i:Interaction.Behaviors>
-                <behaviors:IgnoreMouseWheelBehavior />
-            </i:Interaction.Behaviors>
-        </processes:Monitor>
-
-        <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Visible"  controls:ScrollSynchronizer.ScrollGroup="Group1"  Grid.Column="2">
-            <Grid Height="{DynamicResource LaborsHeight}" />
-        </ScrollViewer>-->
-
-
-                <!--<Border Grid.Row="0" BorderThickness="0,1,0,0">
-            <Border.BorderBrush>
-                <LinearGradientBrush>
-                    <GradientStop Offset="0" Color="#FF88AEDA" />
-                    <GradientStop Offset="1" Color="White" />
-                </LinearGradientBrush>
-            </Border.BorderBrush>
-            <ScrollViewer MaxHeight="{StaticResource LaborsHeight}" Style="{DynamicResource TwillMenuScrollViewer}">
-                <decorators:MouseTrackerDecorator>
-
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" SharedSizeGroup="firstcolumn" />
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="100" SharedSizeGroup="graphic" />
-                            <ColumnDefinition Width="200" SharedSizeGroup="thirdcolumn" />
-                        </Grid.ColumnDefinitions>
-
-                        <Button x:Name="timeline"
-                                Grid.Column="0"
-                                Height="{StaticResource LaborsHeight}"
-                                MinWidth="60"
-                                Command="{Binding AddNewRecordCommand}"
-                                Padding="0"
-                                Style="{DynamicResource ButtonWithoutStyle}">
-                            <Button.CommandParameter>
-                                <MultiBinding Converter="{StaticResource ToListConverter}">
-                                    <Binding Source="{StaticResource LaborsHeight}" />
-                                    <Binding Path="MousePosition.Y" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type decorators:MouseTrackerDecorator}}" />
-                                </MultiBinding>
-                            </Button.CommandParameter>
-                            <timeline:Ruler />
-                        </Button>
-
-                        <Border Grid.Column="1"
-                                Grid.ColumnSpan="2"
-                                Margin="2,0,3,0"
-                                HorizontalAlignment="Stretch"
-                                Background="Black"
-                                BorderBrush="Black"
-                                BorderThickness="1">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="12"
-                                                  ShadowDepth="0"
-                                                  Color="Black" />
-                            </Border.Effect>
-                        </Border>
-
-                        <ListBox x:Name="processes"
-                                 Grid.Column="1"
-                                 Height="{StaticResource LaborsHeight}"
-                                 ItemContainerStyle="{DynamicResource TwillLaborViewerListBoxItemStyle}"
-                                 ItemsSource="{Binding ProcessDayLabors}"
-                                 ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                            <ListBox.Style>
-                                <Style TargetType="{x:Type ListBox}">
-                                    <Setter Property="SnapsToDevicePixels" Value="true" />
-                                    <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}" />
-                                    <Setter Property="BorderBrush" Value="{DynamicResource SolidBorderBrush}" />
-                                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
-                                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden" />
-                                    <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type ListBox}">
-                                                <Grid>
-                                                    <Border x:Name="Border"
-                                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                                            BorderThickness="{TemplateBinding BorderThickness}" />
-                                                    <ScrollViewer controls:ScrollSynchronizer.ScrollGroup="Group1"
-                                                                  Background="{TemplateBinding Background}"
-                                                                  Focusable="false"
-                                                                  Style="{DynamicResource TwillMenuScrollViewer}">
-
-                                                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-
-                                                    </ScrollViewer>
-                                                </Grid>
-                                                <ControlTemplate.Triggers>
-                                                    <Trigger Property="IsEnabled" Value="false">
-                                                        <Setter TargetName="Border" Property="Background" Value="{DynamicResource DisabledBackgroundBrush}" />
-                                                        <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource DisabledBorderBrush}" />
-                                                    </Trigger>
-                                                    <Trigger Property="IsGrouping" Value="true">
-                                                        <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
-                                                    </Trigger>
-                                                </ControlTemplate.Triggers>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </ListBox.Style>
-                            <i:Interaction.Behaviors>
-                                <behaviors:IgnoreMouseWheelBehavior />
-                            </i:Interaction.Behaviors>
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" />
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-
-                            <ListBox.ItemTemplate>
-                                <ItemContainerTemplate>
-                                    <timeline:ProcessDayLabor Width="250"
-                                                              Height="{StaticResource LaborsHeight}"
-                                                              ProcessDayLaborModel="{Binding}" />
-                                </ItemContainerTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-
-
-                        <Line Grid.Column="1"
-                              Grid.ColumnSpan="3"
-                              Panel.ZIndex="4"
-                              Stroke="#FFFF00F3"
-                              StrokeThickness="1"
-                              X1="0"
-                              X2="{Binding ActualWidth,
-                                           Mode=OneWay,
-                                           RelativeSource={RelativeSource FindAncestor,
-                                                                          AncestorType={x:Type UserControl}}}"
-                              Y1="{Binding MousePosition.Y,
-                                           RelativeSource={RelativeSource FindAncestor,
-                                                                          AncestorType={x:Type decorators:MouseTrackerDecorator}}}"
-                              Y2="{Binding MousePosition.Y,
-                                           RelativeSource={RelativeSource FindAncestor,
-                                                                          AncestorType={x:Type decorators:MouseTrackerDecorator}}}">
-                            <Line.Style>
-                                <Style TargetType="Line">
-                                    <Setter Property="Visibility" Value="Hidden" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=timeline, Mode=OneWay}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Line.Style>
-                        </Line>
-
-                        <ListBox Grid.Column="2"
-                                 Height="{StaticResource LaborsHeight}"
-                                 Background="White"
-                                 BorderBrush="#FFD0E4FB"
-                                 BorderThickness="1,0,0,0"
-                                 ItemContainerStyle="{DynamicResource TwillLaborViewerListBoxItemStyle}"
-                                 ScrollViewer.VerticalScrollBarVisibility="Hidden">
-
-                            <ListBox.ItemsSource>
-                                <MultiBinding Converter="{StaticResource LabourActivityGraphicConverter}">
-                                    <Binding Path="ProcessDayLabors" />
-                                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />
-                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
-                                </MultiBinding>
-                            </ListBox.ItemsSource>
-
-                            <i:Interaction.Behaviors>
-                                <behaviors:IgnoreMouseWheelBehavior />
-                            </i:Interaction.Behaviors>
-
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <Canvas Margin="0,0,-9,0" RenderTransformOrigin="0.5,0.5">
-                                        <Canvas.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform ScaleX="-1" ScaleY="1" />
-                                                <SkewTransform AngleX="0" AngleY="0" />
-                                                <RotateTransform Angle="0" />
-                                                <TranslateTransform />
-                                            </TransformGroup>
-                                        </Canvas.RenderTransform>
-                                    </Canvas>
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-
-                            <ListBox.ItemTemplate>
-                                <ItemContainerTemplate>
-                                    <Polyline Fill="{x:Null}"
-                                              Points="{Binding Item2}"
-                                              Stroke="{Binding Item1}"
-                                              StrokeThickness="1" />
-                                </ItemContainerTemplate>
-                            </ListBox.ItemTemplate>
-
-                        </ListBox>
-
-                        <ListBox x:Name="reports"
-                                 Grid.Column="3"
-                                 Height="{StaticResource LaborsHeight}"
-                                 Panel.ZIndex="-1"
-                                 BorderBrush="#FFFD0000"
-                                 ItemsSource="{Binding Reports}"
-                                 ScrollViewer.CanContentScroll="False"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                                 Style="{DynamicResource TwillMenuListBox}">
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Vertical" />
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="{x:Type ListBoxItem}">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                                <ContentPresenter />
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                            <ListBox.ItemTemplate>
-                                <ItemContainerTemplate>
-                                    <Grid Width="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}">
-                                        <Grid.Height>
-                                            <MultiBinding Converter="{StaticResource ReportsTimeIntervalToHeightConverter}">
-                                                <Binding />
-                                                <Binding Source="{StaticResource LaborsHeight}" />
-                                                <Binding Path="End" />
-                                            </MultiBinding>
-                                        </Grid.Height>
-                                        <timeline:Report ReportModel="{Binding Mode=OneWay}" />
-                                        <Grid Margin="0,-8,31,0"
-                                              HorizontalAlignment="Right"
-                                              VerticalAlignment="Top">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <Button Grid.Column="0"
-                                                    Grid.ColumnSpan="1"
-                                                    Width="15"
-                                                    Height="15"
-                                                    Background="White"
-                                                    Command="{Binding DataContext.RemoveTopElementCommand,
-                                                                      RelativeSource={RelativeSource FindAncestor,
-                                                                                                     AncestorType={x:Type UserControl}}}"
-                                                    CommandParameter="{Binding .}"
-                                                    Padding="0"
-                                                    Style="{DynamicResource ButtonWithoutStyle}">
-
-                                                <Viewbox>
-                                                    <Canvas Width="24" Height="24">
-                                                        <Path Data="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" Fill="#FFFF00F3" />
-                                                    </Canvas>
-                                                </Viewbox>
-                                            </Button>
-
-                                            <Button Grid.Column="1"
-                                                    Grid.ColumnSpan="1"
-                                                    Width="15"
-                                                    Height="15"
-                                                    Background="White"
-                                                    Command="{Binding DataContext.RemoveBottomElementCommand,
-                                                                      RelativeSource={RelativeSource FindAncestor,
-                                                                                                     AncestorType={x:Type UserControl}}}"
-                                                    CommandParameter="{Binding .}"
-                                                    Padding="0"
-                                                    Style="{DynamicResource ButtonWithoutStyle}">
-
-                                                <Viewbox>
-                                                    <Canvas Width="24" Height="24">
-                                                        <Path Data="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" Fill="#FFFF00F3" />
-                                                    </Canvas>
-                                                </Viewbox>
-                                            </Button>
-
-                                        </Grid>
-                                    </Grid>
-                                </ItemContainerTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-
-
-
-                    </Grid>
-                </decorators:MouseTrackerDecorator>
-            </ScrollViewer>
-
-        </Border>
-
-        <Grid Grid.Row="1"
-              Height="auto"
-              HorizontalAlignment="Stretch"
-              VerticalAlignment="Bottom"
-              Background="Transparent">
-
-            <ScrollViewer Style="{DynamicResource TwillMenuScrollViewer}">
-
-                <Grid Background="Transparent">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition SharedSizeGroup="firstcolumn" />
-                        <ColumnDefinition />
-                        <ColumnDefinition SharedSizeGroup="graphic" />
-                        <ColumnDefinition SharedSizeGroup="thirdcolumn" />
-                    </Grid.ColumnDefinitions>
-
-
-
-                -->
-                <!--<Border
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="0,-2,0,0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Top"
-                            Background="Black"
-                            BorderBrush="Gray"
-                            BorderThickness="1">
-                        <Border.Effect>
-                            <DropShadowEffect BlurRadius="2"
-                                              ShadowDepth="0"
-                                              Color="Black" />
-                        </Border.Effect>
-                    </Border>-->
-                <!--
-
-
-
-                    <ScrollViewer Grid.Column="1"
-                                  controls:ScrollSynchronizer.ScrollGroup="Group1"
-                                  HorizontalScrollBarVisibility="Visible"
-                                  Style="{DynamicResource TwillMenuScrollViewer}"
-                                  VerticalScrollBarVisibility="Disabled">
-
-                        <ListBox Background="Transparent"
-                                 BorderBrush="White"
-                                 BorderThickness="0"
-                                 ItemContainerStyle="{DynamicResource TwillLaborViewerListBoxItemStyle}"
-                                 ItemsSource="{Binding ProcessDayLabors}"
-                                 Style="{DynamicResource TwillMenuListBox}">
-
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" />
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-
-                            <ListBox.ItemTemplate>
-                                <ItemContainerTemplate>
-                                    <Grid Width="250">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-
-                                        <Border Grid.Column="0"
-                                                Width="12"
-                                                Height="12"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Center"
-                                                Background="{Binding Brush}"
-                                                CornerRadius="3" />
-
-                                        <TextBlock Grid.Column="1"
-                                                   Background="Transparent"
-                                                   FontSize="16"
-                                                   FontStyle="Italic"
-                                                   Foreground="#FF1C1D22"
-                                                   SnapsToDevicePixels="True"
-                                                   Text="{Binding ProcessName}"
-                                                   TextAlignment="Center" />
-
-                                    </Grid>
-                                </ItemContainerTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </ScrollViewer>
-
-                </Grid>
-            </ScrollViewer>
-
-        </Grid>-->
             </Grid>
-
         </Border>
-
     </Grid>
-
 </UserControl>

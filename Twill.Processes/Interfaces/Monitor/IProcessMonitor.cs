@@ -13,7 +13,10 @@ namespace Twill.Processes.Interfaces.Monitor
         where T3 : IGroundWorkState
     {
         ObservableCollection<T1> Processes { get; set; }
+         
         T1 Lead { get; set; }
         string LeadTitle { get; }
+
+        ObservableCollection<Tuple<T1, T3>> UserLogActivities { get; set; }
     }
 }

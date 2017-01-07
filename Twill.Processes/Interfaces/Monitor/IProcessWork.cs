@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace Twill.Processes.Interfaces.Monitor
 {
-    public interface IProcessWork<T> where T : IGroundWorkState
-    {
-        DateTime Start { get; set; }
-        DateTime End { get; set; }
+    public interface IProcessWork<T> : IActivity where T : IGroundWorkState
+    { 
         bool IsAlive { get; set; }
         ObservableCollection<T> GroundWorkStates { get; set; }
+        ObservableCollection<T> LeadGroundWorkStates { get; set; }
     }
 }

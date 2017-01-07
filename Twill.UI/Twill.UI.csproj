@@ -70,11 +70,11 @@
   <ItemGroup>
     <Compile Include="Behaviors\IgnoreMouseWheelBehavior.cs" />
     <Compile Include="Controls\ScrollSynchronizer.cs" />
+    <Compile Include="Converters\BrushToColorConverter.cs" />
     <Compile Include="Converters\DateTimeToPixelsConverter.cs" />
     <Compile Include="Converters\DateTimeToShortStringConverter.cs" />
     <Compile Include="Converters\EqualsTypesConverter.cs" />
     <Compile Include="Converters\HeadersFilterConverter.cs" />
-    <Compile Include="Converters\LabourActivityGraphicConverter.cs" />
     <Compile Include="Converters\TimeLineConverter.cs" />
     <Compile Include="Converters\ToListConverter.cs" />
     <Compile Include="Decorators\MouseTrackerDecorator.cs" />
@@ -111,6 +111,12 @@
     </Compile>
     <Compile Include="UserControls\Controls\TimeLine\Ruler.xaml.cs">
       <DependentUpon>Ruler.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Controls\TimeLine\UserActivity.xaml.cs">
+      <DependentUpon>UserActivity.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Controls\TimeLine\UserActivityLog.xaml.cs">
+      <DependentUpon>UserActivityLog.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
@@ -177,6 +183,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Controls\TimeLine\Ruler.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Controls\TimeLine\UserActivity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Controls\TimeLine\UserActivityLog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

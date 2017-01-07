@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace Twill.Processes.Interfaces.Monitor
 {
-    public interface IGroundWorkState
+    public interface IGroundWorkState : IActivity
     {
         string Title { get; set; }
-        TimeSpan? UsingTime { get; }
-
-        DateTime? StartWork { get; set; }
-        DateTime? EndWork { get; set; }
-
     }
 }

@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="Twill.UI.UserControls.Controls.TimeLine.UserActivity"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:Twill.UI.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Twill.UI.UserControls.Controls.TimeLine"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:monitor="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Twill.UI;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="/Twill.UI;component/Styles/NullStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:DateTimeToPixelsConverter x:Key="DateTimeToPixelsConverter" />
+            <converters:BrushToColorConverter x:Key="BrushToColorConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid d:DataContext="{d:DesignInstance monitor:ProcessMonitor, IsDesignTimeCreatable=True}" DataContext="{Binding ProcessMonitorModel, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
+
+
+        <ListBox x:Name="listbox"
+                 Background="Transparent"
+                 ItemsSource="{Binding UserLogActivities}"
+                 Style="{DynamicResource TwillListBoxNullStyle}">
+            <ListBox.Resources>
+                <Style BasedOn="{StaticResource ToolTipNullStyle}" TargetType="ToolTip" />
+            </ListBox.Resources>
+
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemContainerStyle>
+                <Style BasedOn="{StaticResource TwillListBoxNullItemStyle}" TargetType="ListBoxItem">
+                    <Setter Property="Canvas.Left" Value="0" />
+                    <Setter Property="Canvas.Top">
+                        <Setter.Value>
+                            <MultiBinding Converter="{StaticResource DateTimeToPixelsConverter}">
+                                <Binding Path="Item2.Start" />
+                                <Binding ElementName="listbox"
+                                         Mode="OneWay"
+                                         Path="ActualHeight" />
+                            </MultiBinding>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Canvas.Bottom">
+                        <Setter.Value>
+                            <MultiBinding Converter="{StaticResource DateTimeToPixelsConverter}">
+                                <Binding Path="Item2.End" />
+                                <Binding ElementName="listbox"
+                                         Mode="OneWay"
+                                         Path="ActualHeight" />
+                            </MultiBinding>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <ItemContainerTemplate>
+                    <Button Width="{Binding ActualWidth,
+                                            Mode=OneWay,
+                                            ElementName=listbox}"
+                            Click="UserActivityLogClickMethod"
+                            Style="{DynamicResource ButtonNullStyle}">
+                        <Button.Height>
+                            <MultiBinding Converter="{StaticResource DateTimeToPixelsConverter}">
+                                <Binding Mode="OneWay" Path="Item2.TotalMinutesInterval" />
+                                <Binding ElementName="listbox"
+                                         Mode="OneWay"
+                                         Path="ActualHeight" />
+                            </MultiBinding>
+                        </Button.Height>
+                        <Grid Opacity="0.5"
+                              ToolTipService.BetweenShowDelay="1"
+                              ToolTipService.ShowDuration="200000"
+                              ToolTipService.ShowOnDisabled="True">
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="1.005,0.425" EndPoint="0,0.434">
+                                    <GradientStop Offset="0.209" Color="{Binding Item1.Brush, Converter={StaticResource BrushToColorConverter}}" />
+                                    <GradientStop Offset="1" />
+                                </LinearGradientBrush>
+                            </Grid.Background>
+
+                            <Grid.ToolTip>
+                                <local:UserActivityLog Margin="8" ActivityLogModel="{Binding .}" />
+                            </Grid.ToolTip>
+                        </Grid>
+
+
+                    </Button>
+                </ItemContainerTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

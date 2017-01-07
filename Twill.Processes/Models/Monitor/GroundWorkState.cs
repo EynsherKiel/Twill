@@ -7,15 +7,8 @@ using Twill.Processes.Interfaces.Monitor;
 
 namespace Twill.Processes.Models.Monitor
 {
-    public class GroundWorkState : IGroundWorkState
+    public class GroundWorkState : Activity, IGroundWorkState
     {
-
-        public DateTime? StartWork { get; set; }
-
-        public string Title { get; set; }
-        public DateTime? EndWork { get; set; }
-
-
-        public TimeSpan? UsingTime => StartWork == null || EndWork == null ? null : EndWork - StartWork;
+        public string Title { get; set; }  
     }
 }
