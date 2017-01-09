@@ -9,6 +9,7 @@ using Twill.Processes.Interfaces.Monitor;
 using Twill.Processes.Search;
 using Twill.Processes.Windows;
 using Twill.Tools.Architecture;
+using Twill.Tools.Collections;
 
 namespace Twill.Processes.Tracking
 { 
@@ -55,31 +56,27 @@ namespace Twill.Processes.Tracking
             if (FilterProcessMonitor.Processes == null)
                 FilterProcessMonitor.Processes = new ObservableCollection<TProcessDayActivity>();
 
-            foreach (var process in ProcessMonitor.Processes)
-            {
-                if(!FilterProcessNames.Contains(process.Name) &&
-                   !FilterProcessMonitor.Processes.Select(p => p.Name).Contains(process.Name))
-                {
-                    FilterProcessMonitor.Processes.Add(process);
-                }
-            }
+            if (FilterProcessMonitor.UserLogActivities == null)
+                FilterProcessMonitor.UserLogActivities = new ObservableCollection<Tuple<TProcessDayActivity, TGroundWorkState>>();
 
-            if(ProcessMonitor.Lead == null || FilterProcessNames.Contains(ProcessMonitor.Lead.Name))
+            // filtering processes
+            IList<TProcessDayActivity> processes = FilterProcessMonitor.Processes;
+            ProcessMonitor.Processes.UpdateLinksWithFilter(FilterProcessNames, (listelement, filterelement) => listelement.Name == filterelement, ref processes);
+
+
+            // filtering userlogactivities
+            IList<Tuple<TProcessDayActivity, TGroundWorkState>> userLogActivities = FilterProcessMonitor.UserLogActivities;
+            ProcessMonitor.UserLogActivities.UpdateLinksWithFilter(FilterProcessNames, (listelement, filterelement) => listelement.Item1.Name == filterelement, ref userLogActivities);
+
+
+            // filtering lead
+            if (ProcessMonitor.Lead == null || FilterProcessNames.Contains(ProcessMonitor.Lead.Name))
             {
                 FilterProcessMonitor.Lead = default(TProcessDayActivity);
             }
             else
             {
                 FilterProcessMonitor.Lead = ProcessMonitor.Lead;
-            }
-
-            foreach (var name in FilterProcessNames)
-            {
-                var remove = FilterProcessMonitor.Processes.FirstOrDefault(p => p.Name == name);
-                if (remove != null)
-                {
-                    FilterProcessMonitor.Processes.Remove(remove);
-                }
             }
         }
 

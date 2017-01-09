@@ -45,9 +45,37 @@
                                 <ColumnDefinition Width="auto" SharedSizeGroup="reports" />
                             </Grid.ColumnDefinitions>
 
+                            <Border HorizontalAlignment="Stretch"
+                                    Background="Black"
+                                    BorderBrush="Black"
+                                    BorderThickness="1">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="8"
+                                                      ShadowDepth="0"
+                                                      Color="Black" />
+                                </Border.Effect>
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Grid.Column" Value="1" />
+                                        <Setter Property="Panel.ZIndex" Value="2" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=ActualWidth, ElementName=viewmonitor}" Value="0">
+                                                <Setter Property="Grid.Column" Value="0" />
+                                                <Setter Property="Panel.ZIndex" Value="1" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=ActualWidth, ElementName=viewmonitor}" Value="1">
+                                                <Setter Property="Grid.Column" Value="0" />
+                                                <Setter Property="Panel.ZIndex" Value="1" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+
                             <Button x:Name="timeline"
                                     Height="{DynamicResource LaborsHeight}"
                                     MinWidth="60"
+                                    Panel.ZIndex="1"
                                     Command="{Binding ReportsModel.AddRepordCommand}"
                                     Style="{DynamicResource ButtonNullStyle}">
                                 <Button.CommandParameter>
@@ -61,8 +89,13 @@
                                         <ColumnDefinition />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
-                                    <timeline:Ruler Grid.ColumnSpan="2" />
-                                    <timeline:UserActivity Grid.Column="1" ProcessMonitorModel="{Binding Monitor.ProcessMonitor}">
+                                    <timeline:Ruler Grid.ColumnSpan="2" Foreground="Transparent" />
+                                    <timeline:Ruler Panel.ZIndex="1" Grid.ColumnSpan="2"
+                                                    Background="Transparent"
+                                                    IsHitTestVisible="False" />
+                                    <timeline:UserActivity Grid.Column="1"
+                                                           Grid.ColumnSpan="2"
+                                                           ProcessMonitorModel="{Binding Monitor.ProcessMonitor}">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="Click">
                                                 <i:InvokeCommandAction Command="{Binding Command, ElementName=timeline}" CommandParameter="{Binding CommandParameter, ElementName=timeline}" />
@@ -77,24 +110,11 @@
                             </Button>
 
 
-                            <Border Grid.Column="1"
-                                    Grid.ColumnSpan="1"
-                                    Margin="2,0,3,0"
-                                    HorizontalAlignment="Stretch"
-                                    Panel.ZIndex="1"
-                                    Background="Black"
-                                    BorderBrush="Black"
-                                    BorderThickness="1">
-                                <Border.Effect>
-                                    <DropShadowEffect BlurRadius="12"
-                                                      ShadowDepth="0"
-                                                      Color="Black" />
-                                </Border.Effect>
-                            </Border>
 
-                            <Line Grid.Column="1"
-                                  Grid.ColumnSpan="3"
+                            <Line Grid.Column="0"
+                                  Grid.ColumnSpan="4"
                                   Panel.ZIndex="4"
+                                  IsHitTestVisible="False"
                                   Stroke="{DynamicResource SelectedBrush}"
                                   StrokeThickness="0.5"
                                   X1="0"
@@ -120,7 +140,8 @@
                                 </Line.Style>
                             </Line>
 
-                            <ListBox Grid.Column="1"
+                            <ListBox x:Name="viewmonitor"
+                                     Grid.Column="1"
                                      Panel.ZIndex="3"
                                      Background="{DynamicResource MonitorBackgroundBrush}"
                                      ItemsSource="{Binding Monitor.ProcessMonitor.Processes}">
@@ -155,9 +176,10 @@
                                 </ListBox.ItemsPanel>
                                 <ListBox.ItemTemplate>
                                     <ItemContainerTemplate>
-                                        <processes:ProcessDayActivity Padding="2" Width="250"
+                                        <processes:ProcessDayActivity Width="250"
                                                                       Height="{DynamicResource LaborsHeight}"
                                                                       Background="Transparent"
+                                                                      Padding="2"
                                                                       ProcessDayActivityModel="{Binding}" />
                                     </ItemContainerTemplate>
                                 </ListBox.ItemTemplate>

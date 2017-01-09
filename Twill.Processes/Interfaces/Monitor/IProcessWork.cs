@@ -9,7 +9,6 @@ namespace Twill.Processes.Interfaces.Monitor
 {
     public interface IProcessWork<T> : IActivity where T : IGroundWorkState
     { 
-        bool IsAlive { get; set; }
         ObservableCollection<T> GroundWorkStates { get; set; }
         ObservableCollection<T> LeadGroundWorkStates { get; set; }
     }

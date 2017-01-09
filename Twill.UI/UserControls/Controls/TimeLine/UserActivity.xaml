@@ -75,7 +75,7 @@
                                          Path="ActualHeight" />
                             </MultiBinding>
                         </Button.Height>
-                        <Grid Opacity="0.5"
+                        <Grid  
                               ToolTipService.BetweenShowDelay="1"
                               ToolTipService.ShowDuration="200000"
                               ToolTipService.ShowOnDisabled="True">

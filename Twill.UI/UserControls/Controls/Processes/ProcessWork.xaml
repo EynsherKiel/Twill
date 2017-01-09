@@ -22,7 +22,11 @@
         <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" Style="{DynamicResource TwillListBoxNullStyle}" ItemsSource="{Binding GroundWorkStates}">
             <ListBox.ItemTemplate>
                 <ItemContainerTemplate>
-                    <TextBlock Text="{Binding Title}" />
+                    <TextBlock Text="{Binding Title}" >
+                        <TextBlock.ToolTip>
+                            <TextBlock Text="{Binding Title}" />
+                        </TextBlock.ToolTip>
+                    </TextBlock>
                 </ItemContainerTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
