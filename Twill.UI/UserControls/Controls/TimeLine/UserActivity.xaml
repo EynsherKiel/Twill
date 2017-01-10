@@ -19,9 +19,8 @@
             <converters:BrushToColorConverter x:Key="BrushToColorConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
+   
     <Grid d:DataContext="{d:DesignInstance monitor:ProcessMonitor, IsDesignTimeCreatable=True}" DataContext="{Binding ProcessMonitorModel, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
-
-
         <ListBox x:Name="listbox"
                  Background="Transparent"
                  ItemsSource="{Binding UserLogActivities}"
@@ -41,7 +40,7 @@
                     <Setter Property="Canvas.Top">
                         <Setter.Value>
                             <MultiBinding Converter="{StaticResource DateTimeToPixelsConverter}">
-                                <Binding Path="Item2.Start" />
+                                <Binding Path="Start" />
                                 <Binding ElementName="listbox"
                                          Mode="OneWay"
                                          Path="ActualHeight" />
@@ -51,7 +50,7 @@
                     <Setter Property="Canvas.Bottom">
                         <Setter.Value>
                             <MultiBinding Converter="{StaticResource DateTimeToPixelsConverter}">
-                                <Binding Path="Item2.End" />
+                                <Binding Path="End" />
                                 <Binding ElementName="listbox"
                                          Mode="OneWay"
                                          Path="ActualHeight" />
@@ -69,29 +68,38 @@
                             Style="{DynamicResource ButtonNullStyle}">
                         <Button.Height>
                             <MultiBinding Converter="{StaticResource DateTimeToPixelsConverter}">
-                                <Binding Mode="OneWay" Path="Item2.TotalMinutesInterval" />
+                                <Binding Mode="OneWay" Path="TotalMinutesInterval" />
                                 <Binding ElementName="listbox"
                                          Mode="OneWay"
                                          Path="ActualHeight" />
                             </MultiBinding>
                         </Button.Height>
-                        <Grid  
-                              ToolTipService.BetweenShowDelay="1"
+                        <Grid ToolTipService.BetweenShowDelay="1"
                               ToolTipService.ShowDuration="200000"
                               ToolTipService.ShowOnDisabled="True">
                             <Grid.Background>
                                 <LinearGradientBrush StartPoint="1.005,0.425" EndPoint="0,0.434">
-                                    <GradientStop Offset="0.209" Color="{Binding Item1.Brush, Converter={StaticResource BrushToColorConverter}}" />
+                                    <GradientStop Offset="0.209" Color="{Binding LinkProcess.Brush, Converter={StaticResource BrushToColorConverter}}" />
                                     <GradientStop Offset="1" />
                                 </LinearGradientBrush>
                             </Grid.Background>
 
                             <Grid.ToolTip>
-                                <local:UserActivityLog Margin="8" ActivityLogModel="{Binding .}" />
+                                <Grid  Margin="8">
+                                    <Border Background="Gray">
+                                        <Border.Effect>
+                                            <DropShadowEffect BlurRadius="8"
+                                                              ShadowDepth="0"
+                                                              Color="Gray" />
+                                        </Border.Effect>
+                                    </Border>
+                                    <local:UserActivityLog x:Name="userActivityLog"
+                                                           Height="100"
+                                                            
+                                                           ProcessActivityModel="{Binding .}" />
+                                </Grid>
                             </Grid.ToolTip>
                         </Grid>
-
-
                     </Button>
                 </ItemContainerTemplate>
             </ListBox.ItemTemplate>

@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace Twill.UI.Core.Models.Controls.Processes
 {
-    public class ProcessMonitor : ViewModelBase, IProcessMonitor<ProcessDayActivity, ProcessWork, GroundWorkState>
+    public class ProcessMonitor : ViewModelBase, IProcessMonitor<ProcessDayActivity, ProcessWork, GroundWorkState, ProcessActivity>
     {
         private ProcessDayActivity lead;
         public ProcessDayActivity Lead
@@ -32,8 +32,8 @@ namespace Twill.UI.Core.Models.Controls.Processes
             set { Set(ref processes, value); }
         }
 
-        private ObservableCollection<Tuple<ProcessDayActivity, GroundWorkState>> userLogActivities;
-        public ObservableCollection<Tuple<ProcessDayActivity, GroundWorkState>> UserLogActivities
+        private ObservableCollection<ProcessActivity> userLogActivities;
+        public ObservableCollection<ProcessActivity> UserLogActivities
         {
             get { return userLogActivities; }
             set { Set(ref userLogActivities, value); }

@@ -17,6 +17,7 @@
              xmlns:timelinemodels="clr-namespace:Twill.UI.Core.Models.Controls.TimeLine;assembly=Twill.UI.Core"
              d:DesignHeight="500"
              d:DesignWidth="1200"
+             IsVisibleChanged="UserControl_IsVisibleChanged"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -27,22 +28,23 @@
 
             <converters:ToListConverter x:Key="ToListConverter" />
 
-            <sys:Double x:Key="LaborsHeight">20000</sys:Double>
-
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid d:DataContext="{d:DesignInstance processesmodel:MonitorPageModel, IsDesignTimeCreatable=True}">
 
         <Border BorderBrush="{DynamicResource MonitorBorderBrush}" BorderThickness="0,1,1,0">
-            <Grid Grid.IsSharedSizeScope="True">
-                <ScrollViewer>
+            <Grid>
+                <!--  Grid.IsSharedSizeScope="True"  -->
+                <ScrollViewer x:Name="scrollviewer" ScrollViewer.CanContentScroll="True">
                     <decorators:MouseTrackerDecorator>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" SharedSizeGroup="ruler" />
+                                <ColumnDefinition Width="auto" />
+                                <!--  SharedSizeGroup="ruler"  -->
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="auto" SharedSizeGroup="reports" />
+                                <ColumnDefinition Width="auto" />
+                                <!--  SharedSizeGroup="reports"  -->
                             </Grid.ColumnDefinitions>
 
                             <Border HorizontalAlignment="Stretch"
@@ -73,7 +75,9 @@
                             </Border>
 
                             <Button x:Name="timeline"
-                                    Height="{DynamicResource LaborsHeight}"
+                                    Height="{Binding ContentHeight,
+                                                     RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                    AncestorType=UserControl}}"
                                     MinWidth="60"
                                     Panel.ZIndex="1"
                                     Command="{Binding ReportsModel.AddRepordCommand}"
@@ -90,10 +94,12 @@
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <timeline:Ruler Grid.ColumnSpan="2" Foreground="Transparent" />
-                                    <timeline:Ruler Panel.ZIndex="1" Grid.ColumnSpan="2"
+                                    <timeline:Ruler Grid.ColumnSpan="2"
+                                                    Panel.ZIndex="1"
                                                     Background="Transparent"
                                                     IsHitTestVisible="False" />
-                                    <timeline:UserActivity Grid.Column="1"
+                                    <timeline:UserActivity x:Name="activities"
+                                                           Grid.Column="1"
                                                            Grid.ColumnSpan="2"
                                                            ProcessMonitorModel="{Binding Monitor.ProcessMonitor}">
                                         <i:Interaction.Triggers>
@@ -140,7 +146,16 @@
                                 </Line.Style>
                             </Line>
 
-                            <ListBox x:Name="viewmonitor"
+                            <Grid x:Name="viewmonitor"
+                                  Grid.Column="1"
+                                  Panel.ZIndex="3"
+                                  Background="{DynamicResource MonitorBackgroundBrush}" >
+                                
+                                
+                                
+                            </Grid>
+
+                            <!--<ListBox
                                      Grid.Column="1"
                                      Panel.ZIndex="3"
                                      Background="{DynamicResource MonitorBackgroundBrush}"
@@ -177,24 +192,27 @@
                                 <ListBox.ItemTemplate>
                                     <ItemContainerTemplate>
                                         <processes:ProcessDayActivity Width="250"
-                                                                      Height="{DynamicResource LaborsHeight}"
+
+                                    Height="{Binding ContentHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
                                                                       Background="Transparent"
                                                                       Padding="2"
                                                                       ProcessDayActivityModel="{Binding}" />
                                     </ItemContainerTemplate>
                                 </ListBox.ItemTemplate>
-                            </ListBox>
+                            </ListBox>-->
 
                             <timeline:Reports Grid.Column="2"
                                               Width="150"
-                                              Height="{DynamicResource LaborsHeight}"
+                                              Height="{Binding ContentHeight,
+                                                               RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                              AncestorType=UserControl}}"
                                               ReportsModel="{Binding ReportsModel}" />
 
                         </Grid>
                     </decorators:MouseTrackerDecorator>
                 </ScrollViewer>
 
-                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+                <!--<Grid HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" SharedSizeGroup="ruler" />
                         <ColumnDefinition />
@@ -247,7 +265,7 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </ScrollViewer>
-                </Grid>
+                </Grid>-->
             </Grid>
         </Border>
     </Grid>

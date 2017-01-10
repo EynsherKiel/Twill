@@ -5,13 +5,19 @@ using Twill.UI.Core.Models.Controls.TimeLine;
 namespace Twill.UI.Core.Models.Content
 {
     public class MonitorPageModel : ViewModelBase
-    {
-         
-        private Monitor monitor = Twill.Tools.Architecture.Singleton<Monitor>.Instance;
+    { 
+        private Monitor monitor = Tools.Architecture.Singleton<Monitor>.Instance;
         public Monitor Monitor
         {
             get { return monitor; }
             set { Set(ref monitor, value); }
+        }
+         
+        private DayActivityAnalysis dayActivityAnalysis = new DayActivityAnalysis();
+        public DayActivityAnalysis DayActivityAnalysis
+        {
+            get { return dayActivityAnalysis; }
+            set { Set(ref dayActivityAnalysis, value); }
         }
 
         private ReportsModel reportsModel = new ReportsModel();

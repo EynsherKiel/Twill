@@ -19,7 +19,6 @@ namespace Twill.UI.Core.Models.Controls.Processes
             set { Set(ref groundWorkStates, value); }
         }
          
-         
 
         private ObservableCollection<GroundWorkState> leadGroundWorkStates;
         public ObservableCollection<GroundWorkState> LeadGroundWorkStates

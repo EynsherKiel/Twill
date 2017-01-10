@@ -13,11 +13,12 @@ using Twill.Tools.Collections;
 
 namespace Twill.Processes.Tracking
 { 
-    public abstract class BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState>
-        where TProcessMonitor :  class, IProcessMonitor<TProcessDayActivity, TProcessWork, TGroundWorkState>,new()
+    public abstract class BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>
+        where TProcessMonitor :  class, IProcessMonitor<TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>,new()
         where TProcessDayActivity : class, IProcessDayActivity<TProcessWork, TGroundWorkState>, new()
         where TProcessWork : class, IProcessWork<TGroundWorkState>, new()
         where TGroundWorkState : class, IGroundWorkState, new()
+        where TProcessActivity : class, IProcessActivity<TProcessDayActivity, TProcessWork, TGroundWorkState>, new()
     {
 
         public BaseMonitor()
@@ -25,7 +26,7 @@ namespace Twill.Processes.Tracking
             Environ.UpdateEvent += Environ_UpdateEvent;
         }
 
-        public event Action<BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState>> UpDateEvent = delegate { };
+        public event Action<BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>> UpDateEvent = delegate { };
 
         private Environ Environ = new Environ();
 
@@ -46,9 +47,12 @@ namespace Twill.Processes.Tracking
 
         private void Environ_UpdateEvent(Environ environ)
         {
-            Runtime(() => WriteNewData(environ));
+            Runtime(() =>
+            {
+                WriteNewData(environ);
 
-            UpDateEvent(this);
+                UpDateEvent(this);
+            });
         }
 
         private void Filtering()
@@ -57,7 +61,7 @@ namespace Twill.Processes.Tracking
                 FilterProcessMonitor.Processes = new ObservableCollection<TProcessDayActivity>();
 
             if (FilterProcessMonitor.UserLogActivities == null)
-                FilterProcessMonitor.UserLogActivities = new ObservableCollection<Tuple<TProcessDayActivity, TGroundWorkState>>();
+                FilterProcessMonitor.UserLogActivities = new ObservableCollection<TProcessActivity>();
 
             // filtering processes
             IList<TProcessDayActivity> processes = FilterProcessMonitor.Processes;
@@ -65,8 +69,8 @@ namespace Twill.Processes.Tracking
 
 
             // filtering userlogactivities
-            IList<Tuple<TProcessDayActivity, TGroundWorkState>> userLogActivities = FilterProcessMonitor.UserLogActivities;
-            ProcessMonitor.UserLogActivities.UpdateLinksWithFilter(FilterProcessNames, (listelement, filterelement) => listelement.Item1.Name == filterelement, ref userLogActivities);
+            IList<TProcessActivity> userLogActivities = FilterProcessMonitor.UserLogActivities;
+            ProcessMonitor.UserLogActivities.UpdateLinksWithFilter(FilterProcessNames, (listelement, filterelement) => listelement.LinkProcess.Name == filterelement, ref userLogActivities);
 
 
             // filtering lead
@@ -90,7 +94,7 @@ namespace Twill.Processes.Tracking
                 ProcessMonitor.Processes = new ObservableCollection<TProcessDayActivity>();
 
             if (ProcessMonitor.UserLogActivities == null)
-                ProcessMonitor.UserLogActivities = new ObservableCollection<Tuple<TProcessDayActivity, TGroundWorkState>>();
+                ProcessMonitor.UserLogActivities = new ObservableCollection<TProcessActivity>();
 
             if (environ.Processes == null)
                 return;
@@ -103,10 +107,7 @@ namespace Twill.Processes.Tracking
 
                 if(currentProcessDayActivity == null)
                 {
-                    var work = new TProcessWork();
-                    work.IsAlive = true;
-                    work.Start = now;
-                    work.End = now;
+                    var work = CreateIActivity<TProcessWork>(now);
                     currentProcessDayActivity = new TProcessDayActivity();
                     currentProcessDayActivity.Name = process.Name; // very bad, change to activator ? >_<
 
@@ -120,13 +121,13 @@ namespace Twill.Processes.Tracking
                 var lastProcWork = currentProcessDayActivity.Activities.Last();
                 if (!lastProcWork.IsAlive)
                 {
-                    lastProcWork = new TProcessWork();
-                    lastProcWork.IsAlive = true;
-                    lastProcWork.Start = now;
+                    lastProcWork = CreateIActivity<TProcessWork>(now);
                     currentProcessDayActivity.Activities.Add(lastProcWork);
                 }
-
-                lastProcWork.End = now;
+                else
+                {
+                    lastProcWork.End = now;
+                }
 
                 if (lastProcWork.GroundWorkStates == null)
                     lastProcWork.GroundWorkStates = new ObservableCollection<TGroundWorkState>();
@@ -162,8 +163,11 @@ namespace Twill.Processes.Tracking
                     continue;
                 }
 
-                lastActivity.IsAlive = false;
-                lastActivity.End = now;
+                if (lastActivity.IsAlive)
+                {
+                    lastActivity.IsAlive = false;
+                    lastActivity.End = now;
+                }
 
                 var lastgroundworkstate = lastActivity.GroundWorkStates.LastOrDefault();
                 if (lastgroundworkstate != null)
@@ -182,11 +186,11 @@ namespace Twill.Processes.Tracking
 
                 if (lastUserActivity != null)
                 {
-                    var groundStateWork = lastUserActivity.Item2;
+                    var groundStateWork = lastUserActivity.GroundWorkStates.First();
 
                     if (groundStateWork.IsAlive)
                     {
-                        groundStateWork.End = now;
+                        lastUserActivity.End = now;
                         groundStateWork.IsAlive = false;
                     }
                 }
@@ -201,11 +205,11 @@ namespace Twill.Processes.Tracking
                 }
                 else
                 {
-                    var process = lastUserActivity.Item1;
-                    var groundStateWork = lastUserActivity.Item2;
+                    var process = lastUserActivity.LinkProcess;
+                    var groundStateWork = lastUserActivity.GroundWorkStates.First();
 
                     if (groundStateWork.IsAlive)
-                        groundStateWork.End = now;
+                        lastUserActivity.End = now;
 
                     if (groundStateWork.Title != environ.Lead.Title ||
                         process.Name != ProcessMonitor.Lead.Name ||
@@ -224,7 +228,15 @@ namespace Twill.Processes.Tracking
 
         private void FillingUserLogActivitys(TGroundWorkState groundStateWork)
         {
-            ProcessMonitor.UserLogActivities.Add(new Tuple<TProcessDayActivity, TGroundWorkState>(ProcessMonitor.Lead, groundStateWork));
+            var data = new TProcessActivity();
+
+            data.Start = groundStateWork.Start;
+            data.End = groundStateWork.End;
+
+            data.LinkProcess = ProcessMonitor.Lead;
+            data.GroundWorkStates = new ObservableCollection<TGroundWorkState>() { groundStateWork };
+
+            ProcessMonitor.UserLogActivities.Add(data);
 
             var lastactivity = ProcessMonitor.Lead.Activities.Last();
 
@@ -234,15 +246,21 @@ namespace Twill.Processes.Tracking
             lastactivity.LeadGroundWorkStates.Add(groundStateWork);
         }
 
+        private T CreateIActivity<T>(DateTime now) where T : class, IActivity, new()
+        {
+            var activity = new T();
+
+            activity.IsAlive = true;
+            activity.Start = now;
+            activity.End = now;
+
+            return activity;
+        }
+
         private TGroundWorkState NewGroundStateWork(DateTime now, string title)
         {
-            var lastLeadGroundStateWork = new TGroundWorkState();
-
-            lastLeadGroundStateWork.IsAlive = true;
-            lastLeadGroundStateWork.Start = now;
-            lastLeadGroundStateWork.End = now;
+            var lastLeadGroundStateWork = CreateIActivity<TGroundWorkState>(now);  
             lastLeadGroundStateWork.Title = title;
-
             return lastLeadGroundStateWork;
         }
 

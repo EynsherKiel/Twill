@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 
 namespace Twill.Processes.Interfaces.Monitor
 {
-    public interface IProcessMonitor<T1, T2, T3>
+    public interface IProcessMonitor<T1, T2, T3, T4>
         where T1 : IProcessDayActivity<T2, T3>
         where T2 : IProcessWork<T3>
         where T3 : IGroundWorkState
+        where T4 : IProcessActivity<T1, T2, T3>
     {
         ObservableCollection<T1> Processes { get; set; }
          
         T1 Lead { get; set; }
         string LeadTitle { get; }
 
-        ObservableCollection<Tuple<T1, T3>> UserLogActivities { get; set; }
+        ObservableCollection<T4> UserLogActivities { get; set; }
     }
 }

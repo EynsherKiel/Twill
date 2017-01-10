@@ -8,7 +8,7 @@ using Twill.Tools.Async;
 
 namespace Twill.UI.Core.Models.Controls.Processes
 {
-    public class Monitor : BaseMonitor<ProcessMonitor, ProcessDayActivity, ProcessWork, GroundWorkState>
+    public class Monitor : BaseMonitor<ProcessMonitor, ProcessDayActivity, ProcessWork, GroundWorkState, ProcessActivity>
     {
 
         private readonly SyncContext SyncContext = new SyncContext();

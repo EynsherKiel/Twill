@@ -2,10 +2,8 @@
 
 namespace Twill.Processes.Interfaces.Monitor
 {
-    public interface IActivity
-    {
-        DateTime Start { get; set; }
-        DateTime End { get; set; }
+    public interface IActivity : IInterval
+    { 
         bool IsAlive { get; set; }
     }
 }

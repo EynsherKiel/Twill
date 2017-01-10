@@ -136,7 +136,7 @@
       <Name>Twill.UI.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Twill.UI\Twill.UI.csproj">
-      <Project>{b36df20a-37bb-4821-826c-dcae075aadc4}</Project>
+      <Project>{370867ce-0840-42bd-901e-c6844887f3ac}</Project>
       <Name>Twill.UI</Name>
     </ProjectReference>
   </ItemGroup>

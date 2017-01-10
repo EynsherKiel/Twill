@@ -8,13 +8,14 @@ using Twill.Processes.Interfaces.Monitor;
 
 namespace Twill.Processes.Models.Monitor
 {
-    public class ProcessMonitor : IProcessMonitor<ProcessDayActivity, ProcessWork, GroundWorkState>
+    public class ProcessMonitor : IProcessMonitor<ProcessDayActivity, ProcessWork, GroundWorkState, ProcessActivity>
     {
         public ObservableCollection<ProcessDayActivity> Processes { get; set; }
         public ProcessDayActivity Lead { get; set; }
+        public ObservableCollection<ProcessActivity> UserLogActivities { get; set; }
 
         public string LeadTitle => Lead?.Activities?.LastOrDefault()?.GroundWorkStates?.LastOrDefault()?.Title ?? string.Empty;
 
-        public ObservableCollection<Tuple<ProcessDayActivity,GroundWorkState>> UserLogActivities { get; set; }
+         
     }
 }

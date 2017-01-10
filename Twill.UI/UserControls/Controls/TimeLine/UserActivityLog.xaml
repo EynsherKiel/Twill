@@ -6,8 +6,9 @@
              xmlns:local="clr-namespace:Twill.UI.UserControls.Controls.TimeLine"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:monitor="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib" 
-             Height="100"
+             xmlns:processes="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             d:DesignHeight="75"
              Background="{DynamicResource UserLogActivityBackgroundBrush}"
              Foreground="{DynamicResource UserLogActivityForegroundBrush}"
              mc:Ignorable="d">
@@ -16,24 +17,66 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Twill.UI;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="/Twill.UI;component/Styles/NullStyles.xaml" />
-            </ResourceDictionary.MergedDictionaries> 
-            <converters:BrushToColorConverter x:Key="BrushToColorConverter" />
+                <ResourceDictionary Source="/Twill.UI;component/Styles/ScrollViewer.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style BasedOn="{StaticResource ScrollViewer}" TargetType="ScrollViewer">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                            <Grid Background="{TemplateBinding Background}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <ScrollBar x:Name="PART_VerticalScrollBar"
+                                           Grid.Row="0"
+                                           Grid.Column="0"
+                                           Maximum="{TemplateBinding ScrollableHeight}"
+                                           Minimum="0"
+                                           Orientation="Vertical"
+                                           Style="{DynamicResource ScrollBar}"
+                                           ViewportSize="{TemplateBinding ViewportHeight}"
+                                           Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                           Value="{Binding VerticalOffset,
+                                                           Mode=OneWay,
+                                                           RelativeSource={RelativeSource TemplatedParent}}" />
+                                <ScrollContentPresenter Grid.Row="0"
+                                                        Grid.Column="1"
+                                                        Margin="{TemplateBinding Padding}"
+                                                        CanContentScroll="{TemplateBinding CanContentScroll}"
+                                                        Content="{TemplateBinding Content}"
+                                                        ContentTemplate="{TemplateBinding ContentTemplate}" />
+
+                                <ScrollBar x:Name="PART_HorizontalScrollBar"
+                                           Grid.Row="1"
+                                           Grid.Column="0"
+                                           Maximum="{TemplateBinding ScrollableWidth}"
+                                           Minimum="0"
+                                           Orientation="Horizontal"
+                                           Style="{DynamicResource ScrollBar}"
+                                           ViewportSize="{TemplateBinding ViewportWidth}"
+                                           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                           Value="{Binding HorizontalOffset,
+                                                           Mode=OneWay,
+                                                           RelativeSource={RelativeSource TemplatedParent}}" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
         </ResourceDictionary>
+
+
     </UserControl.Resources>
-    <Grid>
-
-        <Border Background="{Binding Background, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" BorderBrush="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
-
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="8"
-                                  ShadowDepth="0"
-                                  Color="{Binding Foreground,
-                                                  RelativeSource={RelativeSource FindAncestor,
-                                                                                 AncestorType=UserControl}, Converter={StaticResource BrushToColorConverter}}" />
-            </Border.Effect>
-        </Border>
-
-        <Grid DataContext="{Binding ActivityLogModel, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
+    <Grid Margin="5">
+        
+        <Grid d:DataContext="{d:DesignInstance processes:ProcessActivity, IsDesignTimeCreatable=True}" DataContext="{Binding ProcessActivityModel, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />
@@ -47,13 +90,28 @@
 
             <TextBlock FontSize="10"
                        Padding="2"
-                       Text="{Binding Item2.Start,
+                       Text="{Binding Start,
                                       StringFormat=HH:mm:ss}" />
 
-            <TextBlock Grid.Column="2"
-                       VerticalAlignment="Center"
-                       Padding="10,0,10,0"
-                       Text="{Binding Item1.Name}" />
+            <Grid Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid Width="8" Margin="10,2,5,0">
+
+                    <Viewbox>
+                        <Canvas Width="24" Height="24">
+                            <Path Data="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2Z" Fill="{Binding LinkProcess.Brush}" />
+                        </Canvas>
+                    </Viewbox>
+                </Grid>
+                <TextBlock Grid.Column="1"
+                           VerticalAlignment="Center"
+                           Padding="0,0,10,0"
+                           Text="{Binding LinkProcess.Name}" />
+
+            </Grid>
 
             <Line Grid.Row="1"
                   HorizontalAlignment="Center"
@@ -70,16 +128,28 @@
                                RelativeSource={RelativeSource FindAncestor,
                                                               AncestorType=UserControl}}" />
 
-            <TextBlock Grid.Row="1"
-                       Grid.Column="2"
-                       VerticalAlignment="Center"
-                       Padding="10,0,10,0"
-                       Text="{Binding Item2.Title}" />
+            <Grid Grid.Row="1"
+                  Grid.Column="2"
+                  Margin="6,0,10,0"
+                  VerticalAlignment="Center">
+                <ListBox Background="Transparent"
+                         Foreground="{Binding Foreground,
+                                              RelativeSource={RelativeSource FindAncestor,
+                                                                             AncestorType=UserControl}}"
+                         ItemsSource="{Binding GroundWorkStates}"
+                         Style="{DynamicResource TwillListBoxNullStyle}">
+                    <ListBox.ItemTemplate>
+                        <ItemContainerTemplate>
+                            <TextBlock Text="{Binding Title}" />
+                        </ItemContainerTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
 
             <TextBlock Grid.Row="2"
                        FontSize="10"
                        Padding="2"
-                       Text="{Binding Item2.End,
+                       Text="{Binding End,
                                       StringFormat=HH:mm:ss}" />
 
         </Grid>
