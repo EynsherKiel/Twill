@@ -21,31 +21,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
 
                 Start = DateTime.Now.Date.AddSeconds(17);
                 End = DateTime.Now.Date.AddHours(1).AddMinutes(28).AddSeconds(55);
-
-                GroundWorkStates.Add(new GroundWorkState()
-                {
-                    Start = DateTime.Now.Date.AddSeconds(17),
-                    End = DateTime.Now.Date.AddHours(1).AddMinutes(28).AddSeconds(55),
-                    Title = "Some title"
-                });
-                GroundWorkStates.Add(new GroundWorkState()
-                {
-                    Start = DateTime.Now.Date.AddSeconds(17),
-                    End = DateTime.Now.Date.AddHours(1).AddMinutes(28).AddSeconds(55),
-                    Title = "Some title"
-                });
-                GroundWorkStates.Add(new GroundWorkState()
-                {
-                    Start = DateTime.Now.Date.AddSeconds(17),
-                    End = DateTime.Now.Date.AddHours(1).AddMinutes(28).AddSeconds(55),
-                    Title = "Some title"
-                });
-                GroundWorkStates.Add(new GroundWorkState()
-                {
-                    Start = DateTime.Now.Date.AddSeconds(17),
-                    End = DateTime.Now.Date.AddHours(1).AddMinutes(28).AddSeconds(55),
-                    Title = "Some title"
-                });
+                
             }
         }
 

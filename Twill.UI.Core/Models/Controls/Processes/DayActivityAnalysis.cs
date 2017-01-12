@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Twill.Processes.Tracking;
 
 namespace Twill.UI.Core.Models.Controls.Processes
@@ -14,6 +15,11 @@ namespace Twill.UI.Core.Models.Controls.Processes
         public DayActivityAnalysis()
         {
             Monitor = Tools.Architecture.Singleton<Monitor>.Instance;
+
+            if (IsInDesignMode)
+            {
+                ProcessActivities.Add(new ProcessActivity());
+            }
         }
 
         public DayActivityAnalysis(Monitor monitor)
@@ -25,13 +31,12 @@ namespace Twill.UI.Core.Models.Controls.Processes
         private void Monitor_UpDateEvent(BaseMonitor<ProcessMonitor, ProcessDayActivity, ProcessWork, GroundWorkState, ProcessActivity> obj) => UpDate();
 
         private void UpDate()
-        {
-            if (ActualHeight < 0)
+        { 
+            if (ContentHeight < 0)
                 return;
 
             if (SegmentMinHeight < 0)
-                return;
-
+                return; 
         }
 
 
@@ -52,20 +57,20 @@ namespace Twill.UI.Core.Models.Controls.Processes
         }
 
         private double segmentMinHeight = 100.0;
-        public double SegmentMinHeight
+        public double SegmentMinHeight 
         {
-            get { return segmentMinHeight; }
-            set { Set(ref segmentMinHeight, value); UpDate(); }
+            private get { return segmentMinHeight; }
+            set { segmentMinHeight = value; ; UpDate(); }
         }
 
-        private double actualHeight;
-        public double ActualHeight
+        private double contentHeight = 20000.0;
+        public double ContentHeight
         {
-            get { return actualHeight; }
-            set { Set(ref actualHeight, value); UpDate(); }
+            private get { return contentHeight; }
+            set { contentHeight = value; UpDate(); }
         }
 
-        private ObservableCollection<ProcessActivity> processActivities;
+        private ObservableCollection<ProcessActivity> processActivities = new ObservableCollection<ProcessActivity>();
         public ObservableCollection<ProcessActivity> ProcessActivities
         {
             get { return processActivities; }

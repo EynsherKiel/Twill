@@ -8,10 +8,14 @@
              xmlns:monitor="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
              xmlns:processes="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             d:DesignHeight="75"
-             Background="{DynamicResource UserLogActivityBackgroundBrush}"
-             Foreground="{DynamicResource UserLogActivityForegroundBrush}"
+             d:DesignHeight="75" 
              mc:Ignorable="d">
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Setter Property="Background" Value="{DynamicResource UserLogActivityBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource UserLogActivityForegroundBrush}" /> 
+        </Style>
+    </UserControl.Style>
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -19,6 +23,7 @@
                 <ResourceDictionary Source="/Twill.UI;component/Styles/NullStyles.xaml" />
                 <ResourceDictionary Source="/Twill.UI;component/Styles/ScrollViewer.xaml" />
             </ResourceDictionary.MergedDictionaries>
+           
 
             <Style BasedOn="{StaticResource ScrollViewer}" TargetType="ScrollViewer">
                 <Setter Property="Template">

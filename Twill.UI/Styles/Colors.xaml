@@ -50,7 +50,9 @@
     <SolidColorBrush x:Key="SelectedIsMouseOverBrush" Color="#FF8A2DE8" />
     <SolidColorBrush x:Key="SelectedIsPressedBrush" Color="Red" />
     <SolidColorBrush x:Key="ReportsBackgroundBrush" Color="White"/>
+    <SolidColorBrush x:Key="DayActivityAnalysisUserLogActivityBackgroundBrush" Color="Transparent"/>
+    <SolidColorBrush x:Key="DayActivityAnalysisUserLogActivityForegroundBrush" Color="Black"/>
 
- 
+
 
 </ResourceDictionary>

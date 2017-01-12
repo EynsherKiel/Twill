@@ -35,16 +35,13 @@
 
         <Border BorderBrush="{DynamicResource MonitorBorderBrush}" BorderThickness="0,1,1,0">
             <Grid>
-                <!--  Grid.IsSharedSizeScope="True"  -->
                 <ScrollViewer x:Name="scrollviewer" ScrollViewer.CanContentScroll="True">
                     <decorators:MouseTrackerDecorator>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
-                                <!--  SharedSizeGroup="ruler"  -->
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="auto" />
-                                <!--  SharedSizeGroup="reports"  -->
                             </Grid.ColumnDefinitions>
 
                             <Border HorizontalAlignment="Stretch"
@@ -115,8 +112,6 @@
                                 </Grid>
                             </Button>
 
-
-
                             <Line Grid.Column="0"
                                   Grid.ColumnSpan="4"
                                   Panel.ZIndex="4"
@@ -146,60 +141,16 @@
                                 </Line.Style>
                             </Line>
 
-                            <Grid x:Name="viewmonitor"
-                                  Grid.Column="1"
-                                  Panel.ZIndex="3"
-                                  Background="{DynamicResource MonitorBackgroundBrush}" >
-                                
-                                
-                                
-                            </Grid>
 
-                            <!--<ListBox
-                                     Grid.Column="1"
-                                     Panel.ZIndex="3"
-                                     Background="{DynamicResource MonitorBackgroundBrush}"
-                                     ItemsSource="{Binding Monitor.ProcessMonitor.Processes}">
-
-                                <ListBox.Style>
-                                    <Style BasedOn="{StaticResource TwillListBoxNullStyle}" TargetType="ListBox">
-                                        <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
-                                        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
-                                        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden" />
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type ListBox}">
-                                                    <ScrollViewer controls:ScrollSynchronizer.ScrollGroup="Group1"
-                                                                  Background="{TemplateBinding Background}"
-                                                                  Focusable="false">
-
-                                                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-
-                                                    </ScrollViewer>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </ListBox.Style>
+                            <processes:DayActivityAnalysis x:Name="viewmonitor"
+                                                           Grid.Column="1"
+                                                           Panel.ZIndex="3" 
+                                                           Background="{DynamicResource MonitorBackgroundBrush}"
+                                                           DayActivityAnalysisModel="{Binding DayActivityAnalysis}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:IgnoreMouseWheelBehavior />
                                 </i:Interaction.Behaviors>
-                                <ListBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal" />
-                                    </ItemsPanelTemplate>
-                                </ListBox.ItemsPanel>
-                                <ListBox.ItemTemplate>
-                                    <ItemContainerTemplate>
-                                        <processes:ProcessDayActivity Width="250"
-
-                                    Height="{Binding ContentHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                                                                      Background="Transparent"
-                                                                      Padding="2"
-                                                                      ProcessDayActivityModel="{Binding}" />
-                                    </ItemContainerTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>-->
+                            </processes:DayActivityAnalysis>
 
                             <timeline:Reports Grid.Column="2"
                                               Width="150"
@@ -212,60 +163,6 @@
                     </decorators:MouseTrackerDecorator>
                 </ScrollViewer>
 
-                <!--<Grid HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" SharedSizeGroup="ruler" />
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="auto" SharedSizeGroup="reports" />
-                        <ColumnDefinition Width="18" />
-                    </Grid.ColumnDefinitions>
-                    <ScrollViewer Grid.Column="1"
-                                  controls:ScrollSynchronizer.ScrollGroup="Group1"
-                                  Background="Transparent"
-                                  HorizontalScrollBarVisibility="Visible"
-                                  VerticalScrollBarVisibility="Disabled">
-
-                        <ListBox Background="Transparent"
-                                 ItemsSource="{Binding Monitor.ProcessMonitor.Processes}"
-                                 Style="{DynamicResource TwillListBoxNullStyle}">
-
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" />
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-
-                            <ListBox.ItemTemplate>
-                                <ItemContainerTemplate>
-                                    <Grid Width="250">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-
-                                        <Border Grid.Column="0"
-                                                Width="12"
-                                                Height="12"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Center"
-                                                Background="{Binding Brush}"
-                                                CornerRadius="3" />
-
-                                        <TextBlock Grid.Column="1"
-                                                   Background="Transparent"
-                                                   FontSize="16"
-                                                   FontStyle="Italic"
-                                                   Foreground="{DynamicResource ProcessNameForegroundBrush}"
-                                                   SnapsToDevicePixels="True"
-                                                   Text="{Binding Name}"
-                                                   TextAlignment="Center" />
-
-                                    </Grid>
-                                </ItemContainerTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </ScrollViewer>
-                </Grid>-->
             </Grid>
         </Border>
     </Grid>

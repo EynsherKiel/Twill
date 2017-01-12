@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="Twill.UI.UserControls.Controls.Processes.DayActivityAnalysis"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:Twill.UI.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Twill.UI.UserControls.Controls.Processes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:processes="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
+             xmlns:timeline="clr-namespace:Twill.UI.UserControls.Controls.TimeLine"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Twill.UI;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="/Twill.UI;component/Styles/NullStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:DateTimeToPixelsConverter x:Key="DateTimeToPixelsConverter" /> 
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid d:DataContext="{d:DesignInstance processes:DayActivityAnalysis, IsDesignTimeCreatable=True}" DataContext="{Binding DayActivityAnalysisModel, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
+
+        <ListBox x:Name="listbox"
+                 Background="Transparent"
+                 ItemsSource="{Binding ProcessActivities}"
+                 Style="{DynamicResource TwillListBoxNullStyle}">
+
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBox.ItemContainerStyle>
+                <Style BasedOn="{StaticResource TwillListBoxNullItemStyle}" TargetType="ListBoxItem">
+                    <Setter Property="Canvas.Left" Value="0" />
+                    <Setter Property="Canvas.Top">
+                        <Setter.Value>
+                            <MultiBinding Converter="{StaticResource DateTimeToPixelsConverter}">
+                                <Binding Path="Start" />
+                                <Binding ElementName="listbox"
+                                         Mode="OneWay"
+                                         Path="ActualHeight" />
+                            </MultiBinding>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Canvas.Bottom">
+                        <Setter.Value>
+                            <MultiBinding Converter="{StaticResource DateTimeToPixelsConverter}">
+                                <Binding Path="End" />
+                                <Binding ElementName="listbox"
+                                         Mode="OneWay"
+                                         Path="ActualHeight" />
+                            </MultiBinding>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemTemplate>
+                <ItemContainerTemplate>
+
+                    <timeline:UserActivityLog Background="{DynamicResource DayActivityAnalysisUserLogActivityBackgroundBrush}" Foreground="{DynamicResource DayActivityAnalysisUserLogActivityForegroundBrush}" Width="{Binding ActualWidth, Mode=OneWay, ElementName=listbox}" ProcessActivityModel="{Binding .}">
+                        <timeline:UserActivityLog.Height>
+                            <MultiBinding Converter="{StaticResource DateTimeToPixelsConverter}">
+                                <Binding Mode="OneWay" Path="TotalMinutesInterval" />
+                                <Binding ElementName="listbox"
+                                         Mode="OneWay"
+                                         Path="ActualHeight" />
+                            </MultiBinding>
+                        </timeline:UserActivityLog.Height>
+                    </timeline:UserActivityLog>
+
+                </ItemContainerTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+    </Grid>
+</UserControl>
