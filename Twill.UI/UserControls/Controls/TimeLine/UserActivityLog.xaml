@@ -8,12 +8,13 @@
              xmlns:monitor="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
              xmlns:processes="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             d:DesignHeight="75" 
+             d:DesignHeight="75"
              mc:Ignorable="d">
     <UserControl.Style>
         <Style TargetType="UserControl">
             <Setter Property="Background" Value="{DynamicResource UserLogActivityBackgroundBrush}" />
-            <Setter Property="Foreground" Value="{DynamicResource UserLogActivityForegroundBrush}" /> 
+            <Setter Property="Foreground" Value="{DynamicResource UserLogActivityForegroundBrush}" />
+            <Setter Property="Padding" Value="5" />
         </Style>
     </UserControl.Style>
     <UserControl.Resources>
@@ -23,64 +24,13 @@
                 <ResourceDictionary Source="/Twill.UI;component/Styles/NullStyles.xaml" />
                 <ResourceDictionary Source="/Twill.UI;component/Styles/ScrollViewer.xaml" />
             </ResourceDictionary.MergedDictionaries>
-           
 
-            <Style BasedOn="{StaticResource ScrollViewer}" TargetType="ScrollViewer">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type ScrollViewer}">
-                            <Grid Background="{TemplateBinding Background}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <ScrollBar x:Name="PART_VerticalScrollBar"
-                                           Grid.Row="0"
-                                           Grid.Column="0"
-                                           Maximum="{TemplateBinding ScrollableHeight}"
-                                           Minimum="0"
-                                           Orientation="Vertical"
-                                           Style="{DynamicResource ScrollBar}"
-                                           ViewportSize="{TemplateBinding ViewportHeight}"
-                                           Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                                           Value="{Binding VerticalOffset,
-                                                           Mode=OneWay,
-                                                           RelativeSource={RelativeSource TemplatedParent}}" />
-                                <ScrollContentPresenter Grid.Row="0"
-                                                        Grid.Column="1"
-                                                        Margin="{TemplateBinding Padding}"
-                                                        CanContentScroll="{TemplateBinding CanContentScroll}"
-                                                        Content="{TemplateBinding Content}"
-                                                        ContentTemplate="{TemplateBinding ContentTemplate}" />
-
-                                <ScrollBar x:Name="PART_HorizontalScrollBar"
-                                           Grid.Row="1"
-                                           Grid.Column="0"
-                                           Maximum="{TemplateBinding ScrollableWidth}"
-                                           Minimum="0"
-                                           Orientation="Horizontal"
-                                           Style="{DynamicResource ScrollBar}"
-                                           ViewportSize="{TemplateBinding ViewportWidth}"
-                                           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
-                                           Value="{Binding HorizontalOffset,
-                                                           Mode=OneWay,
-                                                           RelativeSource={RelativeSource TemplatedParent}}" />
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+            <Style BasedOn="{StaticResource LeftScrollBar}" TargetType="ScrollViewer" />
 
         </ResourceDictionary>
-
-
     </UserControl.Resources>
-    <Grid Margin="5">
-        
+    <Grid>
+
         <Grid d:DataContext="{d:DesignInstance processes:ProcessActivity, IsDesignTimeCreatable=True}" DataContext="{Binding ProcessActivityModel, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />

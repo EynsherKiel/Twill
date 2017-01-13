@@ -7,15 +7,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Twill.Processes.Tracking;
+using Twill.Tools.Collections;
 
 namespace Twill.UI.Core.Models.Controls.Processes
 {
     public class DayActivityAnalysis : ViewModelBase
     {
-
         public DayActivityAnalysis()
         {
-            Monitor = Tools.Architecture.Singleton<Monitor>.Instance; 
+            Monitor = Tools.Architecture.Singleton<Monitor>.Instance;
+        }
+
+
+        public DayActivityAnalysis(bool isMonitorStaticInstance)
+        {
+            if (isMonitorStaticInstance)
+            {
+                Monitor = Tools.Architecture.Singleton<Monitor>.Instance;
+            }
         }
 
         public DayActivityAnalysis(Monitor monitor)
@@ -23,172 +32,167 @@ namespace Twill.UI.Core.Models.Controls.Processes
             Monitor = monitor;
         }
 
-
         private void Monitor_UpDateEvent(BaseMonitor<ProcessMonitor, ProcessDayActivity, ProcessWork, GroundWorkState, ProcessActivity> obj) => UpDate();
 
         private void UpDate()
         {
-
             if (ContentHeight < 1.0)
                 return;
 
             if (SegmentMinHeight < 1.0)
                 return;
-             
-            var items = new List<ProcessActivity>();
 
-            var first = Monitor.FilterProcessMonitor?.UserLogActivities?.FirstOrDefault();
-            if (first != null)
-            { 
-                if (Monitor.FilterProcessMonitor.UserLogActivities.Count == 1)
+            Analyse(Monitor?.ProcessMonitor?.UserLogActivities);
+        }
+
+        public void Analyse(ICollection<ProcessActivity> list)
+        {
+            if (list == null)
+                return;
+
+            if (list.Count == 0)
+                return;
+
+            var processlist = new List<ProcessActivity>() { list.First() };
+
+            foreach (var last in list.Skip(1))
+            {
+                var itemslast = processlist.Last();
+                if (this.MinutesBetween(itemslast, last) > MinTimeInterval)
                 {
-                    Console.WriteLine("Count == 1");
-                    if (first.TotalMinutesInterval > MinTimeInterval)
+                    processlist.Add(new ProcessActivity()
                     {
-                        ProcessActivities = new ObservableCollection<ProcessActivity>() { first };
+                        LinkProcess = RestProcess,
+                        Start = itemslast.End,
+                        End = last.Start,
+                        GroundWorkStates = new ObservableCollection<GroundWorkState>() { new GroundWorkState() { Title = "(￣、￣＠）Ｚｚz" }
+                        }
+                    });
+                }
+                processlist.Add(last);
+            }
+
+            if ((DateTime.Now - processlist.Last().End).TotalMinutes > MinTimeInterval)
+            {
+                processlist.Add(new ProcessActivity()
+                {
+                    LinkProcess = RestProcess,
+                    Start = processlist.Last().End,
+                    End = DateTime.Now,
+                    GroundWorkStates = new ObservableCollection<GroundWorkState>() { new GroundWorkState() { Title = "(￣、￣＠）Ｚｚz" }
+               }
+                });
+            }
+
+            var processes = processlist.GroupBy(el => el.LinkProcess.Name).Select(__activities =>
+            {
+                var activities = __activities.OrderBy(ac => ac.Start).ToList();
+                var items = new List<ProcessActivity>() { ProcessActivityClone(activities.First()) };
+
+                foreach (var last in activities.Skip(1))
+                {
+                    var first = items.Last();
+                    if (MinutesBetween(first, last) < MinPixTimeInterval)
+                    {
+                        if (first.GroundWorkStates.Count == 0 || first.GroundWorkStates.Last().Title != last.GroundWorkStates.First().Title)
+                            first.GroundWorkStates.Add(last.GroundWorkStates.First());
+
+                        first.End = last.End;
                     }
+                    else
+                    {
+                        items.Add(ProcessActivityClone(last));
+                    }
+                }
+
+                return items.Where(item => item.TotalMinutesInterval > MinTimeInterval).ToList();
+
+            }).SelectMany(el => el).OrderBy(el => el.Start).ToList();
+
+
+            for (int i = 0; i < ProcessActivities.Count; i++)
+            {
+                if (ProcessActivities[i].LinkProcess.Name == processes[i].LinkProcess.Name)
+                {
+                    for (int j = 0; j < ProcessActivities[i].GroundWorkStates.Count; j++)
+                    {
+                        if (ProcessActivities[i].GroundWorkStates[j].Title != processes[i].GroundWorkStates[j].Title)
+                        {
+                            ProcessActivities[i].GroundWorkStates[j].Title = processes[i].GroundWorkStates[j].Title;
+                        }
+                    }
+
+                    if (ProcessActivities[i].GroundWorkStates.Count < processes[i].GroundWorkStates.Count)
+                    {
+                        foreach (var gws in processes[i].GroundWorkStates.Skip(ProcessActivities[i].GroundWorkStates.Count))
+                        {
+                            ProcessActivities[i].GroundWorkStates.Add(gws);
+                        }
+                    }
+
+                    ProcessActivities[i].Start = processes[i].Start;
+                    ProcessActivities[i].End = processes[i].End;
                 }
                 else
-                {
-                    ProcessActivity activity = null;
-                    foreach (ProcessActivity last in Monitor.FilterProcessMonitor.UserLogActivities.Skip(1))
-                    {
+                    throw new Exception();
+            }
 
-                        // findrest
-                        Console.WriteLine($"{first.LinkProcess.Name} == {last.LinkProcess.Name}");
-
-                        // if you moved to a new tab from this process
-                        if (first.LinkProcess.Name == last.LinkProcess.Name)
-                        {
-                            if (activity == null)
-                            {
-                                activity = new ProcessActivity()
-                                {
-                                    Start = first.Start,
-                                    LinkProcess = first.LinkProcess,
-                                    GroundWorkStates = new ObservableCollection<GroundWorkState>() { first.GroundWorkStates.First() }
-                                };
-                            }
-
-                            activity.GroundWorkStates.Add(last.GroundWorkStates.First());
-                            activity.End = last.End;
-
-                            if (activity.TotalMinutesInterval > MinTimeInterval)
-                            {
-                                if (items.LastOrDefault() != activity)
-                                    items.Add(activity);
-                            }
-
-                            continue;
-                        }
+            foreach (var process in processes.Skip(ProcessActivities.Count))
+            {
+                ProcessActivities.Add(process);
+            }
 
 
-                        if ((first.End - last.End).TotalMinutes < MinPixTimeInterval)
-                        {
-                            if (activity == null || activity.LinkProcess != first.LinkProcess)
-                            {
-                                activity = new ProcessActivity()
-                                {
-                                    Start = first.Start,
-                                    LinkProcess = first.LinkProcess,
-                                    GroundWorkStates = new ObservableCollection<GroundWorkState>() { first.GroundWorkStates.First() }
-                                };
-                            }
+            //var mainLast = ProcessActivities.LastOrDefault();
+            //if (mainLast == null)
+            //{
+            //    ProcessActivities = new ObservableCollection<ProcessActivity>(processes);
+            //    return;
+            //}
+            //var newmainlast = processes.Last();
 
-                            activity.End = last.End;
+            //if (mainLast.LinkProcess == newmainlast.LinkProcess)
+            //{
+            //    mainLast.End = newmainlast.End;
+            //    if (mainLast.GroundWorkStates.Last().Title != newmainlast.GroundWorkStates.Last().Title)
+            //    {
+            //        mainLast.GroundWorkStates.Add(newmainlast.GroundWorkStates.Last());
+            //    }
+            //    return;
+            //}
 
-                            if (activity.TotalMinutesInterval > MinTimeInterval)
-                            {
-                                if (items.LastOrDefault() != activity)
-                                    items.Add(activity);
-                            }
-
-                            continue;
-                        }
-
-                        if ((first.End - last.Start).TotalMinutes > MinTimeInterval)
-                        {
-                            if (activity == null || activity.LinkProcess != RestProcess)
-                            {
-                                activity = new ProcessActivity()
-                                {
-                                    Start = first.End,
-                                    End = last.Start,
-                                    LinkProcess = RestProcess,
-                                };
-
-                                activity.GroundWorkStates.Add(new GroundWorkState() { Title = "(￣、￣＠）Ｚｚz" });
-
-                                items.Add(activity);
-                            }
-                        }
-
-
-                        first = last;
-
-                        if (last.TotalMinutesInterval > MinTimeInterval)
-                        {
-
-                            if (activity == null || activity.LinkProcess != first.LinkProcess)
-                            {
-                                activity = new ProcessActivity()
-                                {
-                                    Start = first.Start,
-                                    LinkProcess = first.LinkProcess,
-                                    GroundWorkStates = new ObservableCollection<GroundWorkState>() { first.GroundWorkStates.First() }
-                                };
-                            }
-
-                            activity.End = last.End;
-
-                            if (activity.TotalMinutesInterval > MinTimeInterval)
-                            {
-                                if (items.LastOrDefault() != activity)
-                                    items.Add(activity);
-                            }
-                            continue;
-                        }
-
-
-
-                    }
-
-
-
-                    if ((DateTime.Now - Monitor.FilterProcessMonitor.UserLogActivities.Last().End).TotalMinutes > MinTimeInterval && activity?.LinkProcess != RestProcess)
-                    {
-                    //    Console.WriteLine("Ｚｚz");
-                        activity = new ProcessActivity()
-                        {
-                            Start = first.End,
-                            End = DateTime.Now,
-                            LinkProcess = RestProcess,
-                        };
-
-                        activity.GroundWorkStates.Add(new GroundWorkState() { Title = "(￣、￣＠）Ｚｚz" });
-
-                        items.Add(activity);
-                    }
-
-                }
-            } 
-
-            ProcessActivities = new ObservableCollection<ProcessActivity>(items);
+            //ProcessActivities.Add(newmainlast);
         }
-         
-        private double MinTimeInterval =  Tools.Math.Position.ChoisenMinute(SegmentMinHeightConstant, ContentHeightConstant);
-        private double MinPixTimeInterval =  Tools.Math.Position.ChoisenMinute(MinPixSize, ContentHeightConstant);
+
+
+        private double MinutesBetween(ProcessActivity first, ProcessActivity last) => (last.Start - first.End).TotalMinutes;
+
+        private ProcessActivity ProcessActivityClone(ProcessActivity activity)
+        {
+            return new ProcessActivity()
+            {
+                Start = activity.Start,
+                End = activity.End,
+                LinkProcess = activity.LinkProcess,
+
+                GroundWorkStates = new ObservableCollection<GroundWorkState>(activity.GroundWorkStates.Select(gws => new GroundWorkState() { Title = gws.Title }))
+            };
+        }
+
+
+        private double MinTimeInterval = Tools.Math.Position.ChoisenMinute(SegmentMinHeightConstant, ContentHeightConstant);
+        private double MinPixTimeInterval = Tools.Math.Position.ChoisenMinute(MinPixSize, ContentHeightConstant);
 
         private void SetTimes()
         {
-            MinTimeInterval =  Tools.Math.Position.ChoisenMinute(segmentMinHeight, ContentHeight);
-            MinPixTimeInterval =  Tools.Math.Position.ChoisenMinute(MinPixSize, ContentHeight);
+            MinTimeInterval = Tools.Math.Position.ChoisenMinute(segmentMinHeight, ContentHeight);
+            MinPixTimeInterval = Tools.Math.Position.ChoisenMinute(MinPixSize, ContentHeight);
         }
 
         // static for uniq brush
         private static ProcessDayActivity RestProcess = new ProcessDayActivity() { Name = "Your rest" };
 
-        private const double MinPixSize = 2.0;
+        private const double MinPixSize = 4.0;
 
         private Monitor monitor;
         public Monitor Monitor
@@ -206,9 +210,9 @@ namespace Twill.UI.Core.Models.Controls.Processes
             }
         }
 
-        public const double SegmentMinHeightConstant = 3.0;
+        public const double SegmentMinHeightConstant = 47.0;
         private double segmentMinHeight = SegmentMinHeightConstant;
-        public double SegmentMinHeight 
+        public double SegmentMinHeight
         {
             private get { return segmentMinHeight; }
             set { segmentMinHeight = value; SetTimes(); UpDate(); }
