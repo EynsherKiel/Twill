@@ -51,7 +51,7 @@ namespace Twill.UI.UserControls.Controls.Processes
         }
 
         public static readonly DependencyProperty ContentHeightProperty =
-            DependencyProperty.Register(nameof(ContentHeight), typeof(double), thisType, new PropertyMetadata(20000.0, ContentHeightPropertyChangedCallBack));
+            DependencyProperty.Register(nameof(ContentHeight), typeof(double), thisType, new PropertyMetadata(model.ContentHeightConstant, ContentHeightPropertyChangedCallBack));
 
         private static void ContentHeightPropertyChangedCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -69,7 +69,7 @@ namespace Twill.UI.UserControls.Controls.Processes
         }
 
         public static readonly DependencyProperty SegmentMinHeightProperty =
-            DependencyProperty.Register(nameof(SegmentMinHeight), typeof(double), thisType, new PropertyMetadata(100.0, SegmentMinHeightPropertyChangedCallBack));
+            DependencyProperty.Register(nameof(SegmentMinHeight), typeof(double), thisType, new PropertyMetadata(model.SegmentMinHeightConstant, SegmentMinHeightPropertyChangedCallBack));
         public double SegmentMinHeight
         {
             get { return (double)GetValue(SegmentMinHeightProperty); }

@@ -10,14 +10,14 @@
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
-    
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Twill.UI;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="/Twill.UI;component/Styles/NullStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <converters:DateTimeToPixelsConverter x:Key="DateTimeToPixelsConverter" /> 
+            <converters:DateTimeToPixelsConverter x:Key="DateTimeToPixelsConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -63,7 +63,16 @@
             <ListBox.ItemTemplate>
                 <ItemContainerTemplate>
 
-                    <timeline:UserActivityLog Background="{DynamicResource DayActivityAnalysisUserLogActivityBackgroundBrush}" Foreground="{DynamicResource DayActivityAnalysisUserLogActivityForegroundBrush}" Width="{Binding ActualWidth, Mode=OneWay, ElementName=listbox}" ProcessActivityModel="{Binding .}">
+                    <!--
+                        Background="{DynamicResource DayActivityAnalysisUserLogActivityBackgroundBrush}"
+                        Foreground="{DynamicResource DayActivityAnalysisUserLogActivityForegroundBrush}"
+                    -->
+                    <timeline:UserActivityLog Width="{Binding ActualWidth,
+                                                              Mode=OneWay,
+                                                              ElementName=listbox}"
+                                              Background="{Binding LinkProcess.Brush}"
+                                              Foreground="Blue"
+                                              ProcessActivityModel="{Binding .}">
                         <timeline:UserActivityLog.Height>
                             <MultiBinding Converter="{StaticResource DateTimeToPixelsConverter}">
                                 <Binding Mode="OneWay" Path="TotalMinutesInterval" />

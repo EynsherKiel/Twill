@@ -144,7 +144,7 @@
 
                             <processes:DayActivityAnalysis x:Name="viewmonitor"
                                                            Grid.Column="1"
-                                                           Panel.ZIndex="3" 
+                                                           Panel.ZIndex="3"
                                                            Background="{DynamicResource MonitorBackgroundBrush}"
                                                            DayActivityAnalysisModel="{Binding DayActivityAnalysis}">
                                 <i:Interaction.Behaviors>

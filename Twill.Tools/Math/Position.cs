@@ -8,6 +8,7 @@ namespace Twill.Tools.Math
 {
     public static class Position
     {
+        public const double SecondsInMinute = 60.0;
         public const double MinutesInDay = 1440.0;
 
 
