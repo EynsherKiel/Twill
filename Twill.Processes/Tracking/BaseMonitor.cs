@@ -59,12 +59,9 @@ namespace Twill.Processes.Tracking
             if (environ == null)
                 return;
 
-            Runtime(() =>
-            {
-                WriteNewData(environ);
+            Runtime(() => WriteNewData(environ));
 
-                Event(this, EventArgs.Empty);
-            });
+            Event(this, EventArgs.Empty);
         }
 
         private void Filtering()

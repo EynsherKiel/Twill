@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Twill.Processes.Tracking;
+using Twill.Tools.Async;
 using Twill.Tools.Collections;
 
 namespace Twill.UI.Core.Models.Controls.Processes
@@ -36,13 +37,16 @@ namespace Twill.UI.Core.Models.Controls.Processes
 
         private void UpDate(bool isFullUpdate = false)
         {
-            if (ContentHeight < 1.0)
-                return;
+            lock (SyncRoot)
+            {
+                if (ContentHeight < 1.0)
+                    return;
 
-            if (SegmentMinHeight < 1.0)
-                return;
+                if (SegmentMinHeight < 1.0)
+                    return;
 
-            Analyse(Monitor?.ProcessMonitor?.UserLogActivities, isFullUpdate);
+                Analyse(Monitor?.ProcessMonitor?.UserLogActivities, isFullUpdate);
+            }
         }
 
         public void Analyse(ICollection<ProcessActivity> list, bool isFullUpdate = false)
@@ -84,7 +88,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
                 });
             }
 
-            var processes = processlist.OrderBy(ac => ac.Start).GroupBy(el => el.LinkProcess.Name).Select(activities =>
+            var _processes = processlist.OrderBy(ac => ac.Start).GroupBy(el => el.LinkProcess.Name).Select(activities =>
             { 
                 var items = new List<ProcessActivity>() { ProcessActivityClone(activities.First()) };
 
@@ -106,66 +110,52 @@ namespace Twill.UI.Core.Models.Controls.Processes
 
                 return items.Where(item => item.TotalMinutesInterval > MinTimeInterval).ToList();
 
-            }).SelectMany(el => el).ToList();
+            }).SelectMany(el => el).OrderBy(ac => ac.Start).ToList();
 
-
-            //for (int i = 0; i < ProcessActivities.Count; i++)
-            //{
-            //    if (ProcessActivities[i].LinkProcess.Name == processes[i].LinkProcess.Name)
-            //    {
-            //        for (int j = 0; j < ProcessActivities[i].GroundWorkStates.Count; j++)
-            //        {
-            //            if (ProcessActivities[i].GroundWorkStates[j].Title != processes[i].GroundWorkStates[j].Title)
-            //            {
-            //                ProcessActivities[i].GroundWorkStates[j].Title = processes[i].GroundWorkStates[j].Title;
-            //            }
-            //        }
-
-            //        if (ProcessActivities[i].GroundWorkStates.Count < processes[i].GroundWorkStates.Count)
-            //        {
-            //            foreach (var gws in processes[i].GroundWorkStates.Skip(ProcessActivities[i].GroundWorkStates.Count))
-            //            {
-            //                ProcessActivities[i].GroundWorkStates.Add(gws);
-            //            }
-            //        }
-
-            //        ProcessActivities[i].Start = processes[i].Start;
-            //        ProcessActivities[i].End = processes[i].End;
-            //    }
-            //    else
-            //        throw new Exception();
-            //}
-
-            //foreach (var process in processes.Skip(ProcessActivities.Count))
-            //{
-            //    ProcessActivities.Add(process);
-            //}
-
-            if(isFullUpdate)
-            {
-                ProcessActivities = new ObservableCollection<ProcessActivity>(processes);
-                return;
-            }
-
-            var mainLast = ProcessActivities.LastOrDefault();
-            if (mainLast == null)
-            {
-                ProcessActivities = new ObservableCollection<ProcessActivity>(processes);
-                return;
-            }
-            var newmainlast = processes.Last();
-
-            if (mainLast.LinkProcess == newmainlast.LinkProcess)
-            {
-                mainLast.End = newmainlast.End;
-                if (mainLast.GroundWorkStates.Last().Title != newmainlast.GroundWorkStates.Last().Title)
+            SyncContext.Action(processes =>
                 {
-                    mainLast.GroundWorkStates.Add(newmainlast.GroundWorkStates.Last());
-                }
-                return;
-            }
 
-            ProcessActivities.Add(newmainlast);
+                if (isFullUpdate)
+                {
+                    ProcessActivities = new ObservableCollection<ProcessActivity>(processes);
+                    return;
+                }
+
+                for (int i = 0; i < ProcessActivities.Count; i++)
+                {
+                    if (ProcessActivities[i].LinkProcess.Name == processes[i].LinkProcess.Name)
+                    {
+                        for (int j = 0; j < ProcessActivities[i].GroundWorkStates.Count; j++)
+                        {
+                            if (ProcessActivities[i].GroundWorkStates[j].Title != processes[i].GroundWorkStates[j].Title)
+                            {
+                                ProcessActivities[i].GroundWorkStates[j].Title = processes[i].GroundWorkStates[j].Title;
+                            }
+                        }
+
+                        if (ProcessActivities[i].GroundWorkStates.Count < processes[i].GroundWorkStates.Count)
+                        {
+                            foreach (var gws in processes[i].GroundWorkStates.Skip(ProcessActivities[i].GroundWorkStates.Count))
+                            {
+                                ProcessActivities[i].GroundWorkStates.Add(gws);
+                            }
+                        }
+
+                        ProcessActivities[i].Start = processes[i].Start;
+                        ProcessActivities[i].End = processes[i].End;
+                    }
+                    else
+                        {
+                            ProcessActivities = new ObservableCollection<ProcessActivity>(processes);
+                            return;
+                        }
+                }
+
+                foreach (var process in processes.Skip(ProcessActivities.Count))
+                {
+                    ProcessActivities.Add(process);
+                }
+            }, _processes);
         }
 
 
@@ -197,6 +187,8 @@ namespace Twill.UI.Core.Models.Controls.Processes
             return true;
         }
 
+        private readonly SyncContext SyncContext = new SyncContext();
+        private object SyncRoot = new object();
         // static for uniq brush
         private static ProcessDayActivity RestProcess = new ProcessDayActivity() { Name = "Your rest" };
 
