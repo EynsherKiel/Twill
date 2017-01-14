@@ -10,17 +10,11 @@ namespace Twill.UI.Core.Models.Controls.Processes
 {
     public class Monitor : BaseMonitor<ProcessMonitor, ProcessDayActivity, ProcessWork, GroundWorkState, ProcessActivity>
     {
-
         private readonly SyncContext SyncContext = new SyncContext();
-
+        
         protected override void Runtime(Action action)
         {
             SyncContext.Action(e => action(), string.Empty);
-        }
-
-        internal void UnSubscriveUpDateEvent(DayActivityAnalysis dayActivityAnalysis)
-        {
-            throw new NotImplementedException();
         }
     }
 }

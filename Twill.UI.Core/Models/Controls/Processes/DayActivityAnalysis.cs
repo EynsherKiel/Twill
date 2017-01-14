@@ -45,7 +45,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
                 if (SegmentMinHeight < 1.0)
                     return;
 
-                Analyse(Monitor?.ProcessMonitor?.UserLogActivities, isFullUpdate);
+                Analyse(Monitor?.FilterProcessMonitor?.UserLogActivities, isFullUpdate);
             }
         }
 
@@ -69,8 +69,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
                         LinkProcess = RestProcess,
                         Start = itemslast.End,
                         End = last.Start,
-                        GroundWorkStates = new ObservableCollection<GroundWorkState>() { new GroundWorkState() { Title = "(￣、￣＠）Ｚｚz" }
-                        }
+                        GroundWorkStates = new ObservableCollection<GroundWorkState>() { new GroundWorkState() { Title = "(￣、￣＠）Ｚｚz" } }
                     });
                 }
                 processlist.Add(last);
@@ -83,8 +82,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
                     LinkProcess = RestProcess,
                     Start = processlist.Last().End,
                     End = DateTime.Now,
-                    GroundWorkStates = new ObservableCollection<GroundWorkState>() { new GroundWorkState() { Title = "(￣、￣＠）Ｚｚz" }
-               }
+                    GroundWorkStates = new ObservableCollection<GroundWorkState>() { new GroundWorkState() { Title = "(￣、￣＠）Ｚｚz" } }
                 });
             }
 
@@ -203,7 +201,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
                 try
                 {
                     if (Monitor != null)
-                        value.UnSubscriveUpDateEvent(this);
+                        value.UnSubscribeUpDateEvent(this);
 
                     if (value != null)
                         value.SubscribeUpDateEvent(this);

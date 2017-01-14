@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Twill.Tools.Architecture;
+using System.Threading.Tasks; 
 
 namespace Twill.Storage.Barrier
 {
     public class Controller
     {
-        private FileOperationController FileOperationController = Singleton<FileOperationController>.Instance;
+        private FileOperationController FileOperationController = Tools.Architecture.Singleton<FileOperationController>.Instance;
 
         public T GetLabor<T>(DateTime time) where T : class, new()
         {
