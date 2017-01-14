@@ -11,14 +11,6 @@ namespace Twill.Processes.Search
 {
     public class DesktopSearcher
     {
-        private const string ProgramManager = "Program Manager";
-        private const string RusTaskManager = "Диспетчер задач";
-
-        public List<string> NotFindList { get; } = new List<string>() { ProgramManager, RusTaskManager };
-
-        private bool IsBadText(string windowtext) => string.IsNullOrEmpty(windowtext) || NotFindList.Contains(windowtext);
-
-          
 
         public List<IntPtr> FindDesktopProcess()
         {
@@ -35,9 +27,6 @@ namespace Twill.Processes.Search
                 string windowtext; 
 
                 if (!TryGetWindowText(handle, out windowtext))
-                    return true;
-
-                if (IsBadText(windowtext))
                     return true;
 
                 list.Add(handle);

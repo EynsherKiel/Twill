@@ -10,10 +10,11 @@ using Twill.Processes.Search;
 using Twill.Processes.Windows;
 using Twill.Tools.Architecture;
 using Twill.Tools.Collections;
+using Twill.Tools.Events;
 
 namespace Twill.Processes.Tracking
 { 
-    public abstract class BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>
+    public abstract class BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity> : IWeakEventListener, ISmartWeakEventManager
         where TProcessMonitor :  class, IProcessMonitor<TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>,new()
         where TProcessDayActivity : class, IProcessDayActivity<TProcessWork, TGroundWorkState>, new()
         where TProcessWork : class, IProcessWork<TGroundWorkState>, new()
@@ -23,13 +24,11 @@ namespace Twill.Processes.Tracking
 
         public BaseMonitor()
         {
-            Environ.UpdateEvent += Environ_UpdateEvent;
-        }
-
-        public event Action<BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>> UpDateEvent = delegate { };
+            Environ.SubscribeUpDateEvent(this);
+        } 
+         
 
         private Environ Environ = new Environ();
-
 
         public TProcessMonitor ProcessMonitor { get; private set; } = new TProcessMonitor();
         public TProcessMonitor FilterProcessMonitor { get; private set; } = new TProcessMonitor();
@@ -42,16 +41,29 @@ namespace Twill.Processes.Tracking
             set { Environ.TimeUpdate = value; }
         }
 
+        public event EventHandler<EventArgs> Event = delegate { };
+
+        public void SubscribeUpDateEvent(IWeakEventListener obj) => 
+            SmartWeakEventManager<BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>>.AddListener(this, obj);
+
+        public void UnSubscribeUpDateEvent(IWeakEventListener obj) =>
+            SmartWeakEventManager<BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>>.RemoveListener(this, obj);
+
+
         // Reload for WPF
         protected virtual void Runtime(Action action) => action();
 
-        private void Environ_UpdateEvent(Environ environ)
+        private void Environ_UpdateEvent(object sender, EventArgs e)
         {
+            var environ = sender as Environ;
+            if (environ == null)
+                return;
+
             Runtime(() =>
             {
                 WriteNewData(environ);
 
-                UpDateEvent(this);
+                Event(this, EventArgs.Empty);
             });
         }
 
@@ -264,10 +276,10 @@ namespace Twill.Processes.Tracking
             return lastLeadGroundStateWork;
         }
 
-        ~BaseMonitor()
+        public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
-            if (Environ != null)
-                Environ.UpdateEvent -= Environ_UpdateEvent;
+            Environ_UpdateEvent(sender, e);
+            return true;   
         }
     }
 }

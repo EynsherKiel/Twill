@@ -20,7 +20,10 @@ namespace Twill.Processes.WMI
             {
                 foreach (ManagementObject queryObj in searcher.Get())
                 {
-                    yield return queryObj;
+                    using (queryObj)
+                    {
+                        yield return queryObj;
+                    }
                 }
             }
         }

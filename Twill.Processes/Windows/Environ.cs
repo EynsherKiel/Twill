@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Twill.Processes.Search;
+using Twill.Tools.Events;
 
 namespace Twill.Processes.Windows
 {
-    public class Environ
+    public class Environ : ISmartWeakEventManager
     {
         public Environ()
         {
@@ -19,8 +21,8 @@ namespace Twill.Processes.Windows
 
         public readonly Timer Timer;
         public readonly Searcher Searcher = new Searcher();
-
-        public event Action<Environ> UpdateEvent = delegate { };
+         
+        public event EventHandler<EventArgs> Event = delegate { };
 
         public List<Process> Processes { get; private set; } = new List<Process>();
         public Process Lead { get; set; }
@@ -72,13 +74,17 @@ namespace Twill.Processes.Windows
 
                 Lead?.UpTitle();
 
-                UpdateEvent(this);
+                Event(this, EventArgs.Empty);
             }
             finally
             {
                 Monitor.Exit(SyncRoot);
             }
         }
+
+        public void SubscribeUpDateEvent(IWeakEventListener obj) => SmartWeakEventManager<Environ>.AddListener(this, obj);
+        public void UnSubscribeUpDateEvent(IWeakEventListener obj) => SmartWeakEventManager<Environ>.AddListener(this, obj);
+
 
         ~Environ()
         {

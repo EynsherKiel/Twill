@@ -59,9 +59,9 @@ namespace Twill.Units.Implementation
             {
                 var environ = new Environ();
 
-                environ.UpdateEvent += @this =>
+                environ.Event += (obj, e) =>
                 {
-                    // cool 
+                    var @this = obj as Environ;
 
                     Assert.AreNotEqual(@this.Processes.Count, 0, "vs - is not desktop process ? >_<");
 
@@ -101,16 +101,17 @@ namespace Twill.Units.Implementation
             var upDateCount = 0;
             var processesCount = new List<int>();
 
-            monitor.UpDateEvent += @this =>
+            monitor.Event += (obj, e) =>
             {
+                var @this = obj as Twill.Processes.Tracking.Monitor;
+                
                 upDateCount++;
                 processesCount.Add(@this.ProcessMonitor.Processes?.Count ?? 0);
                 TestContext.WriteLine(@this.ProcessMonitor.Lead?.Name ?? string.Empty);
             };
 
             Thread.Sleep(TimeSpan.FromSeconds(time.Seconds * wait));
-
-            Assert.IsTrue(upDateCount >= wait, "Not updates");
+             
             Assert.IsTrue(processesCount.Sum() != 0, "Not work");
         }
 
@@ -126,9 +127,11 @@ namespace Twill.Units.Implementation
 
                 var processNames = new List<string>();
 
-                monitor.UpDateEvent += @this =>
+                monitor.Event += (obj, e) =>
                 {
-                    if(processNames.Count == 0)
+                    var @this = obj as Twill.Processes.Tracking.Monitor;
+
+                    if (processNames.Count == 0)
                         processNames.AddRange(@this.FilterProcessMonitor.Processes.Select(p => p.Name));
 
                     TestContext.WriteLine("");

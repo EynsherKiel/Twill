@@ -17,5 +17,10 @@ namespace Twill.UI.Core.Models.Controls.Processes
         {
             SyncContext.Action(e => action(), string.Empty);
         }
+
+        internal void UnSubscriveUpDateEvent(DayActivityAnalysis dayActivityAnalysis)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

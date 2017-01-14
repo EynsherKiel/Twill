@@ -11,7 +11,7 @@ using Twill.Tools.Collections;
 
 namespace Twill.UI.Core.Models.Controls.Processes
 {
-    public class DayActivityAnalysis : ViewModelBase
+    public class DayActivityAnalysis : ViewModelBase, IWeakEventListener
     {
         public DayActivityAnalysis()
         {
@@ -32,9 +32,9 @@ namespace Twill.UI.Core.Models.Controls.Processes
             Monitor = monitor;
         }
 
-        private void Monitor_UpDateEvent(BaseMonitor<ProcessMonitor, ProcessDayActivity, ProcessWork, GroundWorkState, ProcessActivity> obj) => UpDate();
+        private void Monitor_UpDateEvent(object obj, EventArgs e) => UpDate();
 
-        private void UpDate()
+        private void UpDate(bool isFullUpdate = false)
         {
             if (ContentHeight < 1.0)
                 return;
@@ -42,10 +42,10 @@ namespace Twill.UI.Core.Models.Controls.Processes
             if (SegmentMinHeight < 1.0)
                 return;
 
-            Analyse(Monitor?.ProcessMonitor?.UserLogActivities);
+            Analyse(Monitor?.ProcessMonitor?.UserLogActivities, isFullUpdate);
         }
 
-        public void Analyse(ICollection<ProcessActivity> list)
+        public void Analyse(ICollection<ProcessActivity> list, bool isFullUpdate = false)
         {
             if (list == null)
                 return;
@@ -84,9 +84,8 @@ namespace Twill.UI.Core.Models.Controls.Processes
                 });
             }
 
-            var processes = processlist.GroupBy(el => el.LinkProcess.Name).Select(__activities =>
-            {
-                var activities = __activities.OrderBy(ac => ac.Start).ToList();
+            var processes = processlist.OrderBy(ac => ac.Start).GroupBy(el => el.LinkProcess.Name).Select(activities =>
+            { 
                 var items = new List<ProcessActivity>() { ProcessActivityClone(activities.First()) };
 
                 foreach (var last in activities.Skip(1))
@@ -107,69 +106,73 @@ namespace Twill.UI.Core.Models.Controls.Processes
 
                 return items.Where(item => item.TotalMinutesInterval > MinTimeInterval).ToList();
 
-            }).SelectMany(el => el).OrderBy(el => el.Start).ToList();
+            }).SelectMany(el => el).ToList();
 
 
-            for (int i = 0; i < ProcessActivities.Count; i++)
-            {
-                if (ProcessActivities[i].LinkProcess.Name == processes[i].LinkProcess.Name)
-                {
-                    for (int j = 0; j < ProcessActivities[i].GroundWorkStates.Count; j++)
-                    {
-                        if (ProcessActivities[i].GroundWorkStates[j].Title != processes[i].GroundWorkStates[j].Title)
-                        {
-                            ProcessActivities[i].GroundWorkStates[j].Title = processes[i].GroundWorkStates[j].Title;
-                        }
-                    }
-
-                    if (ProcessActivities[i].GroundWorkStates.Count < processes[i].GroundWorkStates.Count)
-                    {
-                        foreach (var gws in processes[i].GroundWorkStates.Skip(ProcessActivities[i].GroundWorkStates.Count))
-                        {
-                            ProcessActivities[i].GroundWorkStates.Add(gws);
-                        }
-                    }
-
-                    ProcessActivities[i].Start = processes[i].Start;
-                    ProcessActivities[i].End = processes[i].End;
-                }
-                else
-                    throw new Exception();
-            }
-
-            foreach (var process in processes.Skip(ProcessActivities.Count))
-            {
-                ProcessActivities.Add(process);
-            }
-
-
-            //var mainLast = ProcessActivities.LastOrDefault();
-            //if (mainLast == null)
+            //for (int i = 0; i < ProcessActivities.Count; i++)
             //{
-            //    ProcessActivities = new ObservableCollection<ProcessActivity>(processes);
-            //    return;
-            //}
-            //var newmainlast = processes.Last();
-
-            //if (mainLast.LinkProcess == newmainlast.LinkProcess)
-            //{
-            //    mainLast.End = newmainlast.End;
-            //    if (mainLast.GroundWorkStates.Last().Title != newmainlast.GroundWorkStates.Last().Title)
+            //    if (ProcessActivities[i].LinkProcess.Name == processes[i].LinkProcess.Name)
             //    {
-            //        mainLast.GroundWorkStates.Add(newmainlast.GroundWorkStates.Last());
+            //        for (int j = 0; j < ProcessActivities[i].GroundWorkStates.Count; j++)
+            //        {
+            //            if (ProcessActivities[i].GroundWorkStates[j].Title != processes[i].GroundWorkStates[j].Title)
+            //            {
+            //                ProcessActivities[i].GroundWorkStates[j].Title = processes[i].GroundWorkStates[j].Title;
+            //            }
+            //        }
+
+            //        if (ProcessActivities[i].GroundWorkStates.Count < processes[i].GroundWorkStates.Count)
+            //        {
+            //            foreach (var gws in processes[i].GroundWorkStates.Skip(ProcessActivities[i].GroundWorkStates.Count))
+            //            {
+            //                ProcessActivities[i].GroundWorkStates.Add(gws);
+            //            }
+            //        }
+
+            //        ProcessActivities[i].Start = processes[i].Start;
+            //        ProcessActivities[i].End = processes[i].End;
             //    }
-            //    return;
+            //    else
+            //        throw new Exception();
             //}
 
-            //ProcessActivities.Add(newmainlast);
+            //foreach (var process in processes.Skip(ProcessActivities.Count))
+            //{
+            //    ProcessActivities.Add(process);
+            //}
+
+            if(isFullUpdate)
+            {
+                ProcessActivities = new ObservableCollection<ProcessActivity>(processes);
+                return;
+            }
+
+            var mainLast = ProcessActivities.LastOrDefault();
+            if (mainLast == null)
+            {
+                ProcessActivities = new ObservableCollection<ProcessActivity>(processes);
+                return;
+            }
+            var newmainlast = processes.Last();
+
+            if (mainLast.LinkProcess == newmainlast.LinkProcess)
+            {
+                mainLast.End = newmainlast.End;
+                if (mainLast.GroundWorkStates.Last().Title != newmainlast.GroundWorkStates.Last().Title)
+                {
+                    mainLast.GroundWorkStates.Add(newmainlast.GroundWorkStates.Last());
+                }
+                return;
+            }
+
+            ProcessActivities.Add(newmainlast);
         }
 
 
         private double MinutesBetween(ProcessActivity first, ProcessActivity last) => (last.Start - first.End).TotalMinutes;
 
-        private ProcessActivity ProcessActivityClone(ProcessActivity activity)
-        {
-            return new ProcessActivity()
+        private ProcessActivity ProcessActivityClone(ProcessActivity activity) => 
+            new ProcessActivity()
             {
                 Start = activity.Start,
                 End = activity.End,
@@ -177,7 +180,6 @@ namespace Twill.UI.Core.Models.Controls.Processes
 
                 GroundWorkStates = new ObservableCollection<GroundWorkState>(activity.GroundWorkStates.Select(gws => new GroundWorkState() { Title = gws.Title }))
             };
-        }
 
 
         private double MinTimeInterval = Tools.Math.Position.ChoisenMinute(SegmentMinHeightConstant, ContentHeightConstant);
@@ -187,6 +189,12 @@ namespace Twill.UI.Core.Models.Controls.Processes
         {
             MinTimeInterval = Tools.Math.Position.ChoisenMinute(segmentMinHeight, ContentHeight);
             MinPixTimeInterval = Tools.Math.Position.ChoisenMinute(MinPixSize, ContentHeight);
+        }
+
+        public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
+        {
+            Monitor_UpDateEvent(sender, e);
+            return true;
         }
 
         // static for uniq brush
@@ -200,12 +208,15 @@ namespace Twill.UI.Core.Models.Controls.Processes
             get { return monitor; }
             private set
             {
-                if (Monitor != null)
-                    Monitor.UpDateEvent -= Monitor_UpDateEvent;
+                try
+                {
+                    if (Monitor != null)
+                        value.UnSubscriveUpDateEvent(this);
 
-                if (value != null)
-                    value.UpDateEvent += Monitor_UpDateEvent;
-
+                    if (value != null)
+                        value.SubscribeUpDateEvent(this);
+                }
+                catch { }
                 Set(ref monitor, value);
             }
         }
@@ -215,7 +226,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
         public double SegmentMinHeight
         {
             private get { return segmentMinHeight; }
-            set { segmentMinHeight = value; SetTimes(); UpDate(); }
+            set { segmentMinHeight = value; SetTimes(); UpDate(true); }
         }
 
         public const double ContentHeightConstant = 20000.0;
@@ -223,7 +234,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
         public double ContentHeight
         {
             private get { return contentHeight; }
-            set { contentHeight = value; SetTimes(); UpDate(); }
+            set { contentHeight = value; SetTimes(); UpDate(true); }
         }
 
         private ObservableCollection<ProcessActivity> processActivities = new ObservableCollection<ProcessActivity>();
@@ -231,12 +242,6 @@ namespace Twill.UI.Core.Models.Controls.Processes
         {
             get { return processActivities; }
             set { Set(ref processActivities, value); }
-        }
-
-        ~DayActivityAnalysis()
-        {
-            if (Monitor != null)
-                Monitor.UpDateEvent -= Monitor_UpDateEvent;
-        }
+        } 
     }
 }
