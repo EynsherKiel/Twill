@@ -25,6 +25,7 @@ namespace Twill.Processes.Windows
         public event EventHandler<EventArgs> Event = delegate { };
 
         public List<Process> Processes { get; private set; } = new List<Process>();
+        private List<Process> RealProcesses = new List<Process>();
         public Process Lead { get; set; }
 
 
@@ -60,10 +61,11 @@ namespace Twill.Processes.Windows
                 var handles = results.Item2;
 
                 var newList = new List<Process>();
-                var clonelist = Processes.ToList();
+                var clonelist = RealProcesses.ToList();
 
-                handles.ForEach(handle => newList.Add(clonelist.FirstOrDefault(proc => proc.Handle == handle) ?? new Process(handle)));
+                handles.ForEach(handle => newList.Add(RealProcesses.FirstOrDefault(proc => proc.Handle == handle) ?? new Process(handle)));
 
+                RealProcesses = newList;
                 newList = newList.GroupBy(p => p.Name).Select(group => group.First()).ToList();
 
                 newList.ForEach(el => el.UpTitle());
@@ -73,6 +75,7 @@ namespace Twill.Processes.Windows
                 Lead = selectedprocess == null ? null : newList.FirstOrDefault(proc => proc.Handle == selectedprocess.Handle);
 
                 Lead?.UpTitle();
+                 
 
                 Event(this, EventArgs.Empty);
             }
