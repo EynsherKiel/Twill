@@ -8,11 +8,16 @@
              xmlns:local="clr-namespace:Twill.UI.UserControls.Controls.TimeLine"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             x:Name="usercontrol"
              Width="60"
              d:DesignHeight="1000"
-             Background="{DynamicResource RulerBackgroundBrush}"
-             Foreground="{DynamicResource RulerForegroundBrush}"
              mc:Ignorable="d">
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Setter Property="Background" Value="{DynamicResource RulerBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource RulerForegroundBrush}" />
+        </Style>
+    </UserControl.Style>
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -25,26 +30,26 @@
     <Grid Background="Transparent">
 
         <ListBox Width="{Binding ActualWidth,
-                             Mode=OneWay,
-                             RelativeSource={RelativeSource FindAncestor,
-                                                            AncestorType={x:Type UserControl}}}"
-             HorizontalContentAlignment="Stretch"
-             VerticalContentAlignment="Stretch"
-             Background="{Binding Background,
-                                  RelativeSource={RelativeSource FindAncestor,
-                                                                 AncestorType={x:Type UserControl}}}"
-             BorderBrush="White"
-             BorderThickness="0"
-             Focusable="False"
-             IsHitTestVisible="True"
-             ItemsSource="{Binding ActualHeight,
-                                   Converter={StaticResource TimeLineConverter},
-                                   Mode=OneWay,
-                                   RelativeSource={RelativeSource FindAncestor,
-                                                                  AncestorType={x:Type UserControl}}}"
-             ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-             ScrollViewer.VerticalScrollBarVisibility="Hidden"
-             Style="{DynamicResource TwillListBoxNullStyle}">
+                                 Mode=OneWay,
+                                 RelativeSource={RelativeSource FindAncestor,
+                                                                AncestorType=UserControl}}"
+                 HorizontalContentAlignment="Stretch"
+                 VerticalContentAlignment="Stretch"
+                 Background="{Binding Background,
+                                      RelativeSource={RelativeSource FindAncestor,
+                                                                     AncestorType=UserControl}}"
+                 BorderBrush="White"
+                 BorderThickness="0"
+                 Focusable="False"
+                 IsHitTestVisible="True"
+                 ItemsSource="{Binding ActualHeight,
+                                       Converter={StaticResource TimeLineConverter},
+                                       Mode=OneWay,
+                                       RelativeSource={RelativeSource FindAncestor,
+                                                                      AncestorType=UserControl}}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                 ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                 Style="{DynamicResource TwillListBoxNullStyle}">
             <i:Interaction.Behaviors>
                 <behaviors:IgnoreMouseWheelBehavior />
             </i:Interaction.Behaviors>
@@ -61,55 +66,50 @@
             </ListBox.ItemContainerStyle>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel MaxWidth="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Orientation="Vertical">
+                    <StackPanel MaxWidth="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" Orientation="Vertical">
                         <StackPanel.Resources>
 
-
                             <HierarchicalDataTemplate DataType="{x:Type sys:DateTime}">
-                                <Grid>
+                                <Grid IsHitTestVisible="True">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
 
                                     <Line Height="12"
-                                      Stroke="{Binding Foreground,
-                                                       RelativeSource={RelativeSource FindAncestor,
-                                                                                      AncestorType={x:Type UserControl}}}"
-                                      StrokeThickness="1"
-                                      X1="0"
-                                      X2="14"
-                                      Y1="0"
-                                      Y2="0" />
+                                          Stroke="{Binding Foreground,
+                                                           ElementName=usercontrol}"
+                                          StrokeThickness="1"
+                                          X1="0"
+                                          X2="14"
+                                          Y1="0"
+                                          Y2="0" />
                                     <TextBlock Grid.Column="1"
-                                           Width="{Binding ActualWidth,
-                                                           Mode=OneWay,
-                                                           RelativeSource={RelativeSource FindAncestor,
-                                                                                          AncestorType={x:Type Button}}}"
-                                           Height="12"
-                                           Margin="0,-12,3,0"
-                                           HorizontalAlignment="Right"
-                                           FontFamily="Microsoft Himalaya"
-                                           FontSize="18"
-                                           Foreground="{Binding Foreground,
-                                                                RelativeSource={RelativeSource FindAncestor,
-                                                                                               AncestorType={x:Type UserControl}}}"
-                                           Text="{Binding StringFormat=HH:mm}"
-                                           TextAlignment="Right" />
+                                               Width="{Binding ActualWidth,
+                                                               Mode=OneWay,
+                                                               ElementName=usercontrol}"
+                                               Height="12"
+                                               Margin="0,-12,3,0"
+                                               HorizontalAlignment="Right"
+                                               FontFamily="Microsoft Himalaya"
+                                               FontSize="18"
+                                               Foreground="{Binding Foreground,
+                                                                    ElementName=usercontrol}"
+                                               Text="{Binding StringFormat=HH:mm}"
+                                               TextAlignment="Right" />
                                 </Grid>
                             </HierarchicalDataTemplate>
 
 
                             <HierarchicalDataTemplate DataType="{x:Type sys:Boolean}">
                                 <Line Height="12"
-                                  Stroke="{Binding Foreground,
-                                                   RelativeSource={RelativeSource FindAncestor,
-                                                                                  AncestorType={x:Type UserControl}}}"
-                                  StrokeThickness="1"
-                                  X1="0"
-                                  X2="7"
-                                  Y1="0"
-                                  Y2="0" />
+                                      Stroke="{Binding Foreground,
+                                                       ElementName=usercontrol}"
+                                      StrokeThickness="1"
+                                      X1="0"
+                                      X2="7"
+                                      Y1="0"
+                                      Y2="0" />
                             </HierarchicalDataTemplate>
 
                         </StackPanel.Resources>
@@ -117,6 +117,5 @@
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
         </ListBox>
-        <Grid Background="Transparent" />
     </Grid>
 </UserControl>
