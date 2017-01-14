@@ -36,7 +36,7 @@
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type contetncontrolsmodels:MonitorPageModel}">
-                <contetncontrols:MonitorPage />
+                <contetncontrols:MonitorPage ContentHeight="20000" />
             </DataTemplate>
 
             <Style BasedOn="{StaticResource ScrollViewer}" TargetType="ScrollViewer" />

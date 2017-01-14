@@ -24,7 +24,7 @@ namespace Twill.Tools.Events
                 return currentManager;
             }
         }
-        
+
         public static void AddListener(T source, IWeakEventListener listener)
         {
             CurrentManager.ProtectedAddListener(source, listener);
