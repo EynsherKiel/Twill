@@ -91,6 +91,10 @@
       <Project>{5fb029aa-e411-4494-95b7-86db4e574fc0}</Project>
       <Name>Twill.Processes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Twill.Storage\Twill.Storage.csproj">
+      <Project>{0706db19-a6a6-4d27-b4f2-deaf44c40875}</Project>
+      <Name>Twill.Storage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Twill.Tools\Twill.Tools.csproj">
       <Project>{ccbdd89f-86cf-4d95-89ef-c5c43ea3085a}</Project>
       <Name>Twill.Tools</Name>

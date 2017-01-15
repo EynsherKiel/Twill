@@ -43,17 +43,14 @@ namespace Twill.UI.Core.Models.Controls.Processes
         private void Monitor_UpDateEvent(object obj, EventArgs e) => UpDate();
 
         private void UpDate(bool isFullUpdate = false)
-        {
-            lock (SyncRoot)
-            {
+        { 
                 if (ContentHeight < 1.0)
                     return;
 
                 if (SegmentMinHeight < 1.0)
                     return;
 
-                Analyse(Monitor?.FilterProcessMonitor?.UserLogActivities, isFullUpdate);
-            }
+                Analyse(Monitor?.FilterProcessMonitor?.UserLogActivities, isFullUpdate); 
         }
 
         public void Analyse(ICollection<ProcessActivity> list, bool isFullUpdate = false)
@@ -117,52 +114,52 @@ namespace Twill.UI.Core.Models.Controls.Processes
 
             }).SelectMany(el => el).OrderBy(ac => ac.Start).ToList();
 
-            SyncContext.Action(processes =>
-                {
-
-                    if (isFullUpdate)
-                    {
-                        ProcessActivities = new ObservableCollection<ProcessActivity>(processes);
-                        return;
-                    }
-
-                    for (int i = 0; i < ProcessActivities.Count; i++)
-                    {
-                        if (ProcessActivities[i].LinkProcess.Name == processes[i].LinkProcess.Name)
-                        {
-                            for (int j = 0; j < ProcessActivities[i].GroundWorkStates.Count; j++)
-                            {
-                                if (ProcessActivities[i].GroundWorkStates[j].Title != processes[i].GroundWorkStates[j].Title)
-                                {
-                                    ProcessActivities[i].GroundWorkStates[j].Title = processes[i].GroundWorkStates[j].Title;
-                                }
-                            }
-
-                            if (ProcessActivities[i].GroundWorkStates.Count < processes[i].GroundWorkStates.Count)
-                            {
-                                foreach (var gws in processes[i].GroundWorkStates.Skip(ProcessActivities[i].GroundWorkStates.Count))
-                                {
-                                    ProcessActivities[i].GroundWorkStates.Add(gws);
-                                }
-                            }
-
-                            ProcessActivities[i].Start = processes[i].Start;
-                            ProcessActivities[i].End = processes[i].End;
-                        }
-                        else
-                        {
-                            ProcessActivities = new ObservableCollection<ProcessActivity>(processes);
-                            return;
-                        }
-                    }
-
-                    foreach (var process in processes.Skip(ProcessActivities.Count))
-                    {
-                        ProcessActivities.Add(process);
-                    }
-                }, _processes);
+            SyncContext.AsyncAction(processes => SmartUpDate(isFullUpdate, processes), _processes);
         }
 
+        private void SmartUpDate(bool isFullUpdate, List<ProcessActivity> processes)
+        {
+            if (isFullUpdate)
+            {
+                ProcessActivities = new ObservableCollection<ProcessActivity>(processes);
+                return;
+            }
+
+            for (int i = 0; i < ProcessActivities.Count; i++)
+            {
+                if (ProcessActivities[i].LinkProcess.Name == processes[i].LinkProcess.Name)
+                {
+                    for (int j = 0; j < ProcessActivities[i].GroundWorkStates.Count; j++)
+                    {
+                        if (ProcessActivities[i].GroundWorkStates[j].Title != processes[i].GroundWorkStates[j].Title)
+                        {
+                            ProcessActivities[i].GroundWorkStates[j].Title = processes[i].GroundWorkStates[j].Title;
+                        }
+                    }
+
+                    if (ProcessActivities[i].GroundWorkStates.Count < processes[i].GroundWorkStates.Count)
+                    {
+                        foreach (var gws in processes[i].GroundWorkStates.Skip(ProcessActivities[i].GroundWorkStates.Count))
+                        {
+                            ProcessActivities[i].GroundWorkStates.Add(gws);
+                        }
+                    }
+
+                    ProcessActivities[i].Start = processes[i].Start;
+                    ProcessActivities[i].End = processes[i].End;
+                }
+                else
+                {
+                    ProcessActivities = new ObservableCollection<ProcessActivity>(processes);
+                    return;
+                }
+            }
+
+            foreach (var process in processes.Skip(ProcessActivities.Count))
+            {
+                ProcessActivities.Add(process);
+            }
+        }
 
         private double MinutesBetween(ProcessActivity first, ProcessActivity last) => (last.Start - first.End).TotalMinutes;
 
