@@ -2,18 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using Twill.Processes.Interfaces.Monitor;
-using Twill.Processes.Search;
 using Twill.Processes.Windows;
-using Twill.Tools.Architecture;
 using Twill.Tools.Collections;
 using Twill.Tools.Events;
 
 namespace Twill.Processes.Tracking
-{ 
+{
     public abstract class BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity> : IWeakEventListener, ISmartWeakEventManager
         where TProcessMonitor :  class, IProcessMonitor<TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>,new()
         where TProcessDayActivity : class, IProcessDayActivity<TProcessWork, TGroundWorkState>, new()
@@ -59,12 +55,9 @@ namespace Twill.Processes.Tracking
             if (environ == null)
                 return;
 
-            Runtime(() =>
-            {
-                WriteNewData(environ);
+            Runtime(() => WriteNewData(environ));
 
-                Event(this, EventArgs.Empty);
-            });
+            Event(this, EventArgs.Empty);
         }
 
         private void Filtering()

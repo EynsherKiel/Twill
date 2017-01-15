@@ -44,8 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Barrier\Controller.cs" />
-    <Compile Include="Barrier\FileOperationController.cs" />
+    <Compile Include="Barrier\Manager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\Default.cs" />
   </ItemGroup>
@@ -53,6 +52,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Twill.Processes\Twill.Processes.csproj">
+      <Project>{5fb029aa-e411-4494-95b7-86db4e574fc0}</Project>
+      <Name>Twill.Processes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Twill.Tools\Twill.Tools.csproj">
       <Project>{ccbdd89f-86cf-4d95-89ef-c5c43ea3085a}</Project>
       <Name>Twill.Tools</Name>
