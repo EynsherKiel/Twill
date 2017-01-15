@@ -94,7 +94,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
             }
 
             var _processes = processlist.OrderBy(ac => ac.Start).GroupBy(el => el.LinkProcess.Name).Select(activities =>
-            { 
+            {
                 var items = new List<ProcessActivity>() { ProcessActivityClone(activities.First()) };
 
                 foreach (var last in activities.Skip(1))
@@ -120,53 +120,53 @@ namespace Twill.UI.Core.Models.Controls.Processes
             SyncContext.Action(processes =>
                 {
 
-                if (isFullUpdate)
-                {
-                    ProcessActivities = new ObservableCollection<ProcessActivity>(processes);
-                    return;
-                }
-
-                for (int i = 0; i < ProcessActivities.Count; i++)
-                {
-                    if (ProcessActivities[i].LinkProcess.Name == processes[i].LinkProcess.Name)
+                    if (isFullUpdate)
                     {
-                        for (int j = 0; j < ProcessActivities[i].GroundWorkStates.Count; j++)
-                        {
-                            if (ProcessActivities[i].GroundWorkStates[j].Title != processes[i].GroundWorkStates[j].Title)
-                            {
-                                ProcessActivities[i].GroundWorkStates[j].Title = processes[i].GroundWorkStates[j].Title;
-                            }
-                        }
-
-                        if (ProcessActivities[i].GroundWorkStates.Count < processes[i].GroundWorkStates.Count)
-                        {
-                            foreach (var gws in processes[i].GroundWorkStates.Skip(ProcessActivities[i].GroundWorkStates.Count))
-                            {
-                                ProcessActivities[i].GroundWorkStates.Add(gws);
-                            }
-                        }
-
-                        ProcessActivities[i].Start = processes[i].Start;
-                        ProcessActivities[i].End = processes[i].End;
+                        ProcessActivities = new ObservableCollection<ProcessActivity>(processes);
+                        return;
                     }
-                    else
+
+                    for (int i = 0; i < ProcessActivities.Count; i++)
+                    {
+                        if (ProcessActivities[i].LinkProcess.Name == processes[i].LinkProcess.Name)
+                        {
+                            for (int j = 0; j < ProcessActivities[i].GroundWorkStates.Count; j++)
+                            {
+                                if (ProcessActivities[i].GroundWorkStates[j].Title != processes[i].GroundWorkStates[j].Title)
+                                {
+                                    ProcessActivities[i].GroundWorkStates[j].Title = processes[i].GroundWorkStates[j].Title;
+                                }
+                            }
+
+                            if (ProcessActivities[i].GroundWorkStates.Count < processes[i].GroundWorkStates.Count)
+                            {
+                                foreach (var gws in processes[i].GroundWorkStates.Skip(ProcessActivities[i].GroundWorkStates.Count))
+                                {
+                                    ProcessActivities[i].GroundWorkStates.Add(gws);
+                                }
+                            }
+
+                            ProcessActivities[i].Start = processes[i].Start;
+                            ProcessActivities[i].End = processes[i].End;
+                        }
+                        else
                         {
                             ProcessActivities = new ObservableCollection<ProcessActivity>(processes);
                             return;
                         }
-                }
+                    }
 
-                foreach (var process in processes.Skip(ProcessActivities.Count))
-                {
-                    ProcessActivities.Add(process);
-                }
-            }, _processes);
+                    foreach (var process in processes.Skip(ProcessActivities.Count))
+                    {
+                        ProcessActivities.Add(process);
+                    }
+                }, _processes);
         }
 
 
         private double MinutesBetween(ProcessActivity first, ProcessActivity last) => (last.Start - first.End).TotalMinutes;
 
-        private ProcessActivity ProcessActivityClone(ProcessActivity activity) => 
+        private ProcessActivity ProcessActivityClone(ProcessActivity activity) =>
             new ProcessActivity()
             {
                 Start = activity.Start,
@@ -205,18 +205,13 @@ namespace Twill.UI.Core.Models.Controls.Processes
             get { return monitor; }
             private set
             {
-                try
-                {
-                    if (Monitor != null)
-                        value.UnSubscribeUpDateEvent(this);
+                Monitor?.UnSubscribeUpDateEvent(this);
 
-                    if (value != null)
-                        value.SubscribeUpDateEvent(this);
-                }
-                catch { }
+                value?.SubscribeUpDateEvent(this);
+
                 Set(ref monitor, value);
             }
-        }
+        } 
 
         public const double SegmentMinHeightConstant = 47.0;
         private double segmentMinHeight = SegmentMinHeightConstant;
