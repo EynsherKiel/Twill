@@ -5,14 +5,26 @@ using Twill.UI.Core.Models.Controls.TimeLine;
 namespace Twill.UI.Core.Models.Content
 {
     public class MonitorPageModel : ViewModelBase
-    { 
-        private Monitor monitor = Tools.Architecture.Singleton<Monitor>.Instance;
+    {
+        public MonitorPageModel()
+        {
+            if (IsInDesignMode)
+            {
+                Monitor = new Monitor();
+            }
+            else
+            {
+                Monitor = Tools.Architecture.Singleton<Monitor>.Instance;
+            }
+        }
+
+        private Monitor monitor;
         public Monitor Monitor
         {
             get { return monitor; }
             set { Set(ref monitor, value); }
         }
-         
+
         private DayActivityAnalysis dayActivityAnalysis = new DayActivityAnalysis();
         public DayActivityAnalysis DayActivityAnalysis
         {
@@ -25,6 +37,6 @@ namespace Twill.UI.Core.Models.Content
         {
             get { return reportsModel; }
             set { Set(ref reportsModel, value); }
-        } 
+        }
     }
 }

@@ -16,7 +16,14 @@ namespace Twill.UI.Core.Models.Controls.Processes
     {
         public DayActivityAnalysis()
         {
-            Monitor = Tools.Architecture.Singleton<Monitor>.Instance;
+            if (IsInDesignMode)
+            {
+                Monitor = new Monitor();
+            }
+            else
+            {
+                Monitor = Tools.Architecture.Singleton<Monitor>.Instance;
+            }
         }
 
 
