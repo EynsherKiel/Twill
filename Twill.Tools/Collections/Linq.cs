@@ -10,7 +10,7 @@ namespace Twill.Tools.Collections
     {
         public static void UpdateLinksWithFilter<T, T2>(this IEnumerable<T> list, IEnumerable<T2> secondlist, Func<T, T2, bool> predicate, ref IList<T> changedList)
         {
-            var elements = list.Where(x => secondlist.Any(el => predicate(x, el))).ToList();
+            var elements = list.Where(x => secondlist.Count(el => predicate(x, el)) != 0).ToList();
 
             foreach (var item in list)
             {

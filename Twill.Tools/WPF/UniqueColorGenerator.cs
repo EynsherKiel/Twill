@@ -15,13 +15,10 @@ namespace Twill.Tools.WPF
 
         private static Brush GetUniqueBrush()
         {
-            SolidColorBrush resultBrush = null;
+            Brush resultBrush = null;
             do
-            {
                 resultBrush = new SolidColorBrush(Color.FromRgb((byte)Random.Next(0, 255), (byte)Random.Next(0, 255), (byte)Random.Next(0, 255)));
-
-            }
-            while (Brushes.Cast<SolidColorBrush>().Any(brush => (System.Math.Abs(resultBrush.Color.R - brush.Color.R) + System.Math.Abs(resultBrush.Color.G - brush.Color.G) + System.Math.Abs(resultBrush.Color.B - brush.Color.B)) < 60.0));
+            while (Brushes.Contains(resultBrush));
 
             return resultBrush;
         }

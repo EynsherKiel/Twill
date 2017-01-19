@@ -10,8 +10,7 @@ using Twill.Tools.Events;
 
 namespace Twill.Processes.Tracking
 {
-    public abstract class BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity> : IWeakEventListener, ISmartWeakEventManager, ICloneable
-
+    public abstract class BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity> : IWeakEventListener, ISmartWeakEventManager
         where TProcessMonitor :  class, IProcessMonitor<TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>,new()
         where TProcessDayActivity : class, IProcessDayActivity<TProcessWork, TGroundWorkState>, new()
         where TProcessWork : class, IProcessWork<TGroundWorkState>, new()
@@ -102,12 +101,12 @@ namespace Twill.Processes.Tracking
             if (ProcessMonitor.UserLogActivities == null)
                 ProcessMonitor.UserLogActivities = new ObservableCollection<TProcessActivity>();
 
-            if (environ.ProcessDockers == null)
+            if (environ.Processes == null)
                 return;
 
             var now = DateTime.Now;
 
-            foreach (var process in environ.ProcessDockers)
+            foreach (var process in environ.Processes)
             {
                 var currentProcessDayActivity = ProcessMonitor.Processes.FirstOrDefault(p => p.Name == process.Name);
 
@@ -135,31 +134,31 @@ namespace Twill.Processes.Tracking
                     lastProcWork.End = now;
                 }
 
-                //if (lastProcWork.GroundWorkStates == null)
-                //    lastProcWork.GroundWorkStates = new ObservableCollection<TGroundWorkState>();
+                if (lastProcWork.GroundWorkStates == null)
+                    lastProcWork.GroundWorkStates = new ObservableCollection<TGroundWorkState>();
 
 
-                //var lastGroundState = lastProcWork.GroundWorkStates.LastOrDefault();
+                var lastGroundState = lastProcWork.GroundWorkStates.LastOrDefault();
 
-                //if (lastGroundState != null)
-                //{
-                //    if (lastGroundState.Title == process.Title)
-                //        continue;
+                if (lastGroundState != null)
+                {
+                    if (lastGroundState.Title == process.Title)
+                        continue;
 
-                //    lastGroundState.End = now;
+                    lastGroundState.End = now;
 
-                //}
+                }
 
                 //if(string.IsNullOrEmpty(process.Title))
                 //{
                 //    MessageBox.Show(string.Format("process.Title is null or empty : {0}", process.Title));
                 //}
                  
-                //lastProcWork.GroundWorkStates.Add(NewGroundStateWork(now, process.Title));
+                lastProcWork.GroundWorkStates.Add(NewGroundStateWork(now, process.Title));
             }
 
             // delete was ended process
-            foreach (var process in ProcessMonitor.Processes.Where(proc => !environ.ProcessDockers.Select(p => p.Name).Contains(proc.Name)))
+            foreach (var process in ProcessMonitor.Processes.Where(proc => !environ.Processes.Select(p => p.Name).Contains(proc.Name)))
             {
                 var lastActivity = process.Activities.LastOrDefault();
                 if (lastActivity == null)
@@ -175,12 +174,12 @@ namespace Twill.Processes.Tracking
                     lastActivity.End = now;
                 }
 
-                //var lastgroundworkstate = lastActivity.GroundWorkStates.LastOrDefault();
-                //if (lastgroundworkstate != null)
-                //{
-                //    lastgroundworkstate.End = now;
-                //    lastgroundworkstate.IsAlive = false;
-                //}
+                var lastgroundworkstate = lastActivity.GroundWorkStates.LastOrDefault();
+                if (lastgroundworkstate != null)
+                {
+                    lastgroundworkstate.End = now;
+                    lastgroundworkstate.IsAlive = false;
+                }
             }
              
 
@@ -207,7 +206,7 @@ namespace Twill.Processes.Tracking
 
                 if (lastUserActivity == null)
                 { 
-                    FillingUserLogActivitys(NewGroundStateWork(now, environ.Lead.Lead.Title));
+                    FillingUserLogActivitys(NewGroundStateWork(now, environ.Lead.Title));
                 }
                 else
                 {
@@ -217,13 +216,13 @@ namespace Twill.Processes.Tracking
                     if (groundStateWork.IsAlive)
                         lastUserActivity.End = now;
 
-                    if (groundStateWork.Title != environ.Lead.Lead.Title ||
+                    if (groundStateWork.Title != environ.Lead.Title ||
                         process.Name != ProcessMonitor.Lead.Name ||
                         !groundStateWork.IsAlive)
                     {
                         groundStateWork.IsAlive = false;
 
-                        FillingUserLogActivitys(NewGroundStateWork(now, environ.Lead.Lead.Title));
+                        FillingUserLogActivitys(NewGroundStateWork(now, environ.Lead.Title));
                     }
                 }
             }
@@ -275,7 +274,5 @@ namespace Twill.Processes.Tracking
             Environ_UpdateEvent(sender, e);
             return true;   
         }
-
-        public object Clone() => MemberwiseClone();
     }
 }

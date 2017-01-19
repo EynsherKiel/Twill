@@ -85,7 +85,6 @@
     <Compile Include="Windows\Environ.cs" />
     <Compile Include="Windows\Process.cs" />
     <Compile Include="Interfaces\WMI\IWMIProcess.cs" />
-    <Compile Include="Windows\ProcessDocker.cs" />
     <Compile Include="WMI\Manager.cs" />
   </ItemGroup>
   <ItemGroup>
