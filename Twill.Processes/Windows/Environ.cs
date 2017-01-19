@@ -18,20 +18,16 @@ namespace Twill.Processes.Windows
         }
 
         private object SyncRoot = new object();
+        private TimeSpan timeUpdate = TimeSpan.FromMilliseconds(1000);
 
         public readonly Timer Timer;
         public readonly Searcher Searcher = new Searcher();
          
         public event EventHandler<EventArgs> Event = delegate { };
 
-        public List<ProcessDocker> ProcessDockers { get; private set; } = new List<ProcessDocker>();
-
-        public List<Process> Processes { get; private set; } = new List<Process>();
-        private List<Process> RealProcesses = new List<Process>();
-        public Process Lead { get; set; }
-
-
-        private TimeSpan timeUpdate = TimeSpan.FromMilliseconds(1000 );
+        public ProcessDocker Lead { get; private set; }
+        public List<ProcessDocker> ProcessDockers { get; } = new List<ProcessDocker>();
+         
 
         public TimeSpan TimeUpdate
         {
@@ -70,18 +66,16 @@ namespace Twill.Processes.Windows
                 }
                 else
                 {
-                    ProcessDockers.Add(new ProcessDocker(group.ToList()));
+                    ProcessDockers.Add(new ProcessDocker(group.Key, group.ToList()));
                 }
             }
 
             ProcessDockers.RemoveAll(pd => pd.IsTerminated || !groupsNewestProcesses.Any(gnp => gnp.Key == pd.Name) );
 
-            var lead = ProcessDocker.SetLead(ProcessDockers, selectedprocess);
+            Lead = ProcessDocker.SetLead(ProcessDockers, selectedprocess);
 
             ProcessDockers.ForEach(pd => pd.UpTitles()); 
         }
-
-
 
 
         private void UpDate(object state)
@@ -90,30 +84,7 @@ namespace Twill.Processes.Windows
                 return;
             try
             {
-                UpDate();
-
-
-                var results = Searcher.FindAllProcess();
-
-                var selectedprocess = results.Item1;
-                var handles = results.Item2;
-
-                var newList = new List<Process>();
-                var clonelist = RealProcesses.ToList();
-
-                handles.ForEach(handle => newList.Add(RealProcesses.FirstOrDefault(proc => proc.Handle == handle) ?? new Process(handle)));
-
-                RealProcesses = newList;
-                newList = newList.GroupBy(p => p.Name).Select(group => group.First()).ToList();
-
-                newList.ForEach(el => el.UpTitle());
-
-                Processes = newList;
-
-                Lead = selectedprocess == null ? null : newList.FirstOrDefault(proc => proc.Handle == selectedprocess.Handle);
-
-                Lead?.UpTitle();
-
+                UpDate(); 
 
                 Event(this, EventArgs.Empty);
             }
