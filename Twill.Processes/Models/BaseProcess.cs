@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Twill.Processes.Models
 {
-    public class BaseProcess : IEquatable<BaseProcess>
+    public class BaseProcess
     {
         public BaseProcess(IntPtr handle)
         {
@@ -29,7 +29,5 @@ namespace Twill.Processes.Models
         public string Title { get; private set; }
 
         public void UpTitle() => Title = DesktopSearcher.GetTitle(Handle);
-
-        public bool Equals(BaseProcess other) => other == null ? false : Handle == other.Handle;
     }
 }

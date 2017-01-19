@@ -63,7 +63,7 @@ namespace Twill.Units.Implementation
                 {
                     var @this = obj as Environ;
 
-                    Assert.AreNotEqual(@this.ProcessDockers.Count, 0, "vs - is not desktop process ? >_<");
+                    Assert.AreNotEqual(@this.Processes.Count, 0, "vs - is not desktop process ? >_<");
 
                     TestContextWriteLineEnviron(@this);
 
@@ -84,7 +84,7 @@ namespace Twill.Units.Implementation
 
             TestContext.WriteLine("All process :");
 
-            foreach (var process in environ.ProcessDockers)
+            foreach (var process in environ.Processes)
             {
                 TestContext.WriteLine("     {0}", process.ToString());
             }
