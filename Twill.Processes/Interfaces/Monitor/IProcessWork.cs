@@ -9,7 +9,7 @@ namespace Twill.Processes.Interfaces.Monitor
 {
     public interface IProcessWork<T> : IActivity where T : IGroundWorkState
     { 
-        ObservableCollection<T> GroundWorkStates { get; set; }
+        //ObservableCollection<T> GroundWorkStates { get; set; }
         ObservableCollection<T> LeadGroundWorkStates { get; set; }
     }
 }
