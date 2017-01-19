@@ -11,6 +11,7 @@ using Twill.Tools.Events;
 namespace Twill.Processes.Tracking
 {
     public abstract class BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity> : IWeakEventListener, ISmartWeakEventManager, ICloneable
+
         where TProcessMonitor :  class, IProcessMonitor<TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>,new()
         where TProcessDayActivity : class, IProcessDayActivity<TProcessWork, TGroundWorkState>, new()
         where TProcessWork : class, IProcessWork<TGroundWorkState>, new()
