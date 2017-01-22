@@ -9,7 +9,7 @@ using Twill.Tools.Async;
 
 namespace Twill.Storage.Barrier
 {
-    public class Manager
+    public class Manager 
     {
 
         private AsyncQueue AsyncQueue = Tools.Architecture.Singleton<AsyncQueue>.Instance; 
@@ -84,9 +84,7 @@ namespace Twill.Storage.Barrier
             {
                 try
                 {
-                    var directory = System.IO.Path.GetDirectoryName(path);
-                    if (!System.IO.Directory.Exists(directory))
-                        System.IO.Directory.CreateDirectory(directory);
+                    Tools.IO.Files.CheckDirectory(path);
 
                     System.IO.File.WriteAllText(path, data);
                 }

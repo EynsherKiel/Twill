@@ -22,10 +22,11 @@ namespace Twill.UI.Core.Models.Controls.Processes
             }
             else
             {
-                Monitor = Tools.Architecture.Singleton<Monitor>.Instance;
+                Monitor = StorageHelperManager.Load<Monitor>();
             }
         }
-
+         
+        private StorageHelper.Manager StorageHelperManager = new StorageHelper.Manager();
 
         public DayActivityAnalysis(bool isMonitorStaticInstance)
         {
