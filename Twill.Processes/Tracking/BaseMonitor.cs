@@ -11,7 +11,7 @@ using Twill.Tools.Events;
 namespace Twill.Processes.Tracking
 {
     public abstract class BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity> : IWeakEventListener, ISmartWeakEventManager, ICloneable
-        where TProcessMonitor : class, IProcessMonitor<TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>,new()
+        where TProcessMonitor : class, IProcessMonitor<TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>, new()
         where TProcessDayActivity : class, IProcessDayActivity<TProcessWork, TGroundWorkState>, new()
         where TProcessWork : class, IProcessWork<TGroundWorkState>, new()
         where TGroundWorkState : class, IGroundWorkState, new()
@@ -128,7 +128,7 @@ namespace Twill.Processes.Tracking
             if (environ.ProcessDockers == null)
                 return;
 
-            if(Date != now.Date)
+            if (Date != now.Date)
             {
                 Date = now.Date;
 
@@ -207,7 +207,7 @@ namespace Twill.Processes.Tracking
                 ProcessMonitor.Lead = ProcessMonitor.Processes.First(p => p.Name == environ.Lead.Name);
 
                 if (lastUserActivity == null)
-                { 
+                {
                     FillingUserLogActivitys(NewGroundStateWork(now, environ.Lead.Lead.Title));
                 }
                 else
@@ -227,6 +227,8 @@ namespace Twill.Processes.Tracking
                             groundStateWork.IsAlive = false;
                         }
                     }
+
+
 
 
                     if (groundStateWork.Title != environ.Lead.Lead.Title ||
@@ -295,7 +297,7 @@ namespace Twill.Processes.Tracking
 
             obj.Environ = null;
             obj.FilterProcessNames = new ObservableCollection<string>(this.FilterProcessNames);
-             
+
 
             obj.ProcessMonitor = new TProcessMonitor();
             obj.ProcessMonitor.Processes = new ObservableCollection<TProcessDayActivity>();
@@ -378,7 +380,5 @@ namespace Twill.Processes.Tracking
 
             return obj;
         }
-
-        public object Clone() => MemberwiseClone();
     }
 }
