@@ -13,7 +13,7 @@ namespace Twill.Storage.Settings
 
         public static string ReportsName = "Reports";
         public static string LaborsName = "Activities";
-        public static string LaborJsonName = "activity.json";
+        public static string LaborJsonName = "activity.zip";
 
         public static string UserFolderPath => System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), UserFolderName);
 

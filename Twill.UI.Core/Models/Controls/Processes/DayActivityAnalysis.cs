@@ -128,7 +128,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
 
             for (int i = 0; i < ProcessActivities.Count; i++)
             {
-                if (ProcessActivities[i].LinkProcess.Name == processes[i].LinkProcess.Name)
+                if (ProcessActivities.Count == processes.Count && ProcessActivities[i].LinkProcess.Name == processes[i].LinkProcess.Name)
                 {
                     for (int j = 0; j < ProcessActivities[i].GroundWorkStates.Count; j++)
                     {

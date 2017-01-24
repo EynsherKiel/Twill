@@ -11,14 +11,13 @@ using Twill.Tools.Events;
 namespace Twill.Processes.Tracking
 {
     public abstract class BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity> : IWeakEventListener, ISmartWeakEventManager, ICloneable
-
         where TProcessMonitor : class, IProcessMonitor<TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>, new()
         where TProcessDayActivity : class, IProcessDayActivity<TProcessWork, TGroundWorkState>, new()
         where TProcessWork : class, IProcessWork<TGroundWorkState>, new()
         where TGroundWorkState : class, IGroundWorkState, new()
         where TProcessActivity : class, IProcessActivity<TProcessDayActivity, TProcessWork, TGroundWorkState>, new()
     {
-         
+
         private Environ Environ;
         private object SyncRoot = new object();
 
@@ -26,12 +25,12 @@ namespace Twill.Processes.Tracking
         public TProcessMonitor FilterProcessMonitor { get; private set; } = new TProcessMonitor();
         public ObservableCollection<string> FilterProcessNames { get; private set; } = new ObservableCollection<string>();
 
+        public DateTime Date { get; private set; } = DateTime.Now.Date;
 
         public TimeSpan TimeUpdate
         {
             get { return Environ?.TimeUpdate ?? TimeSpan.Zero; }
-            set {
-                if(Environ != null )Environ.TimeUpdate = value; }
+            set { if (Environ != null) Environ.TimeUpdate = value; }
         }
 
         public event EventHandler<EventArgs> Event = delegate { };
@@ -82,6 +81,9 @@ namespace Twill.Processes.Tracking
 
         public void Filtering()
         {
+            if (FilterProcessMonitor == null)
+                FilterProcessMonitor = new TProcessMonitor();
+
             if (FilterProcessMonitor.Processes == null)
                 FilterProcessMonitor.Processes = new ObservableCollection<TProcessDayActivity>();
 
@@ -111,6 +113,8 @@ namespace Twill.Processes.Tracking
 
         private void WriteNewData(Environ environ)
         {
+            var now = DateTime.Now;
+
 
             if (ProcessMonitor == null)
                 ProcessMonitor = new TProcessMonitor();
@@ -124,7 +128,14 @@ namespace Twill.Processes.Tracking
             if (environ.ProcessDockers == null)
                 return;
 
-            var now = DateTime.Now;
+            if(Date != now.Date)
+            {
+                Date = now.Date;
+
+                ProcessMonitor.Processes.Clear();
+                ProcessMonitor.Lead = null;
+                ProcessMonitor.UserLogActivities.Clear();
+            }
 
             foreach (var process in environ.ProcessDockers)
             {
@@ -217,7 +228,7 @@ namespace Twill.Processes.Tracking
                         }
                     }
 
-                     
+
 
 
                     if (groundStateWork.Title != environ.Lead.Lead.Title ||
@@ -285,7 +296,8 @@ namespace Twill.Processes.Tracking
             var obj = this.MemberwiseClone() as BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>;
 
             obj.Environ = null;
-            obj.FilterProcessNames = new ObservableCollection<string>();
+            obj.FilterProcessNames = new ObservableCollection<string>(this.FilterProcessNames);
+             
 
             obj.ProcessMonitor = new TProcessMonitor();
             obj.ProcessMonitor.Processes = new ObservableCollection<TProcessDayActivity>();

@@ -17,7 +17,7 @@ namespace Twill.Processes.Interfaces.Monitor
          
         T1 Lead { get; set; }
         string LeadTitle { get; }
-
+        
         ObservableCollection<T4> UserLogActivities { get; set; }
     }
 }

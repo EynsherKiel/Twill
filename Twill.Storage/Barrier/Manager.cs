@@ -11,15 +11,8 @@ namespace Twill.Storage.Barrier
 {
     public class Manager 
     {
-
         private AsyncQueue AsyncQueue = Tools.Architecture.Singleton<AsyncQueue>.Instance; 
 
-        // bool = is using datetime
-        private readonly List<Tuple<Type, string, bool>> PathsByTypes = new List<Tuple<Type, string, bool>>()
-        {
-            new Tuple<Type, string, bool>(typeof(BaseMonitor<,,,,>), null, true)
-        };
-         
 
         public void Save<T>(T obj, DateTime? time = null) where T : class
         {
@@ -27,11 +20,11 @@ namespace Twill.Storage.Barrier
             if (type == null)
                 return;
 
-            var path = GetPath(type, time);
-            if (path == null)
+            var interaction = GetPath(type, time);
+            if (interaction == null)
                 return;
 
-            Write(path, Newtonsoft.Json.JsonConvert.SerializeObject(obj));
+            Save(interaction, Newtonsoft.Json.JsonConvert.SerializeObject(obj));
         }
          
         public T Load<T>(DateTime? time = null) where T : class,  new()
@@ -41,29 +34,25 @@ namespace Twill.Storage.Barrier
             if (type == null)
                 return new T();
 
-            var path = GetPath(type, time);
-            if (System.IO.File.Exists(path))
+            var interaction = GetPath(type, time);
+            if (interaction?.IsFileExist() == true)
             {
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(Read(path));
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(Load(interaction));
             }
 
             return new T();
         }
 
-        private string GetPath(Type type, DateTime? time = null)
+        private Files.IInteraction GetPath(Type type, DateTime? time = null)
         {
-            var tuple = PathsByTypes.FirstOrDefault(el => el.Item1 == type);
-            if (tuple == null)
-                return null;
-
-            if(tuple.Item3)
+            if(type == typeof(BaseMonitor<,,,,>))
             {
-                return Settings.Default.GetLaborFullPath(time ?? DateTime.Now);
+                return new Files.Zip(Settings.Default.GetLaborFullPath(time ?? DateTime.Now));
             }
 
-            return tuple.Item2;
+            return null;
         }
-         
+
 
         private Type GetType<T>()
         {
@@ -78,38 +67,17 @@ namespace Twill.Storage.Barrier
 
             return null;
         }
-        private void Write(string path, string data)
-        {
-            AsyncQueue.AsyncAdd(() =>
-            {
-                try
-                {
-                    Tools.IO.Files.CheckDirectory(path);
 
-                    System.IO.File.WriteAllText(path, data);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            });
+        private void Save(Files.IInteraction sysinteraction, string data)
+        {
+            AsyncQueue.AsyncAdd(() => sysinteraction.Save(data));
         }
 
-        private string Read(string path)
+        private string Load(Files.IInteraction sysinteraction)
         {
             string data = string.Empty;
 
-            AsyncQueue.Add(() =>
-            {
-                try
-                {
-                    data = System.IO.File.ReadAllText(path);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            });
+            AsyncQueue.Add(() => data = sysinteraction.Load());
 
             return data;
         }
