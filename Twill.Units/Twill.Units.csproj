@@ -73,6 +73,7 @@
     <Compile Include="Implementation\Collections.cs" />
     <Compile Include="Implementation\Processes.cs" />
     <Compile Include="Implementation\ProcessesModel.cs" />
+    <Compile Include="Implementation\ToolsTextCompressionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

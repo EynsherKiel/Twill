@@ -22,10 +22,11 @@ namespace Twill.UI.Core.Models.Controls.Processes
             }
             else
             {
-                Monitor = Tools.Architecture.Singleton<Monitor>.Instance;
+                Monitor = StorageHelperManager.Load<Monitor>();
             }
         }
-
+         
+        private StorageHelper.Manager StorageHelperManager = new StorageHelper.Manager();
 
         public DayActivityAnalysis(bool isMonitorStaticInstance)
         {
@@ -127,7 +128,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
 
             for (int i = 0; i < ProcessActivities.Count; i++)
             {
-                if (ProcessActivities[i].LinkProcess.Name == processes[i].LinkProcess.Name)
+                if (ProcessActivities.Count == processes.Count && ProcessActivities[i].LinkProcess.Name == processes[i].LinkProcess.Name)
                 {
                     for (int j = 0; j < ProcessActivities[i].GroundWorkStates.Count; j++)
                     {

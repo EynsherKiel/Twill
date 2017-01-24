@@ -97,6 +97,8 @@ namespace Twill.Units.Implementation
 
             var monitor = new Twill.Processes.Tracking.Monitor();
 
+            monitor.StartWatch();
+
             var time = monitor.TimeUpdate;
             var upDateCount = 0;
             var processesCount = new List<int>();
@@ -122,6 +124,8 @@ namespace Twill.Units.Implementation
             using (var token = new ManualResetEvent(false))
             {
                 var monitor = new Twill.Processes.Tracking.Monitor();
+
+                monitor.StartWatch();
 
                 monitor.FilterProcessNames.Clear();
 

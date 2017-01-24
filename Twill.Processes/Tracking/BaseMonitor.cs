@@ -11,36 +11,31 @@ using Twill.Tools.Events;
 namespace Twill.Processes.Tracking
 {
     public abstract class BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity> : IWeakEventListener, ISmartWeakEventManager, ICloneable
-
-        where TProcessMonitor :  class, IProcessMonitor<TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>,new()
+        where TProcessMonitor : class, IProcessMonitor<TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>,new()
         where TProcessDayActivity : class, IProcessDayActivity<TProcessWork, TGroundWorkState>, new()
         where TProcessWork : class, IProcessWork<TGroundWorkState>, new()
         where TGroundWorkState : class, IGroundWorkState, new()
         where TProcessActivity : class, IProcessActivity<TProcessDayActivity, TProcessWork, TGroundWorkState>, new()
     {
 
-        public BaseMonitor()
-        {
-            Environ.SubscribeUpDateEvent(this);
-        } 
-         
-
-        private Environ Environ = new Environ();
+        private Environ Environ;
+        private object SyncRoot = new object();
 
         public TProcessMonitor ProcessMonitor { get; private set; } = new TProcessMonitor();
         public TProcessMonitor FilterProcessMonitor { get; private set; } = new TProcessMonitor();
         public ObservableCollection<string> FilterProcessNames { get; private set; } = new ObservableCollection<string>();
 
+        public DateTime Date { get; private set; } = DateTime.Now.Date;
 
         public TimeSpan TimeUpdate
         {
-            get { return Environ.TimeUpdate; }
-            set { Environ.TimeUpdate = value; }
+            get { return Environ?.TimeUpdate ?? TimeSpan.Zero; }
+            set { if (Environ != null) Environ.TimeUpdate = value; }
         }
 
         public event EventHandler<EventArgs> Event = delegate { };
 
-        public void SubscribeUpDateEvent(IWeakEventListener obj) => 
+        public void SubscribeUpDateEvent(IWeakEventListener obj) =>
             SmartWeakEventManager<BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>>.AddListener(this, obj);
 
         public void UnSubscribeUpDateEvent(IWeakEventListener obj) =>
@@ -60,9 +55,35 @@ namespace Twill.Processes.Tracking
 
             Event(this, EventArgs.Empty);
         }
-
-        private void Filtering()
+        public void StartWatch()
         {
+            lock (SyncRoot)
+            {
+                if (Environ == null)
+                {
+                    Environ = new Environ();
+                    Environ.SubscribeUpDateEvent(this);
+                }
+            }
+        }
+
+        public void StopWatch()
+        {
+            lock (SyncRoot)
+            {
+                if (Environ != null)
+                {
+                    Environ.UnSubscribeUpDateEvent(this);
+                    Environ = null;
+                }
+            }
+        }
+
+        public void Filtering()
+        {
+            if (FilterProcessMonitor == null)
+                FilterProcessMonitor = new TProcessMonitor();
+
             if (FilterProcessMonitor.Processes == null)
                 FilterProcessMonitor.Processes = new ObservableCollection<TProcessDayActivity>();
 
@@ -91,7 +112,9 @@ namespace Twill.Processes.Tracking
         }
 
         private void WriteNewData(Environ environ)
-        { 
+        {
+            var now = DateTime.Now;
+
 
             if (ProcessMonitor == null)
                 ProcessMonitor = new TProcessMonitor();
@@ -105,13 +128,20 @@ namespace Twill.Processes.Tracking
             if (environ.ProcessDockers == null)
                 return;
 
-            var now = DateTime.Now;
+            if(Date != now.Date)
+            {
+                Date = now.Date;
+
+                ProcessMonitor.Processes.Clear();
+                ProcessMonitor.Lead = null;
+                ProcessMonitor.UserLogActivities.Clear();
+            }
 
             foreach (var process in environ.ProcessDockers)
             {
                 var currentProcessDayActivity = ProcessMonitor.Processes.FirstOrDefault(p => p.Name == process.Name);
 
-                if(currentProcessDayActivity == null)
+                if (currentProcessDayActivity == null)
                 {
                     var work = CreateIActivity<TProcessWork>(now);
                     currentProcessDayActivity = new TProcessDayActivity();
@@ -134,28 +164,6 @@ namespace Twill.Processes.Tracking
                 {
                     lastProcWork.End = now;
                 }
-
-                //if (lastProcWork.GroundWorkStates == null)
-                //    lastProcWork.GroundWorkStates = new ObservableCollection<TGroundWorkState>();
-
-
-                //var lastGroundState = lastProcWork.GroundWorkStates.LastOrDefault();
-
-                //if (lastGroundState != null)
-                //{
-                //    if (lastGroundState.Title == process.Title)
-                //        continue;
-
-                //    lastGroundState.End = now;
-
-                //}
-
-                //if(string.IsNullOrEmpty(process.Title))
-                //{
-                //    MessageBox.Show(string.Format("process.Title is null or empty : {0}", process.Title));
-                //}
-                 
-                //lastProcWork.GroundWorkStates.Add(NewGroundStateWork(now, process.Title));
             }
 
             // delete was ended process
@@ -174,15 +182,8 @@ namespace Twill.Processes.Tracking
                     lastActivity.IsAlive = false;
                     lastActivity.End = now;
                 }
-
-                //var lastgroundworkstate = lastActivity.GroundWorkStates.LastOrDefault();
-                //if (lastgroundworkstate != null)
-                //{
-                //    lastgroundworkstate.End = now;
-                //    lastgroundworkstate.IsAlive = false;
-                //}
             }
-             
+
 
             var lastUserActivity = ProcessMonitor.UserLogActivities.LastOrDefault();
 
@@ -214,8 +215,19 @@ namespace Twill.Processes.Tracking
                     var process = lastUserActivity.LinkProcess;
                     var groundStateWork = lastUserActivity.GroundWorkStates.First();
 
+
                     if (groundStateWork.IsAlive)
-                        lastUserActivity.End = now;
+                    {
+                        if (now - lastUserActivity.End < TimeSpan.FromSeconds(10))
+                        {
+                            lastUserActivity.End = now;
+                        }
+                        else
+                        {
+                            groundStateWork.IsAlive = false;
+                        }
+                    }
+
 
                     if (groundStateWork.Title != environ.Lead.Lead.Title ||
                         process.Name != ProcessMonitor.Lead.Name ||
@@ -265,7 +277,7 @@ namespace Twill.Processes.Tracking
 
         private TGroundWorkState NewGroundStateWork(DateTime now, string title)
         {
-            var lastLeadGroundStateWork = CreateIActivity<TGroundWorkState>(now);  
+            var lastLeadGroundStateWork = CreateIActivity<TGroundWorkState>(now);
             lastLeadGroundStateWork.Title = title;
             return lastLeadGroundStateWork;
         }
@@ -273,7 +285,98 @@ namespace Twill.Processes.Tracking
         public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
             Environ_UpdateEvent(sender, e);
-            return true;   
+            return true;
+        }
+
+        public object Clone()
+        {
+
+            var obj = this.MemberwiseClone() as BaseMonitor<TProcessMonitor, TProcessDayActivity, TProcessWork, TGroundWorkState, TProcessActivity>;
+
+            obj.Environ = null;
+            obj.FilterProcessNames = new ObservableCollection<string>(this.FilterProcessNames);
+             
+
+            obj.ProcessMonitor = new TProcessMonitor();
+            obj.ProcessMonitor.Processes = new ObservableCollection<TProcessDayActivity>();
+
+            foreach (var process in this.ProcessMonitor.Processes)
+            {
+                var tpda = new TProcessDayActivity();
+                tpda.Name = process.Name;
+                tpda.Activities = new ObservableCollection<TProcessWork>();
+
+                foreach (var activity in process.Activities)
+                {
+                    var processwork = new TProcessWork();
+
+                    processwork.End = activity.End;
+                    processwork.IsAlive = activity.IsAlive;
+                    processwork.Start = activity.Start;
+
+                    processwork.LeadGroundWorkStates = new ObservableCollection<TGroundWorkState>();
+                    if (activity.LeadGroundWorkStates != null)
+                    {
+                        foreach (var lead in activity.LeadGroundWorkStates)
+                        {
+                            var lgws = new TGroundWorkState();
+
+                            lgws.End = lead.End;
+                            lgws.IsAlive = lead.IsAlive;
+                            lgws.Start = lead.Start;
+
+                            lgws.Title = lead.Title;
+
+                            processwork.LeadGroundWorkStates.Add(lgws);
+                        }
+                    }
+
+                    tpda.Activities.Add(processwork);
+                }
+                obj.ProcessMonitor.Processes.Add(tpda);
+            }
+
+            if (this.ProcessMonitor.Lead != null)
+            {
+                obj.ProcessMonitor.Lead = obj.ProcessMonitor.Processes.First(p => p.Name == this.ProcessMonitor.Lead.Name);
+            }
+
+            obj.ProcessMonitor.UserLogActivities = new ObservableCollection<TProcessActivity>();
+
+            foreach (var ula in this.ProcessMonitor.UserLogActivities)
+            {
+                var newula = new TProcessActivity();
+
+                newula.Start = ula.Start;
+                newula.End = ula.End;
+
+                if (ula.LinkProcess != null)
+                {
+                    newula.LinkProcess = obj.ProcessMonitor.Processes.First(p => p.Name == ula.LinkProcess.Name);
+                }
+
+                newula.GroundWorkStates = new ObservableCollection<TGroundWorkState>();
+
+                foreach (var gws in ula.GroundWorkStates)
+                {
+                    var newgws = new TGroundWorkState();
+
+                    newgws.End = gws.End;
+                    newgws.IsAlive = gws.IsAlive;
+                    newgws.Start = gws.Start;
+                    newgws.Title = gws.Title;
+
+                    newula.GroundWorkStates.Add(newgws);
+                }
+
+                obj.ProcessMonitor.UserLogActivities.Add(newula);
+            }
+
+            obj.FilterProcessMonitor = new TProcessMonitor();
+
+            obj.Filtering();
+
+            return obj;
         }
 
         public object Clone() => MemberwiseClone();
