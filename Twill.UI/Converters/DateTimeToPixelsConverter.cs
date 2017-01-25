@@ -25,12 +25,14 @@ namespace Twill.UI.Converters
                 return 0.0;
             var height = (double)values[1];
 
-
-            if (values[0] is DateTime)
-                return Tools.Math.Position.ChoisenPixel((DateTime)values[0], height);
+            if (values[0] is TimeSpan)
+                return Tools.Math.Position.ChoisenPixel((TimeSpan)values[0], height);
 
             if (values[0] is double)
                 return Tools.Math.Position.ChoisenPixel((double)values[0], height);
+
+            if (values[0] is DateTime)
+                return Tools.Math.Position.ChoisenPixel((DateTime)values[0], height);
 
 
             return 0.0;

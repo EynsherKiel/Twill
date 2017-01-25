@@ -80,13 +80,13 @@ namespace Twill.UI.Core.Models.Controls.Processes
                 processlist.Add(last);
             }
 
-            if ((DateTime.Now - processlist.Last().End).TotalMinutes > MinTimeInterval)
+            if ((DateTime.Now.TimeOfDay - processlist.Last().End).TotalMinutes > MinTimeInterval)
             {
                 processlist.Add(new ProcessActivity()
                 {
                     LinkProcess = RestProcess,
                     Start = processlist.Last().End,
-                    End = DateTime.Now,
+                    End = DateTime.Now.TimeOfDay,
                     GroundWorkStates = new ObservableCollection<GroundWorkState>() { new GroundWorkState() { Title = "(￣、￣＠）Ｚｚz" } }
                 });
             }

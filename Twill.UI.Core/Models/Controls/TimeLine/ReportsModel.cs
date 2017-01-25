@@ -65,7 +65,7 @@ namespace Twill.UI.Core.Models.Controls.TimeLine
                 return;
             var mouseY = (double)values[1];
 
-            var choisenDateTime = DateTime.Now.Date.AddMinutes(Tools.Math.Position.ChoisenMinute(mouseY, height));
+            var choisenDateTime = TimeSpan.FromMinutes(Tools.Math.Position.ChoisenMinute(mouseY, height));
 
             var findRepor = Reports.FirstOrDefault(rep => rep.Start <= choisenDateTime && rep.End >= choisenDateTime);
 

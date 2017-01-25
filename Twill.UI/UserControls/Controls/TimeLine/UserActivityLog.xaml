@@ -43,10 +43,16 @@
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
-            <TextBlock FontSize="10"
-                       Padding="2"
-                       Text="{Binding Start,
-                                      StringFormat=HH:mm:ss}" />
+            <TextBlock FontSize="10" Padding="2">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0:00}:{1:00;00}:{2:00;00}">
+                        <Binding Path="Start.Hours" />
+                        <Binding Path="Start.Minutes" />
+                        <Binding Path="Start.Seconds" />
+                    </MultiBinding>
+                </TextBlock.Text>
+
+            </TextBlock>
 
             <Grid Grid.Column="2">
                 <Grid.ColumnDefinitions>
@@ -103,9 +109,16 @@
 
             <TextBlock Grid.Row="2"
                        FontSize="10"
-                       Padding="2"
-                       Text="{Binding End,
-                                      StringFormat=HH:mm:ss}" />
+                       Padding="2">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0:00}:{1:00;00}:{2:00;00}">
+                        <Binding Path="End.Hours" />
+                        <Binding Path="End.Minutes" />
+                        <Binding Path="End.Seconds" />
+                    </MultiBinding>
+                </TextBlock.Text>
+
+            </TextBlock>
 
         </Grid>
     </Grid>

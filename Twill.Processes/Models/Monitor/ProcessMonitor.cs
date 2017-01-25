@@ -14,7 +14,7 @@ namespace Twill.Processes.Models.Monitor
         public ProcessDayActivity Lead { get; set; }
         public ObservableCollection<ProcessActivity> UserLogActivities { get; set; }
 
-        public string LeadTitle => Lead?.Activities?.LastOrDefault()?.GroundWorkStates?.LastOrDefault()?.Title ?? string.Empty;
+        public string LeadTitle => UserLogActivities?.Last()?.GroundWorkStates?.Last()?.Title ?? string.Empty;
 
          
     }

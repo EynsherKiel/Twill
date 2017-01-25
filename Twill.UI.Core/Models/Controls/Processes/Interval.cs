@@ -10,8 +10,8 @@ namespace Twill.UI.Core.Models.Controls.Processes
 {
     public class Interval : ViewModelBase, IInterval
     {
-        private DateTime start;
-        public DateTime Start
+        private TimeSpan start;
+        public TimeSpan Start
         {
             get { return start; }
             set
@@ -21,8 +21,8 @@ namespace Twill.UI.Core.Models.Controls.Processes
             }
         }
 
-        private DateTime end;
-        public DateTime End
+        private TimeSpan end;
+        public TimeSpan End
         {
             get { return end; }
             set

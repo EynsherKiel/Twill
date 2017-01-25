@@ -19,7 +19,7 @@ namespace Twill.UI.Core.Models.Content
             {
                 Monitor = StorageHelperManager.Load<Monitor>();
 
-                StartSaves(TimeSpan.FromSeconds(10));
+                StartSaves(TimeSpan.FromSeconds(10.0));
             }
         }
 
@@ -30,9 +30,24 @@ namespace Twill.UI.Core.Models.Content
 
         private void StartSaves(TimeSpan updatetime)
         {
-           Timer = new System.Threading.Timer(obj => StorageHelperManager.Save(Monitor.Clone() as Monitor) , null, updatetime, updatetime);
+           Timer = new System.Threading.Timer(AsyncSaveData , null, updatetime, updatetime);
         }
 
+        private void AsyncSaveData(object state)
+        {
+            if (!System.Threading.Monitor.TryEnter(SyncRoot))
+                return;
+            try
+            {
+                StorageHelperManager.Save(Monitor?.GetLightClone());
+            }
+            finally
+            {
+                System.Threading.Monitor.Exit(SyncRoot);
+            }
+        }
+
+        public object SyncRoot = new object();
         private System.Threading.Timer Timer = null;
         private StorageHelper.Manager StorageHelperManager = new StorageHelper.Manager();
 
@@ -58,6 +73,7 @@ namespace Twill.UI.Core.Models.Content
             get { return reportsModel; }
             set { Set(ref reportsModel, value); }
         }
+         
 
         ~MonitorPageModel()
         {

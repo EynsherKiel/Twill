@@ -21,8 +21,8 @@ namespace Twill.UI.Core.Models.Controls.Processes
                 {
                     new ProcessWork()
                     {
-                         Start = DateTime.Now,
-                         End = DateTime.Now.AddHours(15)
+                         Start = DateTime.Now.TimeOfDay,
+                         End = TimeSpan.FromHours(15)
                     }
                 };
             }

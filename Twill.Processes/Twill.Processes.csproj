@@ -72,6 +72,7 @@
     <Compile Include="Models\Monitor\GroundWorkState.cs" />
     <Compile Include="Models\BaseProcess.cs" />
     <Compile Include="Models\Monitor\Interval.cs" />
+    <Compile Include="Models\Monitor\LightProcessMonitor.cs" />
     <Compile Include="Models\Monitor\ProcessActivity.cs" />
     <Compile Include="Models\Monitor\ProcessDayActivity.cs" />
     <Compile Include="Models\Monitor\ProcessMonitor.cs" />

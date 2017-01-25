@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Twill.Processes.Interfaces.Monitor;
+using Twill.Processes.Models.Monitor;
 using Twill.Processes.Tracking;
 using Twill.Tools.Async;
 
@@ -16,6 +17,9 @@ namespace Twill.Storage.Barrier
 
         public void Save<T>(T obj, DateTime? time = null) where T : class
         {
+            if (obj == null)
+                return;
+
             var type = GetType<T>();
             if (type == null)
                 return;
@@ -50,6 +54,11 @@ namespace Twill.Storage.Barrier
                 return new Files.Zip(Settings.Default.GetLaborFullPath(time ?? DateTime.Now));
             }
 
+            if (type == typeof(LightProcessMonitor))
+            {
+                return new Files.Zip(Settings.Default.GetLaborFullPath(time ?? DateTime.Now));
+            }
+
             return null;
         }
 
@@ -63,6 +72,11 @@ namespace Twill.Storage.Barrier
             if (baset.IsGenericType && baset.GetGenericTypeDefinition() == typeof(BaseMonitor<,,,,>))
             {
                 return typeof(BaseMonitor<,,,,>);
+            }
+
+            if(t == typeof(LightProcessMonitor))
+            {
+                return typeof(LightProcessMonitor);
             }
 
             return null;

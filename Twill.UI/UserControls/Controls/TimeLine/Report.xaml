@@ -14,7 +14,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Twill.UI;component/Styles/Colors.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <converters:DateTimeToShortStringConverter x:Key="DateTimeToShortStringConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid d:DataContext="{d:DesignInstance timelinemodels:ReportModel, IsDesignTimeCreatable=True}" DataContext="{Binding ReportModel, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
@@ -111,14 +110,18 @@
                    HorizontalAlignment="Right"
                    VerticalAlignment="Top"
                    FontSize="10"
-                   Foreground="{DynamicResource ReportTimesForegroundBrush}"
-                   Text="{Binding Start,
-                                  StringFormat=HH:mm}">
+                   Foreground="{DynamicResource ReportTimesForegroundBrush}">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{}{0:00}:{1:00;00}">
+                    <Binding Path="Start.Hours" />
+                    <Binding Path="Start.Minutes" />
+                </MultiBinding>
+            </TextBlock.Text>
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="Visibility" Value="Visible" />
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Start, Converter={StaticResource DateTimeToShortStringConverter}, ConverterParameter=HH:mm}" Value="00:00">
+                        <DataTrigger Binding="{Binding Start}" Value="00:00:00">
                             <Setter Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
                     </Style.Triggers>

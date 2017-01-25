@@ -19,7 +19,6 @@
             </ResourceDictionary.MergedDictionaries>
 
             <converters:DateTimeToPixelsConverter x:Key="DateTimeToPixelsConverter" />
-            <converters:DateTimeToShortStringConverter x:Key="DateTimeToShortStringConverter" />
 
         </ResourceDictionary>
     </UserControl.Resources>
@@ -77,7 +76,7 @@
                                     <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}" />
                                     <Setter Property="Background" Value="Transparent" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Start, Converter={StaticResource DateTimeToShortStringConverter}, ConverterParameter=HH:mm}" Value="00:00">
+                                        <DataTrigger Binding="{Binding Start}" Value="00:00:00">
                                             <Setter Property="Visibility" Value="Collapsed" />
                                         </DataTrigger>
 

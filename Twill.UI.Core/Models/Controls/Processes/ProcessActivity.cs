@@ -19,8 +19,8 @@ namespace Twill.UI.Core.Models.Controls.Processes
                      Name = "Test name"
                 };
 
-                Start = DateTime.Now.Date.AddSeconds(17);
-                End = DateTime.Now.Date.AddHours(1).AddMinutes(28).AddSeconds(55);
+                Start = TimeSpan.FromSeconds(17);
+                End = TimeSpan.FromSeconds(1 * 60.0 * 60.0 + 28.0 * 60.0 + 55);
                 
             }
         }

@@ -11,8 +11,8 @@ namespace Twill.UI.Core.Models.Controls.TimeLine
     {
         public ReportModel()
         {
-            Start = DateTime.Now.Date;
-            End = DateTime.Now.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+            Start = TimeSpan.Zero;
+            End = TimeSpan.FromHours(24);
         }
 
         private string text = string.Empty;

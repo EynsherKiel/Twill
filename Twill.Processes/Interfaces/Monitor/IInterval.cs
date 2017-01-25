@@ -8,7 +8,7 @@ namespace Twill.Processes.Interfaces.Monitor
 {
     public interface IInterval
     {
-        DateTime Start { get; set; }
-        DateTime End { get; set; }
+        TimeSpan Start { get; set; }
+        TimeSpan End { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twill.Processes.Models.Monitor;
 using Twill.UI.Core.Models.Controls.Processes;
 
 namespace Twill.UI.Core.StorageHelper
@@ -29,21 +30,11 @@ namespace Twill.UI.Core.StorageHelper
                         if (Tools.Architecture.StaticType<T>.Instance != null)
                             return Tools.Architecture.StaticType<T>.Instance;
 
-                        Tools.Architecture.StaticType<Monitor>.Instance = BarrierManager.Load<Monitor>(DateTime.Now);
+                        var lightMonitor = BarrierManager.Load<LightProcessMonitor>(DateTime.Now);
 
-                        var monitor = Tools.Architecture.StaticType<Monitor>.Instance;
-
-                        if (monitor?.ProcessMonitor?.UserLogActivities != null)
-                        {
-                            foreach (var userLogActivity in monitor.ProcessMonitor.UserLogActivities)
-                            {
-                                var process = monitor.ProcessMonitor.Processes.FirstOrDefault(p => p.Name == userLogActivity.LinkProcess.Name);
-                                if (process != null)
-                                    userLogActivity.LinkProcess = process;
-                            }
-                        }
-
-                        monitor.StartWatch();
+                        Tools.Architecture.StaticType<Monitor>.Instance = new Monitor(lightMonitor);
+                         
+                        Tools.Architecture.StaticType<Monitor>.Instance.StartWatch();
 
                         return Tools.Architecture.StaticType<T>.Instance;
                     }

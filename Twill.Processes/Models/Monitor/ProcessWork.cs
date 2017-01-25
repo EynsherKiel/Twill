@@ -10,9 +10,6 @@ namespace Twill.Processes.Models.Monitor
 {
     public class ProcessWork : Activity, IProcessWork<GroundWorkState>
     {
-        public ObservableCollection<GroundWorkState> GroundWorkStates { get; set; }
-        
-
         public ObservableCollection<GroundWorkState> LeadGroundWorkStates { get; set; }
     }
 }
