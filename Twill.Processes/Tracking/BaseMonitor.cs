@@ -17,10 +17,7 @@ namespace Twill.Processes.Tracking
         where TGroundWorkState : class, IGroundWorkState, new()
         where TProcessActivity : class, IProcessActivity<TProcessDayActivity, TProcessWork, TGroundWorkState>, new()
     {
-        public BaseMonitor()
-        {
-
-        }
+        public BaseMonitor() { }
 
         public BaseMonitor(Models.Monitor.LightProcessMonitor lightProcessMonitor)
         {
@@ -135,11 +132,13 @@ namespace Twill.Processes.Tracking
         {
             ProcessMonitor = new TProcessMonitor();
             ProcessMonitor.Processes = new ObservableCollection<TProcessDayActivity>();
-            ProcessMonitor.UserLogActivities = new ObservableCollection<TProcessActivity>();
 
             Date = lightProcessMonitor.Date;
 
             var leads = new List<Tuple<TProcessDayActivity, TGroundWorkState>>();
+
+            if (lightProcessMonitor?.Processes == null)
+                return;
 
             foreach (var process in lightProcessMonitor.Processes)
             {
@@ -176,37 +175,7 @@ namespace Twill.Processes.Tracking
                 ProcessMonitor.Processes.Add(tpda);
             }
 
-            var orderleads = leads.OrderBy(lead => lead.Item2.Start);
-            var firstelement = orderleads.First();
-
-            var proc = new TProcessActivity();
-            proc.LinkProcess = firstelement.Item1;
-            proc.GroundWorkStates = new ObservableCollection<TGroundWorkState>() { firstelement.Item2 };
-            proc.Start = firstelement.Item2.Start;
-            proc.End = firstelement.Item2.End;
-
-            ProcessMonitor.UserLogActivities.Add(proc);
-
-            foreach (var lead in orderleads.Skip(1))
-            {
-                if(proc.LinkProcess != lead.Item1)
-                {
-                    proc = new TProcessActivity();
-                    proc.LinkProcess = lead.Item1;
-                    proc.GroundWorkStates = new ObservableCollection<TGroundWorkState>() { lead.Item2 };
-                    proc.Start = lead.Item2.Start;
-                    proc.End = lead.Item2.End;
-
-                    ProcessMonitor.UserLogActivities.Add(proc);
-                }
-                else
-                {
-                    proc.GroundWorkStates.Add(lead.Item2);
-                    proc.End = lead.Item2.End;
-                }
-            }
-             
-
+            ProcessMonitor.UserLogActivities = new ObservableCollection<TProcessActivity>(leads.OrderBy(lead => lead.Item2.Start).Select(lead => ProcessActivityFromGroundAndLink(lead.Item2, lead.Item1)));
         }
 
 
@@ -330,6 +299,7 @@ namespace Twill.Processes.Tracking
                     if (groundStateWork.IsAlive)
                     {
                         lastUserActivity.End = time;
+                        groundStateWork.End = time;
                         groundStateWork.IsAlive = false;
                     }
                 }
@@ -353,6 +323,7 @@ namespace Twill.Processes.Tracking
                         if (time - lastUserActivity.End < TimeSpan.FromSeconds(10))
                         {
                             lastUserActivity.End = time;
+                            groundStateWork.End = time;
                         }
                         else
                         {
@@ -378,13 +349,7 @@ namespace Twill.Processes.Tracking
 
         private void FillingUserLogActivitys(TGroundWorkState groundStateWork)
         {
-            var data = new TProcessActivity();
-
-            data.Start = groundStateWork.Start;
-            data.End = groundStateWork.End;
-
-            data.LinkProcess = ProcessMonitor.Lead;
-            data.GroundWorkStates = new ObservableCollection<TGroundWorkState>() { groundStateWork };
+            TProcessActivity data = ProcessActivityFromGroundAndLink(groundStateWork, ProcessMonitor.Lead);
 
             ProcessMonitor.UserLogActivities.Add(data);
 
@@ -394,6 +359,19 @@ namespace Twill.Processes.Tracking
                 lastactivity.LeadGroundWorkStates = new ObservableCollection<TGroundWorkState>();
 
             lastactivity.LeadGroundWorkStates.Add(groundStateWork);
+        }
+
+        private TProcessActivity ProcessActivityFromGroundAndLink(TGroundWorkState groundStateWork, TProcessDayActivity process)
+        {
+            var data = new TProcessActivity();
+
+            data.Start = groundStateWork.Start;
+            data.End = groundStateWork.End;
+
+            data.LinkProcess = process;
+            data.GroundWorkStates = new ObservableCollection<TGroundWorkState>() { groundStateWork };
+
+            return data;
         }
 
         private T CreateIActivity<T>(TimeSpan now) where T : class, IActivity, new()
