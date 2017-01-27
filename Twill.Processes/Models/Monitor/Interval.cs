@@ -10,6 +10,5 @@ namespace Twill.Processes.Models.Monitor
     {
         public TimeSpan Start { get; set; }
         public TimeSpan End { get; set; }
-        public double TotalMinutesInterval => (End - Start).TotalMinutes;
     }
 }

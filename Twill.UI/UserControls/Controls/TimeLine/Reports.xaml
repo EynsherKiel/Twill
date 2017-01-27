@@ -73,7 +73,7 @@
                             <Grid.Resources>
                                 <Style BasedOn="{StaticResource ButtonNullStyle}" TargetType="Button">
                                     <Setter Property="Visibility" Value="Visible" />
-                                    <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}" />
+                                    <Setter Property="Foreground" Value="{StaticResource SelectedBrush}" />
                                     <Setter Property="Background" Value="Transparent" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Start}" Value="00:00:00">
@@ -81,11 +81,11 @@
                                         </DataTrigger>
 
                                         <Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property="Foreground" Value="{StaticResource SelectedIsMouseOverBrush}" />
+                                            <Setter Property="Foreground" Value="{DynamicResource SelectedIsMouseOverBrush}" />
                                         </Trigger>
 
                                         <Trigger Property="IsPressed" Value="true">
-                                            <Setter Property="Foreground" Value="{StaticResource SelectedIsPressedBrush}" />
+                                            <Setter Property="Foreground" Value="{DynamicResource SelectedIsPressedBrush}" />
                                         </Trigger>
 
                                     </Style.Triggers>

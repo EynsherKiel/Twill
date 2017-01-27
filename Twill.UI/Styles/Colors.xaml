@@ -24,7 +24,7 @@
 
 
     <Color x:Key="SelectedColor">#FFFF00F3</Color>
-    <SolidColorBrush x:Key="SelectedBrush" Color="{DynamicResource SelectedColor}" />
+    <SolidColorBrush x:Key="SelectedBrush" Color="#FFFF00F3" />
 
     <SolidColorBrush x:Key="MonitorBorderBrush" Color="WhiteSmoke" />
     <LinearGradientBrush x:Key="MonitorBackgroundBrush" StartPoint="0.5,0" EndPoint="1,0.025">
