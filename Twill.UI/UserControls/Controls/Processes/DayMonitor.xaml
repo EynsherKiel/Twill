@@ -33,7 +33,7 @@
 
     <Grid d:DataContext="{d:DesignInstance processesmodel:DayMonitor, IsDesignTimeCreatable=True}" DataContext="{Binding DayMonitorModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
 
-        <Border BorderBrush="{DynamicResource MonitorBorderBrush}" BorderThickness="0,1,1,0">
+        <Border BorderBrush="{DynamicResource MonitorBorderBrush}" BorderThickness="0,0,0,0">
             <Grid>
                 <ScrollViewer x:Name="scrollviewer" ScrollViewer.CanContentScroll="True">
                     <decorators:MouseTrackerDecorator>

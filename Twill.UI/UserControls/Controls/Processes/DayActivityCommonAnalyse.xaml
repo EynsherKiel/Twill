@@ -8,8 +8,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:processes="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
              xmlns:timeline="clr-namespace:Twill.UI.UserControls.Controls.TimeLine"
-             d:DesignHeight="100"
-             d:DesignWidth="300"
+             d:DesignHeight="400"
+             d:DesignWidth="800"
              mc:Ignorable="d">
     <UserControl.Style>
         <Style TargetType="UserControl">
@@ -30,18 +30,20 @@
     <Grid d:DataContext="{d:DesignInstance processes:DayActivityCommonAnalyse, IsDesignTimeCreatable=True}" DataContext="{Binding DayActivityCommonAnalyseModel, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
 
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
-        <Viewbox HorizontalAlignment="Left" VerticalAlignment="Top">
+        <Viewbox HorizontalAlignment="Center" VerticalAlignment="Top">
 
             <chart:PieChart Width="400"
                             Height="400"
-                            Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
                             Background="Transparent"
-                            ChartSubTitle="in minets"
+                            ChartSubTitle="in minutes"
                             ChartTitle="Day activity"
+                            Foreground="{Binding Foreground,
+                                                 RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                AncestorType=UserControl}}"
                             Palette="{Binding Palette}">
                 <chart:PieChart.Series>
                     <chart:ChartSeries DisplayMember="ProcessName"
@@ -52,6 +54,53 @@
             </chart:PieChart>
 
         </Viewbox>
+
+        <Grid Grid.Column="1"
+              HorizontalAlignment="Left"
+              VerticalAlignment="Top">
+            <Viewbox>
+                <Grid Width="400" Height="400">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="18*" />
+                        <RowDefinition Height="80*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock VerticalAlignment="Center"
+                               FontSize="24"
+                               Text="Statistic" />
+                    <StackPanel Grid.Row="1">
+
+                        <StackPanel.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Margin" Value="12,0,0,15" />
+                                <Setter Property="FontSize" Value="15" />
+                            </Style>
+                        </StackPanel.Resources>
+                        <TextBlock>
+                            <Run Text="Most used application : " />
+                            <Run Text="{Binding MostUsedAppplicationName}" />
+                        </TextBlock>
+
+
+                        <TextBlock>
+                            <Run Text="His time : " />
+                            <Run Text="{Binding MostUsedAppplicationTimeMinutes}" />
+                            <Run Text=" min." />
+                        </TextBlock>
+
+
+                        <TextBlock>
+                            <Run Text="All work time : " />
+                            <Run Text="{Binding AllTime}" />
+                            <Run Text=" min." />
+                        </TextBlock>
+
+                    </StackPanel>
+                </Grid>
+
+            </Viewbox>
+
+        </Grid>
 
     </Grid>
 </UserControl>

@@ -63,6 +63,11 @@ namespace Twill.UI.Core.Models.Controls.Processes
                     CommonProcesses.First(el => el.ProcessName == item.Key.Name).Persents = (int)item.Sum(el => el.TotalMinutesInterval);
                 }
 
+                var maxvalueelement = CommonProcesses.OrderByDescending(el => el.Persents).FirstOrDefault();
+
+                MostUsedAppplicationName = maxvalueelement?.ProcessName;
+                MostUsedAppplicationTimeMinutes = maxvalueelement?.Persents.ToString();
+                AllTime = CommonProcesses.Sum(el => el.Persents).ToString();
             }
         }
 
@@ -80,5 +85,25 @@ namespace Twill.UI.Core.Models.Controls.Processes
             set { Set(ref palette, value); }
         }
 
+        private string mostUsedAppplicationName;
+        public string MostUsedAppplicationName
+        {
+            get { return mostUsedAppplicationName; }
+            set { Set(ref mostUsedAppplicationName, value); }
+        }
+
+        private string mostUsedAppplicationTimeMinutes;
+        public string MostUsedAppplicationTimeMinutes
+        {
+            get { return mostUsedAppplicationTimeMinutes; }
+            set { Set(ref mostUsedAppplicationTimeMinutes, value); }
+        }
+
+        private string allTime;
+        public string AllTime
+        {
+            get { return allTime; }
+            set { Set(ref allTime, value); }
+        }
     }
 }
