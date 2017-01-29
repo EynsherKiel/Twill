@@ -51,7 +51,7 @@ namespace Twill.UI.UserControls.Content
             }
             else
             {
-                this.Resources["Height"] = this.ActualHeight * 0.7;
+                this.Resources["Height"] = this.ActualHeight * 0.6;
                 HideAnimation.Begin();
             }
         }

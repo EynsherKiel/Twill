@@ -14,7 +14,6 @@ namespace Twill.UI.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            Console.WriteLine((double)value);
             return new GridLength((double)value);
         }
 

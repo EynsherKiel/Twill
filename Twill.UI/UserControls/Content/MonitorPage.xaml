@@ -20,6 +20,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Twill.UI;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="/Twill.UI;component/Styles/NullStyles.xaml" />
+                <ResourceDictionary Source="/Twill.UI;component/Styles/CheckBoxStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <converters:DoubleToGridLength x:Key="DoubleToGridLength" />
@@ -55,18 +56,22 @@
         <GridSplitter Height="2"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Bottom"
-                      Background="{DynamicResource SelectedBrush}" />
+                      Background="{DynamicResource ReportsBlindBrush}" />
 
 
         <processes:DayMonitor Grid.Row="1"
-                              ContentHeight="2000"
+                              ContentHeight="20000"
                               DayMonitorModel="{Binding DayMonitor}" />
 
         <CheckBox Grid.Row="1"
-                  Margin="0,42,0,0"
-                  HorizontalAlignment="Center"
+                  Height="12"
+                  HorizontalAlignment="Right"
                   VerticalAlignment="Top"
-                  Click="CheckBox_Click">
+                  Click="CheckBox_Click"
+                  Content="Reports"
+                  FontSize="8"
+                  Foreground="{DynamicResource MainMenuTitleBrush}"
+                  Template="{DynamicResource CheckBoxControlTemplate1}">
             <CheckBox.Style>
                 <Style TargetType="CheckBox">
                     <Setter Property="IsChecked" Value="False" />

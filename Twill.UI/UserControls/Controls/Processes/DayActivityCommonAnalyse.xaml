@@ -11,7 +11,12 @@
              d:DesignHeight="100"
              d:DesignWidth="300"
              mc:Ignorable="d">
-
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Setter Property="Foreground" Value="{DynamicResource MainMenuDefaultForegroundBrush}" />
+            <Setter Property="Background" Value="{DynamicResource MainMenuBrush}" />
+        </Style>
+    </UserControl.Style>
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -25,16 +30,18 @@
     <Grid d:DataContext="{d:DesignInstance processes:DayActivityCommonAnalyse, IsDesignTimeCreatable=True}" DataContext="{Binding DayActivityCommonAnalyseModel, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
-        <Viewbox>
+        <Viewbox HorizontalAlignment="Left" VerticalAlignment="Top">
 
             <chart:PieChart Width="400"
                             Height="400"
-                         ChartTitle="Day activity"
+                            Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                            Background="Transparent"
                             ChartSubTitle="in minets"
+                            ChartTitle="Day activity"
                             Palette="{Binding Palette}">
                 <chart:PieChart.Series>
                     <chart:ChartSeries DisplayMember="ProcessName"

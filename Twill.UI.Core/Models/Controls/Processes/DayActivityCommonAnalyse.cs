@@ -58,26 +58,10 @@ namespace Twill.UI.Core.Models.Controls.Processes
                 }
 
 
-                foreach (var item in processes.Select(activities => new Tuple<string, double>(activities.Key.Name, activities.Sum(el => el.TotalMinutesInterval))))
+                foreach (var item in processes)
                 {
-                    CommonProcesses.First(el => el.ProcessName == item.Item1).Persents = (int)item.Item2;
+                    CommonProcesses.First(el => el.ProcessName == item.Key.Name).Persents = (int)item.Sum(el => el.TotalMinutesInterval);
                 }
-
-            }
-        }
-
-        private void AddCommonProcess(string brushname, Brush brush, ChartElementModel chartElementModel)
-        {
-            var resources = new ResourceDictionary();
-            resources.Add(brushname, brush);
-            Palette.Add(resources);
-            CommonProcesses.Add(chartElementModel);
-        }
-
-        private void RemoveCommonProcess()
-        {
-            lock (SyncRoot)
-            {
 
             }
         }
