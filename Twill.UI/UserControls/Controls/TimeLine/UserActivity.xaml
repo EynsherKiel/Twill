@@ -65,7 +65,7 @@
                                             Mode=OneWay,
                                             ElementName=listbox}"
                             Click="UserActivityLogClickMethod"
-                            Style="{DynamicResource ButtonNullStyle}">
+                            Style="{StaticResource ButtonNullStyle}">
                         <Button.Height>
                             <MultiBinding Converter="{StaticResource DateTimeToPixelsConverter}">
                                 <Binding Mode="OneWay" Path="TotalMinutesInterval" />

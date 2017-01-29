@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
@@ -9,21 +10,29 @@ namespace Twill.Tools.WPF
 {
     public static class UniqueColorGenerator
     {
-        private static List<Brush> Brushes = new List<Brush>();
+        private static List<int> BrushesIndexes = new List<int>();
+        private static Type BrushesType = typeof(Brushes);
 
         private static Random Random = new Random();
+         
 
         private static Brush GetUniqueBrush()
         {
-            SolidColorBrush resultBrush = null;
-            do
+            var result = System.Windows.Media.Brushes.Transparent;
+
+            var properties = BrushesType.GetProperties();
+
+            if (BrushesIndexes.Count == properties.Length)
             {
-                resultBrush = new SolidColorBrush(Color.FromRgb((byte)Random.Next(0, 255), (byte)Random.Next(0, 255), (byte)Random.Next(0, 255)));
-
+                Console.WriteLine("UniqueColorGenerator is full");
+                BrushesIndexes.Clear();
             }
-            while (Brushes.Cast<SolidColorBrush>().Any(brush => (System.Math.Abs(resultBrush.Color.R - brush.Color.R) + System.Math.Abs(resultBrush.Color.G - brush.Color.G) + System.Math.Abs(resultBrush.Color.B - brush.Color.B)) < 60.0));
 
-            return resultBrush;
+            int random = Random.Next(properties.Length);
+            while (BrushesIndexes.Contains(random))
+                random = Random.Next(properties.Length);
+             
+            return (Brush)properties[random].GetValue(null, null);
         }
 
         public static Brush Next() => GetUniqueBrush();

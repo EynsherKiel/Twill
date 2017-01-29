@@ -12,36 +12,19 @@ using Twill.Tools.Collections;
 
 namespace Twill.UI.Core.Models.Controls.Processes
 {
-    public class DayActivityAnalysis : ViewModelBase, IWeakEventListener
+    public class DayActivityAnalysis : BaseDayActivityAnalysis
     {
-        public DayActivityAnalysis()
+        public DayActivityAnalysis() : base()
         {
-            if (IsInDesignMode)
-            {
-                Monitor = new Monitor();
-            }
-            else
-            {
-                Monitor = StorageHelperManager.Load<Monitor>();
-            }
-        }
-         
-        private StorageHelper.Manager StorageHelperManager = new StorageHelper.Manager();
 
-        public DayActivityAnalysis(bool isMonitorStaticInstance)
+        }
+        public DayActivityAnalysis(Monitor monitor) : base(monitor)
         {
-            if (isMonitorStaticInstance)
-            {
-                Monitor = Tools.Architecture.Singleton<Monitor>.Instance;
-            }
         }
 
-        public DayActivityAnalysis(Monitor monitor)
-        {
-            Monitor = monitor;
-        }
+        private static ProcessDayActivity RestProcess = new ProcessDayActivity() { Name = "Your rest" };
 
-        private void Monitor_UpDateEvent(object obj, EventArgs e) => UpDate();
+        protected override void UpDate() => UpDate(false);
 
         private void UpDate(bool isFullUpdate = false)
         { 
@@ -183,33 +166,10 @@ namespace Twill.UI.Core.Models.Controls.Processes
             MinTimeInterval = Tools.Math.Position.ChoisenMinute(segmentMinHeight, ContentHeight);
             MinPixTimeInterval = Tools.Math.Position.ChoisenMinute(MinPixSize, ContentHeight);
         }
-
-        public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
-        {
-            Monitor_UpDateEvent(sender, e);
-            return true;
-        }
-
-        private readonly SyncContext SyncContext = new SyncContext();
-        private object SyncRoot = new object();
-        // static for uniq brush
-        private static ProcessDayActivity RestProcess = new ProcessDayActivity() { Name = "Your rest" };
+         
 
         private const double MinPixSize = 4.0;
-
-        private Monitor monitor;
-        public Monitor Monitor
-        {
-            get { return monitor; }
-            private set
-            {
-                Monitor?.UnSubscribeUpDateEvent(this);
-
-                value?.SubscribeUpDateEvent(this);
-
-                Set(ref monitor, value);
-            }
-        } 
+        
 
         public const double SegmentMinHeightConstant = 47.0;
         private double segmentMinHeight = SegmentMinHeightConstant;

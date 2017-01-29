@@ -33,7 +33,7 @@ namespace Twill.UI.Core.Models
         public ViewModelBase CurrentViewModel
         {
             get { return currentViewModel; }
-            set { Set(ref currentViewModel, value); }
+            set { Set(ref currentViewModel, value); GC.Collect(); GC.WaitForFullGCComplete(); }
         }
     }
 }

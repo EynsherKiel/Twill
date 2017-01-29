@@ -62,15 +62,15 @@
 
             <ListBox.ItemTemplate>
                 <ItemContainerTemplate>
-                    <!--{DynamicResource DayActivityAnalysisUserLogActivityBackgroundBrush}-->
-                    <!--{Binding LinkProcess.Brush}-->
+                    <!--  {DynamicResource DayActivityAnalysisUserLogActivityBackgroundBrush}  -->
+                    <!--  {Binding LinkProcess.Brush}  -->
 
                     <timeline:UserActivityLog Width="{Binding ActualWidth,
                                                               Mode=OneWay,
                                                               ElementName=listbox}"
-                                              Padding="5,0,0,0"
                                               Background="{DynamicResource DayActivityAnalysisUserLogActivityBackgroundBrush}"
                                               Foreground="{DynamicResource DayActivityAnalysisUserLogActivityForegroundBrush}"
+                                              Padding="5,0,0,0"
                                               ProcessActivityModel="{Binding .}">
                         <timeline:UserActivityLog.Height>
                             <MultiBinding Converter="{StaticResource DateTimeToPixelsConverter}">

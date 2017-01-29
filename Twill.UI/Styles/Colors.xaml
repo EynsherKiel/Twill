@@ -23,8 +23,13 @@
     <SolidColorBrush x:Key="UserLogActivityBackgroundBrush" Color="#FF0F021F" />
 
 
+    <Color x:Key="ReportsBlindColorIsPressed">#FF0E0F17</Color>
+    <Color x:Key="ReportsBlindColorIsMouseOver">#FF24252E</Color>
+    <Color x:Key="ReportsBlindColor">#FF3B3D4A</Color>
+    <SolidColorBrush x:Key="ReportsBlindBrush" Color="#FF3B3D4A" />
+
     <Color x:Key="SelectedColor">#FFFF00F3</Color>
-    <SolidColorBrush x:Key="SelectedBrush" Color="{DynamicResource SelectedColor}" />
+    <SolidColorBrush x:Key="SelectedBrush" Color="#FFFF00F3" />
 
     <SolidColorBrush x:Key="MonitorBorderBrush" Color="WhiteSmoke" />
     <LinearGradientBrush x:Key="MonitorBackgroundBrush" StartPoint="0.5,0" EndPoint="1,0.025">
@@ -49,9 +54,9 @@
     <SolidColorBrush x:Key="RulerForegroundBrush" Color="White" />
     <SolidColorBrush x:Key="SelectedIsMouseOverBrush" Color="#FF8A2DE8" />
     <SolidColorBrush x:Key="SelectedIsPressedBrush" Color="Red" />
-    <SolidColorBrush x:Key="ReportsBackgroundBrush" Color="White"/>
-    <SolidColorBrush x:Key="DayActivityAnalysisUserLogActivityBackgroundBrush" Color="Transparent"/>
-    <SolidColorBrush x:Key="DayActivityAnalysisUserLogActivityForegroundBrush" Color="#FF0F021F"/>
+    <SolidColorBrush x:Key="ReportsBackgroundBrush" Color="White" />
+    <SolidColorBrush x:Key="DayActivityAnalysisUserLogActivityBackgroundBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="DayActivityAnalysisUserLogActivityForegroundBrush" Color="#FF0F021F" />
 
 
 

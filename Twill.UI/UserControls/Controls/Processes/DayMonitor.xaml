@@ -1,0 +1,169 @@
+﻿<UserControl x:Class="Twill.UI.UserControls.Controls.Processes.DayMonitor" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behaviors="clr-namespace:Twill.UI.Behaviors"
+             xmlns:content="clr-namespace:Twill.UI.Core.Models.Content;assembly=Twill.UI.Core"
+             xmlns:controls="clr-namespace:Twill.UI.Controls"
+             xmlns:converters="clr-namespace:Twill.UI.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:decorators="clr-namespace:Twill.UI.Decorators"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+             xmlns:local="clr-namespace:Twill.UI.UserControls.Controls.Processes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:processes="clr-namespace:Twill.UI.UserControls.Controls.Processes"
+             xmlns:processesmodel="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:timeline="clr-namespace:Twill.UI.UserControls.Controls.TimeLine"
+             xmlns:timelinemodels="clr-namespace:Twill.UI.Core.Models.Controls.TimeLine;assembly=Twill.UI.Core"
+             d:DesignHeight="500"
+             d:DesignWidth="1200"
+             IsVisibleChanged="UserControl_IsVisibleChanged"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Twill.UI;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="/Twill.UI;component/Styles/NullStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <converters:ToListConverter x:Key="ToListConverter" />
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid d:DataContext="{d:DesignInstance processesmodel:DayMonitor, IsDesignTimeCreatable=True}" DataContext="{Binding DayMonitorModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
+
+        <Border BorderBrush="{DynamicResource MonitorBorderBrush}" BorderThickness="0,0,0,0">
+            <Grid>
+                <ScrollViewer x:Name="scrollviewer" ScrollViewer.CanContentScroll="True">
+                    <decorators:MouseTrackerDecorator>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border HorizontalAlignment="Stretch"
+                                    Background="Black"
+                                    BorderBrush="Black"
+                                    BorderThickness="1">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="8"
+                                                      ShadowDepth="0"
+                                                      Color="Black" />
+                                </Border.Effect>
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Grid.Column" Value="1" />
+                                        <Setter Property="Panel.ZIndex" Value="2" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=ActualWidth, ElementName=viewmonitor}" Value="0">
+                                                <Setter Property="Grid.Column" Value="0" />
+                                                <Setter Property="Panel.ZIndex" Value="1" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=ActualWidth, ElementName=viewmonitor}" Value="1">
+                                                <Setter Property="Grid.Column" Value="0" />
+                                                <Setter Property="Panel.ZIndex" Value="1" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+
+                            <Button x:Name="timeline"
+                                    Height="{Binding ContentHeight,
+                                                     RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                    AncestorType=UserControl}}"
+                                    MinWidth="60"
+                                    Panel.ZIndex="1"
+                                    Command="{Binding ReportsModel.AddRepordCommand}"
+                                    Style="{DynamicResource ButtonNullStyle}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ToListConverter}">
+                                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
+                                        <Binding Path="MousePosition.Y" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type decorators:MouseTrackerDecorator}}" />
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <timeline:Ruler Grid.ColumnSpan="2" Foreground="Transparent" />
+                                    <timeline:Ruler Grid.ColumnSpan="2"
+                                                    Panel.ZIndex="1"
+                                                    Background="Transparent"
+                                                    IsHitTestVisible="False" />
+                                    <timeline:UserActivity x:Name="activities"
+                                                           Grid.Column="1"
+                                                           Grid.ColumnSpan="2"
+                                                           ProcessMonitorModel="{Binding Monitor.ProcessMonitor}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Click">
+                                                <i:InvokeCommandAction Command="{Binding Command, ElementName=timeline}" CommandParameter="{Binding CommandParameter, ElementName=timeline}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:IgnoreMouseWheelBehavior />
+                                        </i:Interaction.Behaviors>
+                                    </timeline:UserActivity>
+
+                                </Grid>
+                            </Button>
+
+                            <Line Grid.Column="0"
+                                  Grid.ColumnSpan="4"
+                                  Panel.ZIndex="4"
+                                  IsHitTestVisible="False"
+                                  Stroke="{DynamicResource SelectedBrush}"
+                                  StrokeThickness="0.5"
+                                  X1="0"
+                                  X2="{Binding ActualWidth,
+                                               Mode=OneWay,
+                                               RelativeSource={RelativeSource FindAncestor,
+                                                                              AncestorType={x:Type UserControl}}}"
+                                  Y1="{Binding MousePosition.Y,
+                                               RelativeSource={RelativeSource FindAncestor,
+                                                                              AncestorType={x:Type decorators:MouseTrackerDecorator}}}"
+                                  Y2="{Binding MousePosition.Y,
+                                               RelativeSource={RelativeSource FindAncestor,
+                                                                              AncestorType={x:Type decorators:MouseTrackerDecorator}}}">
+                                <Line.Style>
+                                    <Style TargetType="Line">
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=timeline, Mode=OneWay}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Line.Style>
+                            </Line>
+
+
+                            <processes:DayActivityAnalysis x:Name="viewmonitor"
+                                                           Grid.Column="1"
+                                                           Panel.ZIndex="3"
+                                                           Background="{DynamicResource MonitorBackgroundBrush}"
+                                                           DayActivityAnalysisModel="{Binding DayActivityAnalysis}">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:IgnoreMouseWheelBehavior />
+                                </i:Interaction.Behaviors>
+                            </processes:DayActivityAnalysis>
+
+                            <timeline:Reports Grid.Column="2"
+                                              Width="150"
+                                              Height="{Binding ContentHeight,
+                                                               RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                              AncestorType=UserControl}}"
+                                              ReportsModel="{Binding ReportsModel}" />
+
+                        </Grid>
+                    </decorators:MouseTrackerDecorator>
+                </ScrollViewer>
+
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

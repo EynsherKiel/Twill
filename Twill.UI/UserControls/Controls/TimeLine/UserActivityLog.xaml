@@ -7,6 +7,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:monitor="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
              xmlns:processes="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
+             xmlns:textblocks="clr-namespace:Twill.UI.UserControls.Controls.TextBlocks"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              d:DesignHeight="75"
              mc:Ignorable="d">
@@ -54,25 +55,7 @@
 
             </TextBlock>
 
-            <Grid Grid.Column="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid Width="8" Margin="10,2,5,0">
-
-                    <Viewbox>
-                        <Canvas Width="24" Height="24">
-                            <Path Data="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2Z" Fill="{Binding LinkProcess.Brush}" />
-                        </Canvas>
-                    </Viewbox>
-                </Grid>
-                <TextBlock Grid.Column="1"
-                           VerticalAlignment="Center"
-                           Padding="0,0,10,0"
-                           Text="{Binding LinkProcess.Name}" />
-
-            </Grid>
+            <textblocks:DotTextBlock Grid.Column="2" DotBrush="{Binding LinkProcess.Brush}"  Text="{Binding LinkProcess.Name}"  Padding="0,0,10,0" />
 
             <Line Grid.Row="1"
                   HorizontalAlignment="Center"
