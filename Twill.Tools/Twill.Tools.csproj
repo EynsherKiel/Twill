@@ -58,6 +58,7 @@
     <Compile Include="Math\Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Text\Compression.cs" />
+    <Compile Include="Text\XML.cs" />
     <Compile Include="WPF\SortableObservableCollection.cs" />
     <Compile Include="WPF\UniqueColorGenerator.cs" />
   </ItemGroup>

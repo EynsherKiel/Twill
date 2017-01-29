@@ -30,32 +30,32 @@ namespace Twill.Units.Implementation
                 {
                     LinkProcess = denev,
                     GroundWorkStates = new ObservableCollection<GroundWorkState>() { new GroundWorkState() { Title = nameof(denev)} },
-                    Start = now.AddHours(9).AddMinutes(15),
-                    End = now.AddHours(9).AddMinutes(15).AddSeconds(27)
+                    Start = now.AddHours(9).AddMinutes(15).TimeOfDay,
+                    End = now.AddHours(9).AddMinutes(15).AddSeconds(27).TimeOfDay
                 },
 
                 new ProcessActivity()
                 {
                     LinkProcess = twill,
                     GroundWorkStates = new ObservableCollection<GroundWorkState>() { new GroundWorkState() { Title = nameof(twill) } },
-                    Start =  now.AddHours(9).AddMinutes(15).AddSeconds(27),
-                    End = now.AddHours(9).AddMinutes(23).AddSeconds(27)
+                    Start =  now.AddHours(9).AddMinutes(15).AddSeconds(27).TimeOfDay,
+                    End = now.AddHours(9).AddMinutes(23).AddSeconds(27).TimeOfDay
                 },
 
                 new ProcessActivity()
                 {
                     LinkProcess = denev,
                     GroundWorkStates = new ObservableCollection<GroundWorkState>() { new GroundWorkState() { Title = nameof(denev) } },
-                    Start = now.AddHours(9).AddMinutes(25).AddSeconds(27),
-                    End = now.AddHours(9).AddMinutes(45).AddSeconds(27)
+                    Start = now.AddHours(9).AddMinutes(25).AddSeconds(27).TimeOfDay,
+                    End = now.AddHours(9).AddMinutes(45).AddSeconds(27).TimeOfDay
                 },
 
                 new ProcessActivity()
                 {
                     LinkProcess = twill,
                     GroundWorkStates = new ObservableCollection<GroundWorkState>() { new GroundWorkState() { Title = nameof(twill) } },
-                    Start =  now.AddHours(9).AddMinutes(45).AddSeconds(27),
-                    End = now.AddHours(9).AddMinutes(46).AddSeconds(27)
+                    Start =  now.AddHours(9).AddMinutes(45).AddSeconds(27).TimeOfDay,
+                    End = now.AddHours(9).AddMinutes(46).AddSeconds(27).TimeOfDay
                 },
 
                 // sites
@@ -64,39 +64,39 @@ namespace Twill.Units.Implementation
                 {
                     LinkProcess = chrome,
                     GroundWorkStates = new ObservableCollection<GroundWorkState>() { new GroundWorkState() { Title = $"{nameof(chrome)} site 1" } },
-                    Start =  now.AddHours(9).AddMinutes(46).AddSeconds(27),
-                    End = now.AddHours(9).AddMinutes(46).AddSeconds(28)
+                    Start =  now.AddHours(9).AddMinutes(46).AddSeconds(27).TimeOfDay,
+                    End = now.AddHours(9).AddMinutes(46).AddSeconds(28).TimeOfDay
                 },
 
                 new ProcessActivity()
                 {
                     LinkProcess = chrome,
                     GroundWorkStates = new ObservableCollection<GroundWorkState>() { new GroundWorkState() { Title = $"{nameof(chrome)} site 2" } },
-                    Start =  now.AddHours(9).AddMinutes(46).AddSeconds(32),
-                    End = now.AddHours(9).AddMinutes(46).AddSeconds(37)
+                    Start =  now.AddHours(9).AddMinutes(46).AddSeconds(32).TimeOfDay,
+                    End = now.AddHours(9).AddMinutes(46).AddSeconds(37).TimeOfDay
                 },
 
                 new ProcessActivity()
                 {
                     LinkProcess = chrome,
                     GroundWorkStates = new ObservableCollection<GroundWorkState>() { new GroundWorkState() { Title = $"{nameof(chrome)} site 3" } },
-                    Start =  now.AddHours(9).AddMinutes(46).AddSeconds(37),
-                    End = now.AddHours(9).AddMinutes(46).AddSeconds(42)
+                    Start =  now.AddHours(9).AddMinutes(46).AddSeconds(37).TimeOfDay,
+                    End = now.AddHours(9).AddMinutes(46).AddSeconds(42).TimeOfDay
                 },
 
                 new ProcessActivity()
                 {
                     LinkProcess = chrome,
                     GroundWorkStates = new ObservableCollection<GroundWorkState>() { new GroundWorkState() { Title = $"{nameof(chrome)} site 4" } },
-                    Start =  now.AddHours(9).AddMinutes(46).AddSeconds(42),
-                    End = now.AddHours(9).AddMinutes(46).AddSeconds(47)
+                    Start =  now.AddHours(9).AddMinutes(46).AddSeconds(42).TimeOfDay,
+                    End = now.AddHours(9).AddMinutes(46).AddSeconds(47).TimeOfDay
                 },
                 new ProcessActivity()
                 {
                     LinkProcess = chrome,
                     GroundWorkStates = new ObservableCollection<GroundWorkState>() { new GroundWorkState() { Title = $"{nameof(chrome)} site 4" } },
-                    Start =  now.AddHours(9).AddMinutes(46).AddSeconds(47),
-                    End = now.AddHours(10).AddMinutes(46).AddSeconds(47)
+                    Start =  now.AddHours(9).AddMinutes(46).AddSeconds(47).TimeOfDay,
+                    End = now.AddHours(10).AddMinutes(46).AddSeconds(47).TimeOfDay
                 },
             };
 
