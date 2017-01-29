@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="De.TorstenMandelkow.MetroChart, Version=0.9.5818.20693, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ModernUICharts.WPF.Beta.0.9.1\lib\De.TorstenMandelkow.MetroChart.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
       <Private>True</Private>
@@ -69,7 +73,10 @@
     <Compile Include="Models\Content\MonitorPageModel.cs" />
     <Compile Include="Models\Content\SettingsPageModel.cs" />
     <Compile Include="Models\Content\HomePageModel.cs" />
+    <Compile Include="Models\Controls\Processes\BaseDayActivityAnalysis.cs" />
     <Compile Include="Models\Controls\Processes\DayActivityAnalysis.cs" />
+    <Compile Include="Models\Controls\Processes\DayActivityCommonAnalyse.cs" />
+    <Compile Include="Models\Controls\Processes\DayMonitor.cs" />
     <Compile Include="Models\Controls\Processes\GroundWorkState.cs" />
     <Compile Include="Models\Controls\Processes\Interval.cs" />
     <Compile Include="Models\Controls\Processes\Monitor.cs" />
@@ -79,6 +86,7 @@
     <Compile Include="Models\Controls\Processes\ProcessWork.cs" />
     <Compile Include="Models\Controls\TimeLine\ReportModel.cs" />
     <Compile Include="Models\Controls\TimeLine\ReportsModel.cs" />
+    <Compile Include="Models\Controls\Utils\ChartElementModel.cs" />
     <Compile Include="Models\MenuModel.cs" />
     <Compile Include="Models\Tray\IconBehaviorModel.cs" />
     <Compile Include="Models\ManagerModel.cs" />

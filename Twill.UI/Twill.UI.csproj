@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="De.TorstenMandelkow.MetroChart, Version=0.9.5818.20693, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ModernUICharts.WPF.Beta.0.9.1\lib\De.TorstenMandelkow.MetroChart.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
       <Private>True</Private>
@@ -75,6 +79,7 @@
     <Compile Include="Converters\BrushToColorConverter.cs" />
     <Compile Include="Converters\DateTimeToPixelsConverter.cs" />
     <Compile Include="Converters\DateTimeToShortStringConverter.cs" />
+    <Compile Include="Converters\DoubleToGridLengthConverter.cs" />
     <Compile Include="Converters\EqualsTypesConverter.cs" />
     <Compile Include="Converters\HeadersFilterConverter.cs" />
     <Compile Include="Converters\TimeLineConverter.cs" />
@@ -108,11 +113,14 @@
     <Compile Include="UserControls\Controls\Processes\DayActivityAnalysis.xaml.cs">
       <DependentUpon>DayActivityAnalysis.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Controls\Processes\ProcessDayActivity.xaml.cs">
-      <DependentUpon>ProcessDayActivity.xaml</DependentUpon>
+    <Compile Include="UserControls\Controls\Processes\DayActivityCommonAnalyse.xaml.cs">
+      <DependentUpon>DayActivityCommonAnalyse.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Controls\Processes\ProcessWork.xaml.cs">
-      <DependentUpon>ProcessWork.xaml</DependentUpon>
+    <Compile Include="UserControls\Controls\Processes\DayMonitor.xaml.cs">
+      <DependentUpon>DayMonitor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Controls\TextBlocks\DotTextBlock.xaml.cs">
+      <DependentUpon>DotTextBlock.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Controls\TimeLine\Report.xaml.cs">
       <DependentUpon>Report.xaml</DependentUpon>
@@ -189,13 +197,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Controls\Processes\ProcessDayActivity.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="UserControls\Controls\Processes\DayActivityCommonAnalyse.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Controls\Processes\ProcessWork.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="UserControls\Controls\Processes\DayMonitor.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Controls\TextBlocks\DotTextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Controls\TimeLine\Report.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -244,6 +256,7 @@
       <Name>Twill.UI.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

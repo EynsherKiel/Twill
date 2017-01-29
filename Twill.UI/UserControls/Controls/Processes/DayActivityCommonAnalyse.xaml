@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="Twill.UI.UserControls.Controls.Processes.DayActivityCommonAnalyse"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
+             xmlns:converters="clr-namespace:Twill.UI.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Twill.UI.UserControls.Controls.Processes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:processes="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
+             xmlns:timeline="clr-namespace:Twill.UI.UserControls.Controls.TimeLine"
+             d:DesignHeight="100"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Twill.UI;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="/Twill.UI;component/Styles/NullStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:DateTimeToPixelsConverter x:Key="DateTimeToPixelsConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid d:DataContext="{d:DesignInstance processes:DayActivityCommonAnalyse, IsDesignTimeCreatable=True}" DataContext="{Binding DayActivityCommonAnalyseModel, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Viewbox>
+
+            <chart:PieChart Width="400"
+                            Height="400"
+                         ChartTitle="Day activity"
+                            ChartSubTitle="in minets"
+                            Palette="{Binding Palette}">
+                <chart:PieChart.Series>
+                    <chart:ChartSeries DisplayMember="ProcessName"
+                                       ItemsSource="{Binding CommonProcesses}"
+                                       SeriesTitle="CommonProcesses"
+                                       ValueMember="Persents" />
+                </chart:PieChart.Series>
+            </chart:PieChart>
+
+        </Viewbox>
+
+    </Grid>
+</UserControl>
