@@ -3,7 +3,7 @@ using System.Linq;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 
-namespace Twill.Storage.Serialization
+namespace Twill.Storage.Files.Serialization.Implementations
 {
     [XmlRoot(ElementName = "TASK")]
     public class Task
@@ -84,22 +84,28 @@ namespace Twill.Storage.Serialization
         {
             FileName = filename;
 
+            UpLastMod();
+        }
+
+        private void UpLastMod()
+        {
             var time = DateTime.Now;
 
-            LastMod = time.ToOADate(); 
+            LastMod = time.ToOADate();
             LastModString = $"{time.ToShortDateString()} {time.ToString("H:mm")}";
         }
 
-        public void Add(DateTime time, string title, int cost)
+        public void Add(string parenttitle, string title, int cost)
         {
-            var lasttask = Tasks.LastOrDefault();
-            if(lasttask == null || lasttask.Title != time.ToShortDateString())
-            {
-                Tasks.Add(new Task(NextUniqueid++) { Title = time.ToShortDateString() });
-                lasttask = Tasks.Last();
+            var lasttask = Tasks.FirstOrDefault(task => task.Title == parenttitle);
+            if(lasttask == null)
+            { 
+                Tasks.Add(lasttask = new Task(NextUniqueid++) { Title = parenttitle }); 
             }
 
             lasttask.Add(title, cost, NextUniqueid++);
+
+            UpLastMod();
         }
 
         [XmlElement(ElementName = "TASK")]

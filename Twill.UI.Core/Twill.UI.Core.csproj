@@ -84,6 +84,7 @@
     <Compile Include="Models\Controls\Processes\ProcessDayActivity.cs" />
     <Compile Include="Models\Controls\Processes\ProcessMonitor.cs" />
     <Compile Include="Models\Controls\Processes\ProcessWork.cs" />
+    <Compile Include="Models\Content\Settings\GeneralPageModel.cs" />
     <Compile Include="Models\Controls\TimeLine\ReportModel.cs" />
     <Compile Include="Models\Controls\TimeLine\ReportsModel.cs" />
     <Compile Include="Models\Controls\Utils\ChartElementModel.cs" />
@@ -112,6 +113,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

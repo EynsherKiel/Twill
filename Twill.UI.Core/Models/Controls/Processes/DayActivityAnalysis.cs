@@ -192,7 +192,6 @@ namespace Twill.UI.Core.Models.Controls.Processes
         }
 
         private ObservableCollection<ProcessActivity> processActivities = new ObservableCollection<ProcessActivity>();
-        private bool v;
 
         public ObservableCollection<ProcessActivity> ProcessActivities
         {

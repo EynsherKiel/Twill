@@ -1,26 +1,61 @@
 ﻿<UserControl x:Class="Twill.UI.UserControls.Content.SettingsPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:content="clr-namespace:Twill.UI.Core.Models.Content;assembly=Twill.UI.Core"
+             xmlns:contetncontrols="clr-namespace:Twill.UI.UserControls.Content"
+             xmlns:contetncontrolsmodels="clr-namespace:Twill.UI.Core.Models.Content;assembly=Twill.UI.Core"
+             xmlns:controls="clr-namespace:Twill.UI.Controls"
+             xmlns:converters="clr-namespace:Twill.UI.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Twill.UI.UserControls.Content"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:content="clr-namespace:Twill.UI.Core.Models.Content;assembly=Twill.UI.Core"
-             d:DataContext="{d:DesignInstance content:SettingsPageModel,
-                                              IsDesignTimeCreatable=True}"
+             xmlns:models="clr-namespace:Twill.UI.Core.Models;assembly=Twill.UI.Core"
+             xmlns:settings="clr-namespace:Twill.UI.Core.Models.Content.Settings;assembly=Twill.UI.Core"
+             xmlns:settingspages="clr-namespace:Twill.UI.UserControls.Content.Settings"
              d:DesignHeight="200"
              d:DesignWidth="500"
              mc:Ignorable="d">
-    <Grid>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Twill.UI;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="/Twill.UI;component/Styles/ScrollViewer.xaml" />
+                <ResourceDictionary Source="/Twill.UI;component/Controls/Menu.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <converters:EqualsTypesConverter x:Key="EqualsTypesConverter" />
+
+            <DataTemplate DataType="{x:Type settings:GeneralPageModel}">
+                <settingspages:GeneralPage />
+            </DataTemplate>
 
 
-        <TextBlock  
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   FontFamily="pack://application:,,,/Twill.UI;component/fonts/VLADIMIR.TTF#Vladimir Script"
-                   FontSize="110"
-                   Foreground="#FF8924EB"
-                   Text="{Binding Text,
-                                  Mode=TwoWay,
-                                  UpdateSourceTrigger=PropertyChanged}" />
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid d:DataContext="{d:DesignInstance content:SettingsPageModel, IsDesignTimeCreatable=True}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <controls:Menu Title="Settings"
+                       Width="200"
+                       FontSize="16"
+                       Style="{DynamicResource MainMenu}">
+
+            <MenuItem Command="{Binding GeneralPageViewCommand}"
+                      Header="General"
+                      IsChecked="{Binding CurrentViewModel,
+                                          Converter={StaticResource ResourceKey=EqualsTypesConverter},
+                                          ConverterParameter=GeneralPageModel}" />
+
+
+
+        </controls:Menu>
+
+        <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}" />
+
     </Grid>
 </UserControl>

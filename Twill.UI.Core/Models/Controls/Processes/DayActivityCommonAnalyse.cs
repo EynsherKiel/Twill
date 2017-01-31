@@ -47,7 +47,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
                     foreach (var item in processes)
                     {
                         var resources = new ResourceDictionary();
-                        resources.Add($"Brush{palete.Count + 1}", item.Key.Brush);
+                        resources.Add($"Brush{palete.Count}", item.Key.Brush);
                         palete.Add(resources);
 
                         commonProcesses.Add(new ChartElementModel() { ProcessName = item.Key.Name });

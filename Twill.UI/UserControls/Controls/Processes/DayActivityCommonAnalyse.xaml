@@ -36,6 +36,7 @@
 
         <Viewbox HorizontalAlignment="Center" VerticalAlignment="Top">
 
+            <!--todo : need remove!-->
             <chart:PieChart Width="400"
                             Height="400"
                             Background="Transparent"

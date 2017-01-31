@@ -13,10 +13,10 @@ namespace Twill.Units.Implementation
         [TestMethod]
         public void IntoToDoListTest()
         {
-            var todolist = new Storage.Serialization.TodoList("test");
+            var todolist = new Twill.Storage.Files.Serialization.Implementations.TodoList("test");
 
-            todolist.Add(DateTime.Now, "new task", 500); 
-            todolist.Add(DateTime.Now.AddDays(1), "new task", 500);
+            todolist.Add(DateTime.Now.ToShortDateString(), "new task", 500); 
+            todolist.Add(DateTime.Now.AddDays(1).ToShortDateString(), "new task", 500);
 
             var data = Twill.Tools.Text.XML.Serialization(todolist);
 

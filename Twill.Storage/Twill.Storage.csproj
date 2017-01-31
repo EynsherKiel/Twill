@@ -48,9 +48,10 @@
     <Compile Include="Files\BaseInteraction.cs" />
     <Compile Include="Files\IInteraction.cs" />
     <Compile Include="Files\Json.cs" />
+    <Compile Include="Files\Serialization\ToType.cs" />
     <Compile Include="Files\Zip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\ToDo.cs" />
+    <Compile Include="Files\Serialization\Implementations\ToDoList.cs" />
     <Compile Include="Settings\Default.cs" />
   </ItemGroup>
   <ItemGroup>
