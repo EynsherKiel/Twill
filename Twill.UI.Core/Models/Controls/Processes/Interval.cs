@@ -8,7 +8,7 @@ using Twill.Processes.Interfaces.Monitor;
 
 namespace Twill.UI.Core.Models.Controls.Processes
 {
-    public class Interval : ViewModelBase, IInterval
+    public class Interval : ObservableObject, IInterval
     {
         private TimeSpan start;
         public TimeSpan Start

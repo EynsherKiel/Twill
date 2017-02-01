@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Twill.Storage.Files
 {
-   internal class BaseInteraction
+   internal abstract class BaseInteraction
     {
         public BaseInteraction(string path)
         {

@@ -20,7 +20,8 @@ namespace Twill.Storage.Settings
         public static string LaborsPath => System.IO.Path.Combine(UserFolderPath, LaborsName);
         public static string ReportsPath => System.IO.Path.Combine(UserFolderPath, ReportsName);
 
-        public static string GetLaborFullPath(DateTime time) => System.IO.Path.Combine(LaborsPath, time.GetDateTimeFormats().First(), LaborJsonName);
-
+        public static string GetLaborForlderFullPath(DateTime time) => System.IO.Path.Combine(LaborsPath, time.GetDateTimeFormats().First());
+        public static string GetLaborFullPath(DateTime time) => System.IO.Path.Combine(GetLaborForlderFullPath(time), LaborJsonName);
+        public static string GetLaborFullPath(DateTime time, string name) => System.IO.Path.Combine(GetLaborForlderFullPath(time), name);
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Twill.Storage.Files.Serialization;
+using Twill.Storage.Enums; 
 
 namespace Twill.UI.Core.Models.Content.Settings
 {

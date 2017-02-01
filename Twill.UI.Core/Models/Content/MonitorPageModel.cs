@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using System;
 using System.Linq;
 using System.Windows.Input;
+using Twill.Storage.Files.Reports;
 using Twill.Tools.Async;
 using Twill.UI.Core.Models.Content.Settings;
 using Twill.UI.Core.Models.Controls.Processes;
@@ -25,12 +26,25 @@ namespace Twill.UI.Core.Models.Content
         }
 
         private StorageHelper.Manager StorageHelperManager = new StorageHelper.Manager();
+        private ReportsRegulator ReportsRegulator = new ReportsRegulator();
 
         public ICommand SaveReportsCommand => new RelayCommand(SaveReportsMethod);
 
         private void SaveReportsMethod()
-        { 
-            // todo save
+        {
+            var dayreport = new DayReport<ReportModel>()
+            {
+                Date = DayMonitor.Monitor.Date,
+                Reports = DayMonitor.ReportsModel.Reports.Where(report => !string.IsNullOrEmpty(report.Text)).ToList()
+            };
+
+            if (dayreport.Reports.Count == 0)
+                return;
+
+            var path = ReportsRegulator.Save(dayreport, GeneralPageModel.ToType);
+
+            System.Windows.MessageBox.Show(path);
+
         }
 
         private DayMonitor dayMonitor = new DayMonitor();

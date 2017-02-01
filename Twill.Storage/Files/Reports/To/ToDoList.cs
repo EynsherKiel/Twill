@@ -2,8 +2,9 @@
 using System.Linq;
 using System.Xml.Serialization;
 using System.Collections.Generic;
+using Twill.Storage.Interfaces.Reports;
 
-namespace Twill.Storage.Files.Serialization.Implementations
+namespace Twill.Storage.Files.Reports.To
 {
     [XmlRoot(ElementName = "TASK")]
     public class Task
@@ -26,7 +27,7 @@ namespace Twill.Storage.Files.Serialization.Implementations
             CreationDateString = $"{STARTDATESTRING} {time.ToString("H:mm")}";
         }
 
-        public void Add(string title, int cost, int nextuniqid)
+        public void Add(string title, double cost, int nextuniqid)
         {
             Tasks.Add(new Task(nextuniqid) { Title = title, Cost = cost });
         }
@@ -73,11 +74,13 @@ namespace Twill.Storage.Files.Serialization.Implementations
     }
 
     [XmlRoot(ElementName = "TODOLIST")]
-    public class TodoList
+    public class TodoList<T> : IReportFormatter<T> where T : IReport
     {
         public TodoList()
         {
+            FileName = string.Empty;
 
+            UpLastMod();
         }
 
         public TodoList(string filename)
@@ -95,7 +98,7 @@ namespace Twill.Storage.Files.Serialization.Implementations
             LastModString = $"{time.ToShortDateString()} {time.ToString("H:mm")}";
         }
 
-        public void Add(string parenttitle, string title, int cost)
+        public void Add(string parenttitle, string title, double cost)
         {
             var lasttask = Tasks.FirstOrDefault(task => task.Title == parenttitle);
             if(lasttask == null)
@@ -106,6 +109,16 @@ namespace Twill.Storage.Files.Serialization.Implementations
             lasttask.Add(title, cost, NextUniqueid++);
 
             UpLastMod();
+        }
+
+        public string Serialize() => Twill.Tools.Text.XML.Serialization(this);
+
+        public void Add(DayReport<T> dayReport)
+        {
+            string shortDateString = dayReport.Date.ToShortDateString();
+
+            foreach (var report in dayReport.Reports)
+                Add(shortDateString, report.Text, (report.End - report.Start).TotalHours);
         }
 
         [XmlElement(ElementName = "TASK")]

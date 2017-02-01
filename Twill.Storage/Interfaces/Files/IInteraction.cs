@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Twill.Storage.Files
+namespace Twill.Storage.Interfaces.Files
 {
     internal interface IInteraction
     {

@@ -49,7 +49,6 @@
                 <chart:PieChart.Series>
                     <chart:ChartSeries DisplayMember="ProcessName"
                                        ItemsSource="{Binding CommonProcesses}"
-                                       SeriesTitle="CommonProcesses"
                                        ValueMember="Persents" />
                 </chart:PieChart.Series>
             </chart:PieChart>

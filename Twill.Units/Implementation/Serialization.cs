@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twill.Storage.Interfaces.Reports;
 
 namespace Twill.Units.Implementation
 {
@@ -13,7 +14,7 @@ namespace Twill.Units.Implementation
         [TestMethod]
         public void IntoToDoListTest()
         {
-            var todolist = new Twill.Storage.Files.Serialization.Implementations.TodoList("test");
+            var todolist = new Storage.Files.Reports.To.TodoList<IReport>("test");
 
             todolist.Add(DateTime.Now.ToShortDateString(), "new task", 500); 
             todolist.Add(DateTime.Now.AddDays(1).ToShortDateString(), "new task", 500);

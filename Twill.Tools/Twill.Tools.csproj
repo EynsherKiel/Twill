@@ -46,6 +46,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Architecture\EnumUtils.cs" />
     <Compile Include="Architecture\StaticType.cs" />
     <Compile Include="Async\AsyncQueue.cs" />
     <Compile Include="Architecture\Singleton.cs" />

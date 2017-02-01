@@ -12,17 +12,6 @@ namespace Twill.UI.Core.Models.Controls.Processes
     {
         public ProcessActivity()
         {
-            if (IsInDesignMode)
-            {
-                LinkProcess = new ProcessDayActivity()
-                {
-                     Name = "Test name"
-                };
-
-                Start = TimeSpan.FromSeconds(17);
-                End = TimeSpan.FromSeconds(1 * 60.0 * 60.0 + 28.0 * 60.0 + 55);
-                
-            }
         }
 
         private ProcessDayActivity linkProcess;

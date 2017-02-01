@@ -28,7 +28,7 @@ namespace Twill.Storage.Barrier
             if (interaction == null)
                 return;
 
-            Save(interaction, Newtonsoft.Json.JsonConvert.SerializeObject(obj));
+            AsyncSave(interaction, Newtonsoft.Json.JsonConvert.SerializeObject(obj));
         }
          
         public T Load<T>(DateTime? time = null) where T : class,  new()
@@ -47,7 +47,7 @@ namespace Twill.Storage.Barrier
             return new T();
         }
 
-        private Files.IInteraction GetPath(Type type, DateTime? time = null)
+        private Interfaces.Files.IInteraction GetPath(Type type, DateTime? time = null)
         {
             if(type == typeof(BaseMonitor<,,,,>))
             {
@@ -82,12 +82,17 @@ namespace Twill.Storage.Barrier
             return null;
         }
 
-        private void Save(Files.IInteraction sysinteraction, string data)
+        internal void AsyncSave(Interfaces.Files.IInteraction sysinteraction, string data)
         {
             AsyncQueue.AsyncAdd(() => sysinteraction.Save(data));
         }
 
-        private string Load(Files.IInteraction sysinteraction)
+        internal void Save(Interfaces.Files.IInteraction sysinteraction, string data)
+        {
+            AsyncQueue.Add(() => sysinteraction.Save(data));
+        }
+
+        internal string Load(Interfaces.Files.IInteraction sysinteraction)
         {
             string data = string.Empty;
 
