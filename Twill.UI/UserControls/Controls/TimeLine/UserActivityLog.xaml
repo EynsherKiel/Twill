@@ -8,8 +8,7 @@
              xmlns:monitor="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
              xmlns:processes="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
              xmlns:textblocks="clr-namespace:Twill.UI.UserControls.Controls.TextBlocks"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:textblocks="clr-namespace:Twill.UI.UserControls.Controls.TextBlocks"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib" 
              d:DesignHeight="75"
              mc:Ignorable="d">
     <UserControl.Style>
