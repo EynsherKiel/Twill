@@ -9,6 +9,7 @@
              xmlns:processes="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
              xmlns:textblocks="clr-namespace:Twill.UI.UserControls.Controls.TextBlocks"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:textblocks="clr-namespace:Twill.UI.UserControls.Controls.TextBlocks"
              d:DesignHeight="75"
              mc:Ignorable="d">
     <UserControl.Style>
@@ -55,7 +56,10 @@
 
             </TextBlock>
 
-            <textblocks:DotTextBlock Grid.Column="2" DotBrush="{Binding LinkProcess.Brush}"  Text="{Binding LinkProcess.Name}"  Padding="0,0,10,0" />
+            <textblocks:DotTextBlock Grid.Column="2"
+                                     DotBrush="{Binding LinkProcess.Brush}"
+                                     Padding="0,0,10,0"
+                                     Text="{Binding LinkProcess.Name}" />
 
             <Line Grid.Row="1"
                   HorizontalAlignment="Center"

@@ -46,6 +46,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Architecture\EnumUtils.cs" />
     <Compile Include="Architecture\StaticType.cs" />
     <Compile Include="Async\AsyncQueue.cs" />
     <Compile Include="Architecture\Singleton.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Math\Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Text\Compression.cs" />
+    <Compile Include="Text\XML.cs" />
     <Compile Include="WPF\SortableObservableCollection.cs" />
     <Compile Include="WPF\UniqueColorGenerator.cs" />
   </ItemGroup>

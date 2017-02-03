@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
-
+using GalaSoft.MvvmLight.Command;
+using System.Windows.Input;
+using Twill.UI.Core.Models.Content.Settings;
 
 namespace Twill.UI.Core.Models.Content
 {
@@ -12,15 +14,46 @@ namespace Twill.UI.Core.Models.Content
     {
         public SettingsPageModel()
         {
+            if (IsInDesignMode)
+            {
+                GeneralPageModel = new GeneralPageModel();
+            }
+            else
+            {
+                GeneralPageModel = StorageHelperManager.Load<GeneralPageModel>();
+            }
 
+            currentViewModel = GeneralPageModel;
+        }
+
+        private StorageHelper.Manager StorageHelperManager = new StorageHelper.Manager();
+
+
+        public ICommand GeneralPageViewCommand => new RelayCommand(() => CurrentViewModel = GeneralPageModel);
+
+        private GeneralPageModel generalPageModel;
+        public GeneralPageModel GeneralPageModel
+        {
+            get { return generalPageModel; }
+            set { Set(ref generalPageModel, value); }
         }
 
 
-        private string text = "Settings";
-        public string Text
+        private ViewModelBase currentViewModel;
+        public ViewModelBase CurrentViewModel
         {
-            get { return text; }
-            set { Set(nameof(Text), ref text, value); }
+            get { return currentViewModel; }
+            set
+            {
+                Set(ref currentViewModel, value);
+                try
+                {
+                    GC.Collect(); GC.WaitForFullGCComplete();
+                }
+                catch
+                {
+                }
+            }
         }
     }
 } 

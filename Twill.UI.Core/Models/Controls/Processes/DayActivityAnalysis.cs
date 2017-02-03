@@ -22,6 +22,10 @@ namespace Twill.UI.Core.Models.Controls.Processes
         {
         }
 
+        public DayActivityAnalysis(bool v) : base(v)
+        { 
+        }
+
         private static ProcessDayActivity RestProcess = new ProcessDayActivity() { Name = "Your rest" };
 
         protected override void UpDate() => UpDate(false);
@@ -188,6 +192,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
         }
 
         private ObservableCollection<ProcessActivity> processActivities = new ObservableCollection<ProcessActivity>();
+
         public ObservableCollection<ProcessActivity> ProcessActivities
         {
             get { return processActivities; }

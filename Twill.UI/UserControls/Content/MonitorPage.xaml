@@ -64,11 +64,12 @@
                               DayMonitorModel="{Binding DayMonitor}" />
 
         <CheckBox Grid.Row="1"
-                  Height="12"
+                  Height="17"
+                  Margin="0,0,17,0"
                   HorizontalAlignment="Right"
                   VerticalAlignment="Top"
                   Click="CheckBox_Click"
-                  Content="Reports"
+                  Content="Analytics"
                   FontSize="8"
                   Foreground="{DynamicResource MainMenuTitleBrush}"
                   Template="{DynamicResource CheckBoxControlTemplate1}">

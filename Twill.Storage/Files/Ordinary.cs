@@ -7,15 +7,17 @@ using Twill.Storage.Interfaces.Files;
 
 namespace Twill.Storage.Files
 {
-    internal class Zip : BaseInteraction, IInteraction
+    internal class Ordinary : BaseInteraction, IInteraction
     {
-        public Zip(string path) : base(path) { }
+        public Ordinary(string path) : base(path) { }
+
+        public Encoding Encoding = Encoding.UTF8;
 
         public string Load()
         {
             try
             {
-               return Tools.Text.Compression.UnzipText(System.IO.File.ReadAllBytes(Path));
+                return System.IO.File.ReadAllText(Path, Encoding);
             }
             catch (Exception ex)
             {
@@ -28,7 +30,7 @@ namespace Twill.Storage.Files
         {
             try
             {
-                System.IO.File.WriteAllBytes(Path, Twill.Tools.Text.Compression.ZipText(data));
+                System.IO.File.WriteAllText(Path, data, Encoding);
             }
             catch (Exception ex)
             {

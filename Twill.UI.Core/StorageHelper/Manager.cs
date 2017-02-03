@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Twill.Processes.Models.Monitor;
+using Twill.UI.Core.Models.Content.Settings;
 using Twill.UI.Core.Models.Controls.Processes;
 
 namespace Twill.UI.Core.StorageHelper
@@ -14,7 +15,7 @@ namespace Twill.UI.Core.StorageHelper
         private Storage.Barrier.Manager BarrierManager = new Storage.Barrier.Manager();
         private object SyncRoot = new object();
 
-        public void Save<T>(T obj, DateTime? time = null) where T : class 
+        public void Save<T>(T obj, DateTime? time = null) where T : class
         {
             BarrierManager.Save(obj, time);
         }
@@ -33,7 +34,7 @@ namespace Twill.UI.Core.StorageHelper
                         var lightMonitor = BarrierManager.Load<LightProcessMonitor>(DateTime.Now);
 
                         Tools.Architecture.StaticType<Monitor>.Instance = new Monitor(lightMonitor);
-                         
+
                         Tools.Architecture.StaticType<Monitor>.Instance.StartWatch();
 
                         return Tools.Architecture.StaticType<T>.Instance;
@@ -45,6 +46,18 @@ namespace Twill.UI.Core.StorageHelper
                 }
             }
 
+            if (typeof(T) == typeof(GeneralPageModel))
+            {
+                // todo alarm!
+                lock (SyncRoot)
+                {
+                    if (Tools.Architecture.StaticType<T>.Instance != null)
+                        return Tools.Architecture.StaticType<T>.Instance;
+
+                    return Tools.Architecture.StaticType<T>.Instance = BarrierManager.Load<T>();
+                }
+
+            }
             return BarrierManager.Load<T>(time);
         }
     }
