@@ -46,7 +46,7 @@
                                        Converter={StaticResource TimeLineConverter},
                                        Mode=OneWay,
                                        RelativeSource={RelativeSource FindAncestor,
-                                                                      AncestorType=UserControl}}"
+                                                                      AncestorType=UserControl}, IsAsync=True}"
                  ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                  ScrollViewer.VerticalScrollBarVisibility="Hidden"
                  Style="{DynamicResource TwillListBoxNullStyle}">

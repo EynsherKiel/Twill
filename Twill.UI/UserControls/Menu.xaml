@@ -6,6 +6,7 @@
              xmlns:controls="clr-namespace:Twill.UI.Controls"
              xmlns:converters="clr-namespace:Twill.UI.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:Twill.UI.UserControls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Twill.UI.Core.Models;assembly=Twill.UI.Core"
@@ -49,7 +50,8 @@
           Background="{DynamicResource MainMenuTitleBrush}"
           DataContext="{Binding MenuModel,
                                 RelativeSource={RelativeSource FindAncestor,
-                                                               AncestorType={x:Type UserControl}}}">
+                                                               AncestorType={x:Type UserControl}},
+                                IsAsync=True}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -66,28 +68,32 @@
                        FontSize="16"
                        Style="{DynamicResource MainMenu}">
 
-            <MenuItem Command="{Binding HomePageViewCommand}"
+            <MenuItem Command="{Binding HomePageViewCommand,
+                                        IsAsync=True}"
                       Header="Home"
                       IsChecked="{Binding CurrentViewModel,
                                           Converter={StaticResource ResourceKey=EqualsTypesConverter},
                                           ConverterParameter=HomePageModel}" />
 
 
-            <MenuItem Command="{Binding MonitorPageViewCommand}"
+            <MenuItem Command="{Binding MonitorPageViewCommand,
+                                        IsAsync=True}"
                       Header="Monitor"
                       IsChecked="{Binding CurrentViewModel,
                                           Converter={StaticResource ResourceKey=EqualsTypesConverter},
                                           ConverterParameter=MonitorPageModel}" />
 
 
-            <MenuItem Command="{Binding SettingsPageViewCommand}"
+            <MenuItem Command="{Binding SettingsPageViewCommand,
+                                        IsAsync=True}"
                       Header="Settings"
                       IsChecked="{Binding CurrentViewModel,
                                           Converter={StaticResource ResourceKey=EqualsTypesConverter},
                                           ConverterParameter=SettingsPageModel}" />
 
 
-            <MenuItem Command="{Binding AboutPageViewCommand}"
+            <MenuItem Command="{Binding AboutPageViewCommand,
+                                        IsAsync=True}"
                       Header="About"
                       IsChecked="{Binding CurrentViewModel,
                                           Converter={StaticResource ResourceKey=EqualsTypesConverter},
@@ -95,9 +101,29 @@
 
         </controls:Menu>
 
-        <ContentControl Grid.Column="1"
-                        Panel.ZIndex="2"
-                        Content="{Binding CurrentViewModel}" />
+        <ContentControl Grid.Column="1" Panel.ZIndex="2">
+            <ContentControl.Resources>
+
+                <sys:Boolean x:Key="wait">true</sys:Boolean>
+
+                <DataTemplate DataType="{x:Type sys:Boolean}">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontFamily="pack://application:,,,/Twill.UI;component/fonts/VLADIMIR.TTF#Vladimir Script"
+                               FontSize="110"
+                               Foreground="#FF8924EB"
+                               Text="Is load..." />
+                </DataTemplate>
+            </ContentControl.Resources>
+            <ContentControl.Content>
+                <PriorityBinding>
+                    <Binding IsAsync="True" Path="CurrentViewModel" />
+                    <Binding Source="{StaticResource wait}" />
+                </PriorityBinding>
+            </ContentControl.Content>
+
+
+        </ContentControl>
 
 
         <Grid Grid.Row="0"
@@ -136,7 +162,7 @@
 
                 <DataTemplate DataType="{x:Type contetncontrolsmodels:MonitorPageModel}">
                     <Grid Background="Transparent">
-                        <Button  Margin="0,0,10,0"
+                        <Button Margin="0,0,10,0"
                                 HorizontalAlignment="Right"
                                 Command="{Binding SaveReportsCommand}"
                                 Content="Save full reports"

@@ -19,11 +19,11 @@
             <converters:BrushToColorConverter x:Key="BrushToColorConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-   
-    <Grid d:DataContext="{d:DesignInstance monitor:ProcessMonitor, IsDesignTimeCreatable=True}" DataContext="{Binding ProcessMonitorModel, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
+
+    <Grid d:DataContext="{d:DesignInstance monitor:ProcessMonitor, IsDesignTimeCreatable=True}" DataContext="{Binding ProcessMonitorModel, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, IsAsync=True}">
         <ListBox x:Name="listbox"
                  Background="Transparent"
-                 ItemsSource="{Binding UserLogActivities}"
+                 ItemsSource="{Binding UserLogActivities, IsAsync=True}"
                  Style="{DynamicResource TwillListBoxNullStyle}">
             <ListBox.Resources>
                 <Style BasedOn="{StaticResource ToolTipNullStyle}" TargetType="ToolTip" />
@@ -96,7 +96,7 @@
                                     <local:UserActivityLog x:Name="userActivityLog"
                                                            Height="100"
                                                             
-                                                           ProcessActivityModel="{Binding .}" />
+                                                           ProcessActivityModel="{Binding ., IsAsync=True, Delay=10000}" />
                                 </Grid>
                             </Grid.ToolTip>
                         </Grid>
