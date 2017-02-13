@@ -6,10 +6,10 @@
              xmlns:controls="clr-namespace:Twill.UI.Controls"
              xmlns:converters="clr-namespace:Twill.UI.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:Twill.UI.UserControls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Twill.UI.Core.Models;assembly=Twill.UI.Core"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              d:DesignHeight="450"
              d:DesignWidth="900"
              mc:Ignorable="d">
@@ -46,8 +46,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid d:DataContext="{d:DesignInstance models:MenuModel,
-                                           IsDesignTimeCreatable=True}"
-          Background="{DynamicResource MainMenuTitleBrush}"
+                                           IsDesignTimeCreatable=True}" 
           DataContext="{Binding MenuModel,
                                 RelativeSource={RelativeSource FindAncestor,
                                                                AncestorType={x:Type UserControl}},
@@ -101,7 +100,7 @@
 
         </controls:Menu>
 
-        <ContentControl Grid.Column="1" Panel.ZIndex="2">
+        <ContentControl   Grid.Column="1" Panel.ZIndex="5">
             <ContentControl.Resources>
 
                 <sys:Boolean x:Key="wait">true</sys:Boolean>
@@ -126,22 +125,18 @@
         </ContentControl>
 
 
-        <Grid Grid.Row="0"
+        <Grid Grid.Row="1"
               Grid.ColumnSpan="2"
-              Panel.ZIndex="1"
-              Background="{DynamicResource MainMenuTitleBrush}">
-            <Border BorderBrush="{DynamicResource SelectedIsMouseOverBrush}" BorderThickness="0,0,0,1">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="8"
-                                      ShadowDepth="0"
-                                      Color="{DynamicResource SelectedColor}" />
-                </Border.Effect>
-            </Border>
+              Panel.ZIndex="1" >
+ 
+            
         </Grid>
 
+            <Border Grid.Row="1"
+                        Grid.ColumnSpan="2" BorderBrush="{DynamicResource RulerBackgroundBrush}" BorderThickness="0,1,0,0" >
+               
 
-        <ContentControl Grid.Row="1"
-                        Grid.ColumnSpan="2"
+        <ContentControl
                         Height="17"
                         HorizontalAlignment="Stretch"
                         Panel.ZIndex="0"
@@ -149,19 +144,21 @@
             <ContentControl.Resources>
 
                 <DataTemplate DataType="{x:Type contetncontrolsmodels:HomePageModel}">
-                    <Grid Background="Transparent" />
+                    <Grid Background="{DynamicResource MainMenuTitleBrush}" />
                 </DataTemplate>
 
                 <DataTemplate DataType="{x:Type contetncontrolsmodels:SettingsPageModel}">
-                    <Grid Background="Transparent" />
+                    <Grid Background="{DynamicResource MainMenuTitleBrush}" />
                 </DataTemplate>
 
                 <DataTemplate DataType="{x:Type contetncontrolsmodels:AboutPageModel}">
-                    <Grid Background="Transparent" />
+                    <Grid Background="{DynamicResource MainMenuTitleBrush}" />
                 </DataTemplate>
 
                 <DataTemplate DataType="{x:Type contetncontrolsmodels:MonitorPageModel}">
-                    <Grid Background="Transparent">
+                    <Grid Background="{DynamicResource MainMenuTitleBrush}">
+ 
+                        
                         <Button Margin="0,0,10,0"
                                 HorizontalAlignment="Right"
                                 Command="{Binding SaveReportsCommand}"
@@ -189,5 +186,6 @@
             </ContentControl.Resources>
         </ContentControl>
 
+        </Border>
     </Grid>
 </UserControl>

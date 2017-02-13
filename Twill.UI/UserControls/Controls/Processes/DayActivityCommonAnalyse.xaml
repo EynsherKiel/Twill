@@ -34,9 +34,8 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!--<Viewbox HorizontalAlignment="Center" VerticalAlignment="Top">
-
-            --><!--todo : need remove!--><!--
+        <Viewbox HorizontalAlignment="Center" VerticalAlignment="Top">
+ 
             <chart:PieChart Width="400"
                             Height="400"
                             Background="Transparent"
@@ -53,7 +52,7 @@
                 </chart:PieChart.Series>
             </chart:PieChart>
 
-        </Viewbox>-->
+        </Viewbox>
 
         <Grid Grid.Column="1"
               HorizontalAlignment="Left"
