@@ -20,11 +20,13 @@ namespace Twill.UI.Core.Models
 
         public HomePageModel HomePageModel { get; set; } = new HomePageModel();
         public AboutPageModel AboutPageModel { get; set; } = new AboutPageModel();
+        public ReportsPageModel ReportsPageModel { get; set; } = new ReportsPageModel();
         public MonitorPageModel MonitorPageModel { get; set; } = new MonitorPageModel();
         public SettingsPageModel SettingsPageModel { get; set; } = new SettingsPageModel();
 
         public ICommand HomePageViewCommand => new RelayCommand(() => CurrentViewModel = HomePageModel);
         public ICommand AboutPageViewCommand => new RelayCommand(() => CurrentViewModel = AboutPageModel);
+        public ICommand ReportsPageViewCommand => new RelayCommand(() => CurrentViewModel = ReportsPageModel);
         public ICommand MonitorPageViewCommand => new RelayCommand(() => CurrentViewModel = MonitorPageModel);
         public ICommand SettingsPageViewCommand => new RelayCommand(() => CurrentViewModel = SettingsPageModel);
         
