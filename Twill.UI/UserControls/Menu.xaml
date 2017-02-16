@@ -129,7 +129,7 @@
             </ContentControl.Resources>
             <ContentControl.Content>
                 <PriorityBinding>
-                    <Binding IsAsync="True" Path="CurrentViewModel" />
+                    <Binding  Path="CurrentViewModel" />
                     <Binding Source="{StaticResource wait}" />
                 </PriorityBinding>
             </ContentControl.Content>

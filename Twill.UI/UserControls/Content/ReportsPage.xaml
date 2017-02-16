@@ -4,15 +4,44 @@
              xmlns:content="clr-namespace:Twill.UI.Core.Models.Content;assembly=Twill.UI.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Twill.UI.UserControls.Content"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DataContext="{d:DesignInstance content:ReportsPageModel,
                                               IsDesignTimeCreatable=True}"
-             d:DesignHeight="200"
-             d:DesignWidth="500"
+             d:DesignHeight="700"
+             d:DesignWidth="1200"
+             Background="{DynamicResource MaterialDesignPaper}"
+             TextElement.FontSize="13"
+             TextElement.FontWeight="Regular"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
              mc:Ignorable="d">
-    <Grid>
 
-        <Calendar />
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Calendar.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DatePicker.xaml" />
 
+                
+
+            </ResourceDictionary.MergedDictionaries>
+ 
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Background="{StaticResource PrimaryHueMidForegroundBrush}">
+   
+            <DatePicker   Style="{StaticResource MaterialDesignFloatingHintDatePicker}" > 
+            </DatePicker>
+ 
     </Grid>
 </UserControl>
