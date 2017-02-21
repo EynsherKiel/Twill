@@ -27,6 +27,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Calendar.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DatePicker.xaml" />
+                <ResourceDictionary Source="/Twill.UI;component/Styles/Colors.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <converters:DateTimeToCalendarBlackoutDateCollectionConverter x:Key="DateTimeToCalendarBlackoutDateCollectionConverter" />
@@ -68,13 +69,19 @@
 
         </StackPanel>
 
-        <processes:DayMonitor Grid.Row="2"
+
+        <processes:DayActivityCommonAnalyse Grid.Row="1" HorizontalAlignment="Left"
+                                                Background="Transparent"
+                                                DayActivityCommonAnalyseModel="{Binding DayMonitor.DayActivityCommonAnalyse}"
+                                                Foreground="Black" />
+
+        <GridSplitter Grid.Row="1" Height="1" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Background="{StaticResource MainMenuBrush}"  />
+
+        <processes:DayMonitor Background="White" Grid.Row="2"
                               ContentHeight="20000"
                               DayMonitorModel="{Binding DayMonitor,
                                                         IsAsync=True}" />
 
 
-
     </Grid>
-
 </UserControl>
