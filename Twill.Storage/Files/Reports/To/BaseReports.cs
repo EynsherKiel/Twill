@@ -31,6 +31,6 @@ namespace Twill.Storage.Files.Reports.To
 
         public abstract string Serialize();
 
-        public static T1 Deserialize<T1>(string obj) where T1 : BaseReports<T> { return default(T1); }
+        public abstract DayReport<T> Deserialize(string text);
     }
 }

@@ -26,7 +26,7 @@ namespace Twill.UI.Core.Models
 
         public ICommand HomePageViewCommand => new RelayCommand(() => CurrentViewModel = HomePageModel);
         public ICommand AboutPageViewCommand => new RelayCommand(() => CurrentViewModel = AboutPageModel);
-        public ICommand ReportsPageViewCommand => new RelayCommand(() => CurrentViewModel = ReportsPageModel);
+        public ICommand ReportsPageViewCommand => new RelayCommand(() => { ReportsPageModel.SelectedDate = null; CurrentViewModel = ReportsPageModel; });
         public ICommand MonitorPageViewCommand => new RelayCommand(() => CurrentViewModel = MonitorPageModel);
         public ICommand SettingsPageViewCommand => new RelayCommand(() => CurrentViewModel = SettingsPageModel);
         

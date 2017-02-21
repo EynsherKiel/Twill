@@ -41,14 +41,14 @@ namespace Twill.UI.Core.StorageHelper
                     }
                 }
                 else
-                {
-                    return BarrierManager.Load<T>(time);
+                { 
+
+                    return new Monitor(BarrierManager.Load<LightProcessMonitor>(time)) as T;
                 }
             }
 
             if (typeof(T) == typeof(GeneralPageModel))
             {
-                // todo alarm!
                 lock (SyncRoot)
                 {
                     if (Tools.Architecture.StaticType<T>.Instance != null)

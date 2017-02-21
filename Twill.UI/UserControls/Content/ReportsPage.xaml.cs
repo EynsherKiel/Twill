@@ -15,14 +15,12 @@ using System.Windows.Shapes;
 
 namespace Twill.UI.UserControls.Content
 {
-    /// <summary>
-    /// Логика взаимодействия для ReportsPage.xaml
-    /// </summary>
     public partial class ReportsPage : UserControl
     {
         public ReportsPage()
         {
             InitializeComponent();
         }
+        
     }
 }
