@@ -30,7 +30,18 @@ namespace Twill.Storage.Barrier
 
             AsyncSave(interaction, Newtonsoft.Json.JsonConvert.SerializeObject(obj));
         }
-         
+
+        public T GetAllActivities<T>() where T : ICollection<DateTime>, new()
+        {
+
+            var path = Settings.Default.LaborsPath;
+
+            var dirs = System.IO.Directory.GetDirectories(path);
+
+            return Tools.Collections.Utils.CreateCollection<T, DateTime>(dirs.Select(dir => Tools.Text.Convert.TryParseDatTimeShort(new System.IO.DirectoryInfo(dir).Name)).OfType<DateTime>());
+        }
+        
+
         public T Load<T>(DateTime? time = null) where T : class,  new()
         {
 

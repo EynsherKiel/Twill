@@ -121,6 +121,11 @@ namespace Twill.Storage.Files.Reports.To
                 Add(shortDateString, report.Text, (report.End - report.Start).TotalHours);
         }
 
+        public DayReport<T> Deserialize(string text)
+        {
+            return null;
+        }
+
         [XmlElement(ElementName = "TASK")]
         public List<Task> Tasks { get; set; } = new List<Task>();
         [XmlAttribute(AttributeName = "PROJECTNAME")]

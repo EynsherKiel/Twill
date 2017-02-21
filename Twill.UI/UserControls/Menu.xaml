@@ -9,6 +9,7 @@
              xmlns:local="clr-namespace:Twill.UI.UserControls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Twill.UI.Core.Models;assembly=Twill.UI.Core"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              d:DesignHeight="450"
              d:DesignWidth="900"
              mc:Ignorable="d">
@@ -25,7 +26,7 @@
             <converters:EqualsTypesConverter x:Key="EqualsTypesConverter" />
 
             <DataTemplate DataType="{x:Type contetncontrolsmodels:HomePageModel}">
-                <contetncontrols:HomePage />
+                <contetncontrols:HomePage MonitorClickCommand="{Binding DataContext.MonitorPageViewCommand, IsAsync=True, ElementName=maingrid}" ReportsClickCommand="{Binding DataContext.ReportsPageViewCommand, IsAsync=True, ElementName=maingrid}" />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type contetncontrolsmodels:SettingsPageModel}">
@@ -40,128 +41,169 @@
                 <contetncontrols:MonitorPage Background="White" />
             </DataTemplate>
 
+
+            <DataTemplate DataType="{x:Type contetncontrolsmodels:ReportsPageModel}">
+                <contetncontrols:ReportsPage />
+            </DataTemplate>
+
             <Style BasedOn="{StaticResource ScrollViewer}" TargetType="ScrollViewer" />
 
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid d:DataContext="{d:DesignInstance models:MenuModel,
-                                           IsDesignTimeCreatable=True}"
-          Background="{DynamicResource MainMenuTitleBrush}"
-          DataContext="{Binding MenuModel,
-                                RelativeSource={RelativeSource FindAncestor,
-                                                               AncestorType={x:Type UserControl}}}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="auto" />
-        </Grid.RowDefinitions>
+    <Border BorderBrush="{DynamicResource RulerBackgroundBrush}" BorderThickness="0,1,0,0">
 
-        <!--  FontFamily="pack://application:,,,/Twill.UI;component/fonts/VLADIMIR.TTF#Vladimir Script"  -->
-        <controls:Menu Width="200"
-                       Panel.ZIndex="2"
-                       FontSize="16"
-                       Style="{DynamicResource MainMenu}">
+        <Grid x:Name="maingrid"
+              d:DataContext="{d:DesignInstance models:MenuModel,
+                                               IsDesignTimeCreatable=True}"
+              DataContext="{Binding MenuModel,
+                                    RelativeSource={RelativeSource FindAncestor,
+                                                                   AncestorType={x:Type UserControl}},
+                                    IsAsync=True}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-            <MenuItem Command="{Binding HomePageViewCommand}"
-                      Header="Home"
-                      IsChecked="{Binding CurrentViewModel,
-                                          Converter={StaticResource ResourceKey=EqualsTypesConverter},
-                                          ConverterParameter=HomePageModel}" />
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
 
+            <!--  FontFamily="pack://application:,,,/Twill.UI;component/fonts/VLADIMIR.TTF#Vladimir Script"  -->
+            <controls:Menu Width="200"
+                           Panel.ZIndex="2"
+                           FontSize="16"
+                           Style="{DynamicResource MainMenu}">
 
-            <MenuItem Command="{Binding MonitorPageViewCommand}"
-                      Header="Monitor"
-                      IsChecked="{Binding CurrentViewModel,
-                                          Converter={StaticResource ResourceKey=EqualsTypesConverter},
-                                          ConverterParameter=MonitorPageModel}" />
+                <MenuItem Command="{Binding HomePageViewCommand,
+                                            IsAsync=True}"
+                          Header="Home"
+                          IsChecked="{Binding CurrentViewModel,
+                                              Converter={StaticResource ResourceKey=EqualsTypesConverter},
+                                              ConverterParameter=HomePageModel}" />
 
 
-            <MenuItem Command="{Binding SettingsPageViewCommand}"
-                      Header="Settings"
-                      IsChecked="{Binding CurrentViewModel,
-                                          Converter={StaticResource ResourceKey=EqualsTypesConverter},
-                                          ConverterParameter=SettingsPageModel}" />
+                <MenuItem Command="{Binding MonitorPageViewCommand,
+                                            IsAsync=True}"
+                          Header="Monitor"
+                          IsChecked="{Binding CurrentViewModel,
+                                              Converter={StaticResource ResourceKey=EqualsTypesConverter},
+                                              ConverterParameter=MonitorPageModel}" />
+
+                <MenuItem Command="{Binding ReportsPageViewCommand,
+                                            IsAsync=True}"
+                          Header="Reports"
+                          IsChecked="{Binding CurrentViewModel,
+                                              Converter={StaticResource ResourceKey=EqualsTypesConverter},
+                                              ConverterParameter=ReportsPageModel}" />
 
 
-            <MenuItem Command="{Binding AboutPageViewCommand}"
-                      Header="About"
-                      IsChecked="{Binding CurrentViewModel,
-                                          Converter={StaticResource ResourceKey=EqualsTypesConverter},
-                                          ConverterParameter=AboutPageModel}" />
-
-        </controls:Menu>
-
-        <ContentControl Grid.Column="1"
-                        Panel.ZIndex="2"
-                        Content="{Binding CurrentViewModel}" />
+                <MenuItem Command="{Binding SettingsPageViewCommand,
+                                            IsAsync=True}"
+                          Header="Settings"
+                          IsChecked="{Binding CurrentViewModel,
+                                              Converter={StaticResource ResourceKey=EqualsTypesConverter},
+                                              ConverterParameter=SettingsPageModel}" />
 
 
-        <Grid Grid.Row="0"
-              Grid.ColumnSpan="2"
-              Panel.ZIndex="1"
-              Background="{DynamicResource MainMenuTitleBrush}">
-            <Border BorderBrush="{DynamicResource SelectedIsMouseOverBrush}" BorderThickness="0,0,0,1">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="8"
-                                      ShadowDepth="0"
-                                      Color="{DynamicResource SelectedColor}" />
-                </Border.Effect>
+                <MenuItem Command="{Binding AboutPageViewCommand,
+                                            IsAsync=True}"
+                          Header="About"
+                          IsChecked="{Binding CurrentViewModel,
+                                              Converter={StaticResource ResourceKey=EqualsTypesConverter},
+                                              ConverterParameter=AboutPageModel}" />
+
+            </controls:Menu>
+
+            <ContentControl Grid.Column="1" Panel.ZIndex="5">
+                <ContentControl.Resources>
+
+                    <sys:Boolean x:Key="wait">true</sys:Boolean>
+
+                    <DataTemplate DataType="{x:Type sys:Boolean}">
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontFamily="pack://application:,,,/Twill.UI;component/fonts/VLADIMIR.TTF#Vladimir Script"
+                                   FontSize="110"
+                                   Foreground="#FF8924EB"
+                                   Text="Is load..." />
+                    </DataTemplate>
+                </ContentControl.Resources>
+                <ContentControl.Content>
+                    <PriorityBinding>
+                        <Binding Path="CurrentViewModel" />
+                        <Binding Source="{StaticResource wait}" />
+                    </PriorityBinding>
+                </ContentControl.Content>
+
+
+            </ContentControl>
+
+
+            <Grid Grid.Row="1"
+                  Grid.ColumnSpan="2"
+                  Panel.ZIndex="1" />
+
+            <Border Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    BorderBrush="{DynamicResource RulerBackgroundBrush}"
+                    BorderThickness="0,1,0,0">
+
+
+                <ContentControl Height="17"
+                                HorizontalAlignment="Stretch"
+                                Panel.ZIndex="0"
+                                Content="{Binding CurrentViewModel}">
+                    <ContentControl.Resources>
+
+                        <DataTemplate DataType="{x:Type contetncontrolsmodels:HomePageModel}">
+                            <Grid Background="{DynamicResource MainMenuTitleBrush}" />
+                        </DataTemplate>
+
+                        <DataTemplate DataType="{x:Type contetncontrolsmodels:SettingsPageModel}">
+                            <Grid Background="{DynamicResource MainMenuTitleBrush}" />
+                        </DataTemplate>
+
+                        <DataTemplate DataType="{x:Type contetncontrolsmodels:AboutPageModel}">
+                            <Grid Background="{DynamicResource MainMenuTitleBrush}" />
+                        </DataTemplate>
+
+                        <DataTemplate DataType="{x:Type contetncontrolsmodels:ReportsPageModel}">
+                            <Grid Background="{DynamicResource MainMenuTitleBrush}" />
+                        </DataTemplate>
+
+                        <DataTemplate DataType="{x:Type contetncontrolsmodels:MonitorPageModel}">
+                            <Grid Background="{DynamicResource MainMenuTitleBrush}">
+
+                                <Button Margin="0,0,10,0"
+                                        HorizontalAlignment="Right"
+                                        Command="{Binding SaveReportsCommand}"
+                                        Content="Save full reports"
+                                        FontSize="9"
+                                        Foreground="{DynamicResource MainMenuDefaultForegroundBrush}">
+                                    <Button.Style>
+                                        <Style BasedOn="{StaticResource ButtonNullStyle}" TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="Border.CornerRadius" Value="3" />
+                                            <Setter Property="Padding" Value="5,1,5,1" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Setter Property="Background" Value="{StaticResource MainMenuBrush}" />
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="true">
+                                                    <Setter Property="Background" Value="{StaticResource MainMenuIsPressedTitleBrush}" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
+
             </Border>
         </Grid>
-
-
-        <ContentControl Grid.Row="1"
-                        Grid.ColumnSpan="2"
-                        Height="17"
-                        HorizontalAlignment="Stretch"
-                        Panel.ZIndex="0"
-                        Content="{Binding CurrentViewModel}">
-            <ContentControl.Resources>
-
-                <DataTemplate DataType="{x:Type contetncontrolsmodels:HomePageModel}">
-                    <Grid Background="Transparent" />
-                </DataTemplate>
-
-                <DataTemplate DataType="{x:Type contetncontrolsmodels:SettingsPageModel}">
-                    <Grid Background="Transparent" />
-                </DataTemplate>
-
-                <DataTemplate DataType="{x:Type contetncontrolsmodels:AboutPageModel}">
-                    <Grid Background="Transparent" />
-                </DataTemplate>
-
-                <DataTemplate DataType="{x:Type contetncontrolsmodels:MonitorPageModel}">
-                    <Grid Background="Transparent">
-                        <Button  Margin="0,0,10,0"
-                                HorizontalAlignment="Right"
-                                Command="{Binding SaveReportsCommand}"
-                                Content="Save full reports"
-                                FontSize="9"
-                                Foreground="{DynamicResource MainMenuDefaultForegroundBrush}">
-                            <Button.Style>
-                                <Style BasedOn="{StaticResource ButtonNullStyle}" TargetType="Button">
-                                    <Setter Property="Background" Value="Transparent" />
-                                    <Setter Property="Border.CornerRadius" Value="3" />
-                                    <Setter Property="Padding" Value="5,1,5,1" />
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property="Background" Value="{StaticResource MainMenuBrush}" />
-                                        </Trigger>
-                                        <Trigger Property="IsPressed" Value="true">
-                                            <Setter Property="Background" Value="{StaticResource MainMenuIsPressedTitleBrush}" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-                    </Grid>
-                </DataTemplate>
-            </ContentControl.Resources>
-        </ContentControl>
-
-    </Grid>
+    </Border>
 </UserControl>

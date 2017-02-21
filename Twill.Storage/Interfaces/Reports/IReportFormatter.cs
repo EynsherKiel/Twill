@@ -10,6 +10,7 @@ namespace Twill.Storage.Interfaces.Reports
     internal interface IReportFormatter<T> where T : IReport
     {
         void Add(DayReport<T> dayReport);
-        string Serialize(); 
+        string Serialize();
+        DayReport<T> Deserialize(string text);
     }
 }

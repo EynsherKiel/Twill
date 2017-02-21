@@ -1,9 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Twill.Tools.Async;
 using Twill.UI.Core.Models.Controls.TimeLine;
 
@@ -23,17 +20,13 @@ namespace Twill.UI.Core.Models.Controls.Processes
 
                 StartSaves(TimeSpan.FromSeconds(10.0));
             }
-
-            DayActivityAnalysis = new DayActivityAnalysis(Monitor);
-            DayActivityCommonAnalyse = new DayActivityCommonAnalyse(Monitor);
         }
 
-        public DayMonitor(DateTime time)
+        public DayMonitor(DateTime date)
         {
-            Monitor = StorageHelperManager.Load<Monitor>(time);
-            DayActivityAnalysis = new DayActivityAnalysis(Monitor);
-            DayActivityCommonAnalyse = new DayActivityCommonAnalyse(Monitor);
+            Monitor = StorageHelperManager.Load<Monitor>(date);
         }
+
 
         private void StartSaves(TimeSpan updatetime)
         {
@@ -64,8 +57,12 @@ namespace Twill.UI.Core.Models.Controls.Processes
         public Monitor Monitor
         {
             get { return monitor; }
-            set { Set(ref monitor, value); }
-        }
+            set
+            {
+                Set(ref monitor, value);
+                Fill();
+            }
+        } 
 
         private DayActivityCommonAnalyse dayActivityCommonAnalyse;
         public DayActivityCommonAnalyse DayActivityCommonAnalyse
@@ -88,6 +85,40 @@ namespace Twill.UI.Core.Models.Controls.Processes
             set { Set(ref reportsModel, value); }
         }
 
+
+        private void Fill()
+        {
+            if (Monitor == null)
+            {
+                DayActivityAnalysis = null;
+                DayActivityCommonAnalyse = null;
+                ReportsModel = new ReportsModel();
+                return;
+            }
+
+            DayActivityAnalysis = new DayActivityAnalysis(Monitor);
+            DayActivityCommonAnalyse = new DayActivityCommonAnalyse(Monitor);
+
+            FillReportDayModel();
+        }
+
+        public Storage.Files.Reports.DayReport<ReportModel> GetDayReport()
+        {
+            return new Storage.Files.Reports.DayReport<ReportModel>()
+            {
+                Date = Monitor.Date,
+                Reports = ReportsModel.Reports.Where(report => !string.IsNullOrEmpty(report.Text)).ToList()
+            };
+        }
+        private void FillReportDayModel()
+        {
+            var dayreport = ReportsModel.ReportsRegulator.Load<ReportModel>(Monitor.Date);
+
+            if (ReportsModel == null)
+                ReportsModel = new ReportsModel();
+
+            ReportsModel.UpDateReportModel(dayreport?.Reports);
+        }
 
         ~DayMonitor()
         {

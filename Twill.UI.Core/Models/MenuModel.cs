@@ -14,17 +14,19 @@ namespace Twill.UI.Core.Models
     {
         public MenuModel()
         {
-            currentViewModel = MonitorPageModel;
+            currentViewModel = ReportsPageModel;
         }
 
 
         public HomePageModel HomePageModel { get; set; } = new HomePageModel();
         public AboutPageModel AboutPageModel { get; set; } = new AboutPageModel();
+        public ReportsPageModel ReportsPageModel { get; set; } = new ReportsPageModel();
         public MonitorPageModel MonitorPageModel { get; set; } = new MonitorPageModel();
         public SettingsPageModel SettingsPageModel { get; set; } = new SettingsPageModel();
 
         public ICommand HomePageViewCommand => new RelayCommand(() => CurrentViewModel = HomePageModel);
         public ICommand AboutPageViewCommand => new RelayCommand(() => CurrentViewModel = AboutPageModel);
+        public ICommand ReportsPageViewCommand => new RelayCommand(() => { ReportsPageModel.SelectedDate = null; CurrentViewModel = ReportsPageModel; });
         public ICommand MonitorPageViewCommand => new RelayCommand(() => CurrentViewModel = MonitorPageModel);
         public ICommand SettingsPageViewCommand => new RelayCommand(() => CurrentViewModel = SettingsPageModel);
         
@@ -33,16 +35,7 @@ namespace Twill.UI.Core.Models
         public ViewModelBase CurrentViewModel
         {
             get { return currentViewModel; }
-            set
-            {
-                Set(ref currentViewModel, value); try
-                {
-                    GC.Collect(); GC.WaitForFullGCComplete();
-                }
-                catch
-                {
-                }
-            }
+            set { Set(ref currentViewModel, value); GC.Collect();  }
         }
     }
 }

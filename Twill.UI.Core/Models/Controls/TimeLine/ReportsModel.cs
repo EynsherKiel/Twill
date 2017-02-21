@@ -7,16 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Twill.Storage.Files.Reports;
 
 namespace Twill.UI.Core.Models.Controls.TimeLine
 {
     public class ReportsModel : ViewModelBase
     {
-
-
         public ICommand AddRepordCommand => new RelayCommand<System.Collections.IList>(AddRepordMethod);
         public ICommand RemoveTopElementCommand => new RelayCommand<ReportModel>(RemoveTopElementMethod);
         public ICommand RemoveBottomElementCommand => new RelayCommand<ReportModel>(RemoveBottomElementMethod);
+
+        public readonly ReportsRegulator ReportsRegulator = new ReportsRegulator();
 
         private void RemoveTopElementMethod(ReportModel report)
         {
@@ -78,6 +79,45 @@ namespace Twill.UI.Core.Models.Controls.TimeLine
             findRepor.End = choisenDateTime;
         }
 
+        public void UpDateReportModel(IList<ReportModel> list)
+        {
+            if (list == null)
+                return;
+
+            var reports = new ObservableCollection<ReportModel>() { new ReportModel() };
+
+            foreach (var item in list)
+            {
+                Add(reports, item);
+            }
+
+            Reports = reports;
+        }
+
+        private void Add(IList<ReportModel> list, ReportModel report)
+        {
+            var usereport = list.FirstOrDefault(rep => rep.Start <= report.Start && rep.End >= report.Start);
+
+            var reportindex = list.IndexOf(usereport);
+            var end = usereport.End;
+
+            if (usereport.End == report.Start)
+            {
+                list[reportindex + 1].Start = report.End;
+                list.Insert(reportindex + 1, report);
+            }
+            else
+            {
+                var newreport = new ReportModel();
+
+                newreport.Start = report.End;
+                newreport.End = usereport.End;
+                usereport.End = report.Start;
+
+                list.Insert(reportindex + 1, report);
+                list.Insert(reportindex + 2, newreport);
+            }
+        }
 
         private ObservableCollection<ReportModel> reports = new ObservableCollection<ReportModel>() { new ReportModel() };
         public ObservableCollection<ReportModel> Reports

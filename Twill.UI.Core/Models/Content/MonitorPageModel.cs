@@ -25,23 +25,18 @@ namespace Twill.UI.Core.Models.Content
             }
         }
 
-        private StorageHelper.Manager StorageHelperManager = new StorageHelper.Manager();
-        private ReportsRegulator ReportsRegulator = new ReportsRegulator();
+        private StorageHelper.Manager StorageHelperManager = new StorageHelper.Manager(); 
 
         public ICommand SaveReportsCommand => new RelayCommand(SaveReportsMethod);
 
         private void SaveReportsMethod()
         {
-            var dayreport = new DayReport<ReportModel>()
-            {
-                Date = DayMonitor.Monitor.Date,
-                Reports = DayMonitor.ReportsModel.Reports.Where(report => !string.IsNullOrEmpty(report.Text)).ToList()
-            };
+            var dayreport = DayMonitor.GetDayReport();
 
             if (dayreport.Reports.Count == 0)
                 return;
 
-            var path = ReportsRegulator.Save(dayreport, GeneralPageModel.ToType);
+            var path = DayMonitor.ReportsModel.ReportsRegulator.Save(dayreport, GeneralPageModel.ToType);
 
             System.Windows.MessageBox.Show(path);
 

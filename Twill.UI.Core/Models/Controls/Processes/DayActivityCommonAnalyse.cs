@@ -23,7 +23,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
         }
         public DayActivityCommonAnalyse(Monitor monitor) : base(monitor)
         {
-
+            UpDate(Monitor?.ProcessMonitor?.UserLogActivities);
         }
 
         protected override void UpDate()
@@ -33,6 +33,9 @@ namespace Twill.UI.Core.Models.Controls.Processes
 
         private void UpDate(ICollection<ProcessActivity> list)
         {
+            if (list == null)
+                return;
+
             lock (SyncRoot)
             {
                 var names = CommonProcesses.Select(cp => cp.ProcessName).ToList();

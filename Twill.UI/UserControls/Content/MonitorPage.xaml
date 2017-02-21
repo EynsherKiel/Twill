@@ -44,14 +44,14 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid x:Name="grid" d:DataContext="{d:DesignInstance {x:Type content:MonitorPageModel}, IsDesignTimeCreatable=True}">
+    <Grid x:Name="grid" d:DataContext="{d:DesignInstance {x:Type content:MonitorPageModel}, IsDesignTimeCreatable=True}" DataContext="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, IsAsync=True}">
         <Grid.RowDefinitions>
-            <RowDefinition x:Name="row" Height="{Binding ColumnHeight, Converter={StaticResource DoubleToGridLength}, ElementName=usercontrol, Mode=TwoWay}" />
+            <RowDefinition x:Name="row" Height="{Binding ColumnHeight, Converter={StaticResource DoubleToGridLength}, ElementName=usercontrol, Mode=TwoWay, IsAsync=True}" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
 
-        <processes:DayActivityCommonAnalyse x:Name="dayActivityCommonAnalyse" DayActivityCommonAnalyseModel="{Binding DayMonitor.DayActivityCommonAnalyse, Mode=OneWay}" />
+        <processes:DayActivityCommonAnalyse x:Name="dayActivityCommonAnalyse" DayActivityCommonAnalyseModel="{Binding DayMonitor.DayActivityCommonAnalyse, Mode=OneWay, IsAsync=True}" />
 
         <GridSplitter Height="2"
                       HorizontalAlignment="Stretch"
@@ -61,7 +61,7 @@
 
         <processes:DayMonitor Grid.Row="1"
                               ContentHeight="20000"
-                              DayMonitorModel="{Binding DayMonitor}" />
+                              DayMonitorModel="{Binding DayMonitor, IsAsync=True}" />
 
         <CheckBox Grid.Row="1"
                   Height="17"
@@ -77,10 +77,10 @@
                 <Style TargetType="CheckBox">
                     <Setter Property="IsChecked" Value="False" />
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ColumnHeight, ElementName=usercontrol}" Value="1">
+                        <DataTrigger Binding="{Binding ColumnHeight, ElementName=usercontrol, IsAsync=True}" Value="1">
                             <Setter Property="IsChecked" Value="True" />
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding ColumnHeight, ElementName=usercontrol}" Value="2">
+                        <DataTrigger Binding="{Binding ColumnHeight, ElementName=usercontrol, IsAsync=True}" Value="2">
                             <Setter Property="IsChecked" Value="True" />
                         </DataTrigger>
                     </Style.Triggers>

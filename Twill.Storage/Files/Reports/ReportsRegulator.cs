@@ -17,22 +17,36 @@ namespace Twill.Storage.Files.Reports
 
         public const string FileName = "dayreport";
 
+        private ToType DefaultType = ToType.JSON;
         private Barrier.Manager BarrierManager = new Barrier.Manager();
 
-        public DayReport<T> Load<T>(DateTime time) where T : Interfaces.Reports.IReport
+        public DayReport<T> Load<T>(DateTime date) where T : Interfaces.Reports.IReport
         {
-            return null;
+            var formatter = DefineReportFormat<T>(DefaultType);
+            var requested = GetPath(DefaultType, date);
+
+            if (!requested.IsFileExist())
+                return null;
+
+            var text = requested.Load();
+
+            if (string.IsNullOrEmpty(text))
+                return null;
+
+            return formatter.Deserialize(text);
         }
+
         public string Save<T>(DayReport<T> report, ToType toType) where T : Interfaces.Reports.IReport
         {
-            if(toType != ToType.JSON)
+            if(toType != DefaultType)
             {
                 // need for report
-                ImplementSave(report, ToType.JSON);
+                ImplementSave(report, DefaultType);
             }
 
             return ImplementSave(report, toType);
         }
+
         private string ImplementSave<T>(DayReport<T> report, ToType toType) where T : Interfaces.Reports.IReport
         {
             var formatter = DefineReportFormat<T>(toType);

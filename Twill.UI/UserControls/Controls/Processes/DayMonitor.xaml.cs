@@ -44,7 +44,7 @@ namespace Twill.UI.UserControls.Controls.Processes
 
         private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            scrollviewer.ScrollToVerticalOffset(Tools.Math.Position.ChoisenPixel(DateTime.Now, ContentHeight) - 20.0);
+            scrollviewer.ScrollToVerticalOffset(Tools.Math.Position.ChoisenPixel(DateTime.Now, ContentHeight) - 50.0);
         }
     }
 }

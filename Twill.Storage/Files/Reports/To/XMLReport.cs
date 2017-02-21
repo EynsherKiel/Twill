@@ -9,13 +9,14 @@ using Twill.Storage.Interfaces.Reports;
 namespace Twill.Storage.Files.Reports.To
 {
     public class XMLReport<T> : BaseReports<T> where T : IReport
-    {
-        public static new T1 Deserialize<T1>(string text) where T1 : XMLReport<T>
+    { 
+        public override DayReport<T> Deserialize(string text)
         {
             var doc = new XmlDocument();
             doc.LoadXml(text);
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<T1>(Newtonsoft.Json.JsonConvert.SerializeXmlNode(doc));
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<XMLReport<T>>(Newtonsoft.Json.JsonConvert.SerializeXmlNode(doc))?.DayReports?.FirstOrDefault();
         }
-        public override string Serialize() => (Newtonsoft.Json.JsonConvert.DeserializeXmlNode(Newtonsoft.Json.JsonConvert.SerializeObject(this)) as XmlDocument)?.InnerXml;
+
+        public override string Serialize() => Newtonsoft.Json.JsonConvert.DeserializeXmlNode(Newtonsoft.Json.JsonConvert.SerializeObject(this))?.InnerXml;
     }
 }
