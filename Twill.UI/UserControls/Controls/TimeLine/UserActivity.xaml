@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Twill.UI.UserControls.Controls.TimeLine.UserActivity"
+<UserControl x:Class="Twill.UI.UserControls.Controls.TimeLine.UserActivity"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:Twill.UI.Converters"
@@ -26,8 +26,6 @@
 
     <Grid d:DataContext="{d:DesignInstance monitor:ProcessMonitor, IsDesignTimeCreatable=True}" DataContext="{Binding ProcessMonitorModel, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, IsAsync=True}">
 
-
-
         <Grid x:Name="tooltipservice"  > 
             <Grid.ToolTip>
                 <ToolTip Style="{StaticResource ToolTipNullStyle}">
@@ -53,6 +51,7 @@
                  Background="Transparent"
                  ItemsSource="{Binding UserLogActivities,
                                        IsAsync=True}"
+
                  Style="{DynamicResource TwillListBoxNullStyle}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -105,10 +104,11 @@
                                     <GradientStop Offset="0.209" Color="{Binding LinkProcess.Brush, Converter={StaticResource BrushToColorConverter}}" />
                                     <GradientStop Offset="1" />
                                 </LinearGradientBrush>
+
                             </Grid.Background> 
                             
                             
-                            
+              
                         </Grid>
                     </Button>
                 </ItemContainerTemplate>

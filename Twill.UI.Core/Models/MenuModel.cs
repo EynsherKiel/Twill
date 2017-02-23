@@ -14,7 +14,7 @@ namespace Twill.UI.Core.Models
     {
         public MenuModel()
         {
-            currentViewModel = MonitorPageModel;
+            currentViewModel = ReportsPageModel;
         }
 
 
