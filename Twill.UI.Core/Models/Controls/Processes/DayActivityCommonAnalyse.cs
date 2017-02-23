@@ -1,5 +1,4 @@
-﻿using De.TorstenMandelkow.MetroChart;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -38,54 +37,59 @@ namespace Twill.UI.Core.Models.Controls.Processes
 
             lock (SyncRoot)
             {
-                var names = CommonProcesses.Select(cp => cp.ProcessName).ToList();
+
+                var names = Charts.Select(cp => cp.Process.Name).ToList();
 
                 var processes = list.GroupBy(el => el.LinkProcess).ToList();
 
-                if (processes.Count != names.Count || !processes.Any(el => names.Contains(el.Key.Name))) 
-                {
-                    var palete = new ResourceDictionaryCollection();
-                    var commonProcesses = new ObservableCollection<ChartElementModel>();
-
-                    foreach (var item in processes)
-                    {
-                        var resources = new ResourceDictionary();
-                        resources.Add($"Brush{palete.Count}", item.Key.Brush);
-                        palete.Add(resources);
-
-                        commonProcesses.Add(new ChartElementModel() { ProcessName = item.Key.Name });
-                    }
-
-                    Palette = palete;
-                    CommonProcesses = commonProcesses;
+                if (processes.Count != names.Count || !processes.Any(el => names.Contains(el.Key.Name)))
+                { 
+                    Charts = new ObservableCollection<ChartElementModel>(processes.Select(process => new ChartElementModel(process.Key))); 
                 }
 
+                if (Charts.Count == 0)
+                    return;
 
-                foreach (var item in processes)
+                var fullsum = processes.Select(process => process.Sum(el => el.TotalMinutesInterval)).Sum();
+
+
+                var firstprocesses = processes.First();
+                var chart = Charts.First(el => el.Process.Name == firstprocesses.Key.Name);
+
+                UpDateChart(chart, fullsum, firstprocesses.Sum(el => el.TotalMinutesInterval), 0.0);
+
+                foreach (var process in processes.Skip(1))
                 {
-                    CommonProcesses.First(el => el.ProcessName == item.Key.Name).Persents = (int)item.Sum(el => el.TotalMinutesInterval);
+                    var nextchart = Charts.First(el => el.Process.Name == process.Key.Name);
+
+                    UpDateChart(nextchart, fullsum, process.Sum(el => el.TotalMinutesInterval), chart.EndAngle);
+
+                    chart = nextchart;
                 }
 
-                var maxvalueelement = CommonProcesses.OrderByDescending(el => el.Persents).FirstOrDefault();
+                var maxvalueelement = Charts.OrderByDescending(el => el.TotalTime).First();
 
-                MostUsedAppplicationName = maxvalueelement?.ProcessName;
-                MostUsedAppplicationTimeMinutes = maxvalueelement?.Persents.ToString();
-                AllTime = CommonProcesses.Sum(el => el.Persents).ToString();
+                MostUsedAppplicationName =  maxvalueelement.Process.Name;
+                MostUsedAppplicationTimeMinutes = Math.Round(maxvalueelement.TotalTime).ToString();
+                AllTime = Math.Round(Charts.Sum(el => el.TotalTime)).ToString();
             }
         }
 
-        private ObservableCollection<ChartElementModel> commonProcesses = new ObservableCollection<ChartElementModel>();
-        public ObservableCollection<ChartElementModel> CommonProcesses
+        private void UpDateChart(ChartElementModel chart, double fullsum, double chartsum, double startprocess)
         {
-            get { return commonProcesses; }
-            set { Set(ref commonProcesses, value); }
+            chart.StartAngle = startprocess;
+
+            var persent = chartsum / fullsum;
+
+            chart.EndAngle = startprocess + 360.0 * persent;
+            chart.TotalTime = chartsum;
         }
 
-        private ResourceDictionaryCollection palette = new ResourceDictionaryCollection();
-        public ResourceDictionaryCollection Palette
+        private ObservableCollection<ChartElementModel> charts = new ObservableCollection<ChartElementModel>();
+        public ObservableCollection<ChartElementModel> Charts
         {
-            get { return palette; }
-            set { Set(ref palette, value); }
+            get { return charts; }
+            set { Set(ref charts, value); }
         }
 
         private string mostUsedAppplicationName;
