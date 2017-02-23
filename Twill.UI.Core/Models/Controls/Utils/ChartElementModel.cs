@@ -4,24 +4,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twill.UI.Core.Models.Controls.Processes;
 
 namespace Twill.UI.Core.Models.Controls.Utils
 {
     public class ChartElementModel : ViewModelBase
     {
-        private string processName;
-        public string ProcessName
+        public ChartElementModel(ProcessDayActivity process)
         {
-            get { return processName; }
-            set { Set(ref processName, value); }
+            Process = process;
+        }
+
+        public ProcessDayActivity Process { get; }
+        
+
+        private double startAngle;
+        public double StartAngle
+        {
+            get { return startAngle; }
+            set { Set(ref startAngle, value); }
+        }
+
+        private double endAngle;
+        public double EndAngle
+        {
+            get { return endAngle; }
+            set { Set(ref endAngle, value); }
         }
 
 
-        private int persents;
-        public int Persents
+        private double totalTime;
+        public double TotalTime
         {
-            get { return persents; }
-            set { Set(ref persents, value); }
+            get { return totalTime; }
+            set { Set(ref totalTime, value); }
         }
     }
 }

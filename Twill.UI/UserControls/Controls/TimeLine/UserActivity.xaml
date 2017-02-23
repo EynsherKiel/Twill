@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Twill.UI.UserControls.Controls.TimeLine.UserActivity"
+<UserControl x:Class="Twill.UI.UserControls.Controls.TimeLine.UserActivity"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:Twill.UI.Converters"
@@ -17,18 +17,42 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:DateTimeToPixelsConverter x:Key="DateTimeToPixelsConverter" />
             <converters:BrushToColorConverter x:Key="BrushToColorConverter" />
+
+
+
         </ResourceDictionary>
+
     </UserControl.Resources>
 
     <Grid d:DataContext="{d:DesignInstance monitor:ProcessMonitor, IsDesignTimeCreatable=True}" DataContext="{Binding ProcessMonitorModel, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, IsAsync=True}">
+
+        <Grid x:Name="tooltipservice"  > 
+            <Grid.ToolTip>
+                <ToolTip Style="{StaticResource ToolTipNullStyle}">
+                    <Grid Margin="8">
+                        <Border Background="Gray">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="8"
+                                                  ShadowDepth="0"
+                                                  Color="Gray" />
+                            </Border.Effect>
+                        </Border>
+                        <local:UserActivityLog x:Name="userActivityLog"
+                                               Height="100"
+                                               ProcessActivityModel="{Binding .,
+                                                                              IsAsync=True,
+                                                                              Delay=10000}" />
+                    </Grid>
+                </ToolTip>
+            </Grid.ToolTip>
+        </Grid> 
+
         <ListBox x:Name="listbox"
                  Background="Transparent"
-                 ItemsSource="{Binding UserLogActivities, IsAsync=True}"
-                 Style="{DynamicResource TwillListBoxNullStyle}">
-            <ListBox.Resources>
-                <Style BasedOn="{StaticResource ToolTipNullStyle}" TargetType="ToolTip" />
-            </ListBox.Resources>
+                 ItemsSource="{Binding UserLogActivities,
+                                       IsAsync=True}"
 
+                 Style="{DynamicResource TwillListBoxNullStyle}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas />
@@ -74,31 +98,17 @@
                                          Path="ActualHeight" />
                             </MultiBinding>
                         </Button.Height>
-                        <Grid ToolTipService.BetweenShowDelay="1"
-                              ToolTipService.ShowDuration="200000"
-                              ToolTipService.ShowOnDisabled="True">
+                        <Grid MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave">
                             <Grid.Background>
                                 <LinearGradientBrush StartPoint="1.005,0.425" EndPoint="0,0.434">
                                     <GradientStop Offset="0.209" Color="{Binding LinkProcess.Brush, Converter={StaticResource BrushToColorConverter}}" />
                                     <GradientStop Offset="1" />
                                 </LinearGradientBrush>
-                            </Grid.Background>
 
-                            <Grid.ToolTip>
-                                <Grid  Margin="8">
-                                    <Border Background="Gray">
-                                        <Border.Effect>
-                                            <DropShadowEffect BlurRadius="8"
-                                                              ShadowDepth="0"
-                                                              Color="Gray" />
-                                        </Border.Effect>
-                                    </Border>
-                                    <local:UserActivityLog x:Name="userActivityLog"
-                                                           Height="100"
-                                                            
-                                                           ProcessActivityModel="{Binding ., IsAsync=True, Delay=10000}" />
-                                </Grid>
-                            </Grid.ToolTip>
+                            </Grid.Background> 
+                            
+                            
+              
                         </Grid>
                     </Button>
                 </ItemContainerTemplate>
