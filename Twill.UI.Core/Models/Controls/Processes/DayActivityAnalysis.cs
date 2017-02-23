@@ -20,6 +20,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
         }
         public DayActivityAnalysis(Monitor monitor) : base(monitor)
         {
+            UpDate(true);
         }
 
         public DayActivityAnalysis(bool v) : base(v)
@@ -38,7 +39,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
                 if (SegmentMinHeight < 1.0)
                     return;
 
-                Analyse(Monitor?.FilterProcessMonitor?.UserLogActivities, isFullUpdate); 
+                Analyse(Monitor?.ProcessMonitor?.UserLogActivities, isFullUpdate); 
         }
 
         public void Analyse(ICollection<ProcessActivity> list, bool isFullUpdate = false)
