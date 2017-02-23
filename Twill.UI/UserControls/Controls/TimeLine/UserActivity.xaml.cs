@@ -46,5 +46,21 @@ namespace Twill.UI.UserControls.Controls.TimeLine
         { 
             RaiseEvent(new TextChangedEventArgs(ClickEvent, UndoAction.None));
         }
+
+        private void Grid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var service =  tooltipservice.ToolTip as ToolTip;
+
+            service.DataContext = (sender as FrameworkElement).DataContext;
+
+            service.IsOpen = true;
+        }
+
+        private void Grid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            var service =  tooltipservice.ToolTip as ToolTip;
+
+            service.IsOpen = false;
+        }
     }
 }
