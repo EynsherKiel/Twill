@@ -13,10 +13,20 @@ namespace Twill.UI.Core.Models.Controls.Processes
             if (IsInDesignMode)
             {
                 Monitor = new Monitor();
+
+                Fill();
             }
             else
             {
                 Monitor = StorageHelperManager.Load<Monitor>();
+                ReportsModel = StorageHelperManager.Load<ReportsModel>(Monitor.Date);
+
+                DayActivityAnalysis = new DayActivityAnalysis(Monitor);
+                DayActivityCommonAnalyse = new DayActivityCommonAnalyse(Monitor);
+
+                if (IsUsingTimer)
+                    return;
+                IsUsingTimer = true;
 
                 StartSaves(TimeSpan.FromSeconds(10.0));
             }
@@ -25,8 +35,11 @@ namespace Twill.UI.Core.Models.Controls.Processes
         public DayMonitor(DateTime date)
         {
             Monitor = StorageHelperManager.Load<Monitor>(date);
+
+            Fill();
         }
 
+        private static bool IsUsingTimer = false;
 
         private void StartSaves(TimeSpan updatetime)
         {
@@ -57,11 +70,7 @@ namespace Twill.UI.Core.Models.Controls.Processes
         public Monitor Monitor
         {
             get { return monitor; }
-            set
-            {
-                Set(ref monitor, value);
-                Fill();
-            }
+            set { Set(ref monitor, value); }
         } 
 
         private DayActivityCommonAnalyse dayActivityCommonAnalyse;
@@ -102,14 +111,6 @@ namespace Twill.UI.Core.Models.Controls.Processes
             FillReportDayModel();
         }
 
-        public Storage.Files.Reports.DayReport<ReportModel> GetDayReport()
-        {
-            return new Storage.Files.Reports.DayReport<ReportModel>()
-            {
-                Date = Monitor.Date,
-                Reports = ReportsModel.Reports.Where(report => !string.IsNullOrEmpty(report.Text)).ToList()
-            };
-        }
         private void FillReportDayModel()
         {
             var dayreport = ReportsModel.ReportsRegulator.Load<ReportModel>(Monitor.Date);
@@ -118,6 +119,15 @@ namespace Twill.UI.Core.Models.Controls.Processes
                 ReportsModel = new ReportsModel();
 
             ReportsModel.UpDateReportModel(dayreport?.Reports);
+        }
+
+        public Storage.Files.Reports.DayReport<ReportModel> GetDayReport()
+        {
+            return new Storage.Files.Reports.DayReport<ReportModel>()
+            {
+                Date = Monitor.Date,
+                Reports = ReportsModel.Reports.Where(report => !string.IsNullOrEmpty(report.Text)).ToList()
+            };
         }
 
         ~DayMonitor()
