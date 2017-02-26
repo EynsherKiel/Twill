@@ -79,6 +79,15 @@ namespace Twill.Tools.Async
             return true;
         }
 
+        public void Clear()
+        {
+            foreach (var day in Planners)
+            {
+                day.Value.Clear();
+            }
+            Pulse();
+        }
+
         private void Work()
         {
             lock (SyncRoot)
