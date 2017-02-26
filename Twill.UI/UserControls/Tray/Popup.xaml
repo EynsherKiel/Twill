@@ -50,69 +50,60 @@
                 BorderThickness="1">
 
             <Grid Background="{DynamicResource MainMenuTitleBrush}">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
+              
                 <Grid.DataContext>
                     <content:MonitorPageModel />
                 </Grid.DataContext>
 
                 <Border BorderBrush="{DynamicResource RulerBackgroundBrush}" BorderThickness="0,0,0,01">
                     <Grid Background="{DynamicResource MainMenuTitleBrush}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Background="White">
+
+                            <processes:DayMonitor ContentHeight="20000" DayMonitorModel="{Binding DayMonitor, IsAsync=True}" />
+
+                        </Grid>
+
+                        <Border Grid.Row="1" 
+                                BorderBrush="{DynamicResource RulerBackgroundBrush}"
+                                BorderThickness="0,1,0,0">
+                            <Grid Background="{DynamicResource MainMenuTitleBrush}">
 
 
-                <Grid Background="White">
+                                <Button Margin="0,0,10,0"
+                                        HorizontalAlignment="Right"
+                                        Command="{Binding SaveReportsCommand}"
+                                        Content="Save full reports"
+                                        FontSize="9"
+                                        Foreground="{DynamicResource MainMenuDefaultForegroundBrush}">
+                                    <Button.Style>
+                                        <Style BasedOn="{StaticResource ButtonNullStyle}" TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="Border.CornerRadius" Value="3" />
+                                            <Setter Property="Padding" Value="5,1,5,1" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Setter Property="Background" Value="{StaticResource MainMenuBrush}" />
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="true">
+                                                    <Setter Property="Background" Value="{StaticResource MainMenuIsPressedTitleBrush}" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
+                        </Border>
 
-                    <processes:DayMonitor ContentHeight="20000" DayMonitorModel="{Binding DayMonitor, IsAsync=True}" /> 
-
-                </Grid>
-
-                <Border Grid.Row="1"
-                        BorderBrush="{DynamicResource RulerBackgroundBrush}"
-                        BorderThickness="0,1,0,0">
-                    <Grid Background="{DynamicResource MainMenuTitleBrush}">
-
-
-                        <Button Margin="0,0,10,0"
-                                HorizontalAlignment="Right"
-                                Command="{Binding SaveReportsCommand}"
-                                Content="Save full reports"
-                                FontSize="9"
-                                Foreground="{DynamicResource MainMenuDefaultForegroundBrush}">
-                            <Button.Style>
-                                <Style BasedOn="{StaticResource ButtonNullStyle}" TargetType="Button">
-                                    <Setter Property="Background" Value="Transparent" />
-                                    <Setter Property="Border.CornerRadius" Value="3" />
-                                    <Setter Property="Padding" Value="5,1,5,1" />
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property="Background" Value="{StaticResource MainMenuBrush}" />
-                                        </Trigger>
-                                        <Trigger Property="IsPressed" Value="true">
-                                            <Setter Property="Background" Value="{StaticResource MainMenuIsPressedTitleBrush}" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
+ 
                     </Grid>
                 </Border>
-
-
-                <Grid Grid.Row="1" Background="White">
-
-                    <processes:DayMonitor Grid.Row="1"
-                                          ContentHeight="20000"
-                                          DayMonitorModel="{Binding DayMonitor,
-                                                                    IsAsync=True}" />
-
-
-                </Grid>
-
             </Grid>
         </Border>
-
 
     </Grid>
 </UserControl>
