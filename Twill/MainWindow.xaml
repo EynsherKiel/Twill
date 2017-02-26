@@ -18,29 +18,34 @@
         StateChanged="StateChangedEvent"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
+
     <Window.DataContext>
         <models:ManagerModel />
     </Window.DataContext>
+
     <Grid>
 
         <usercontrols:Menu MenuModel="{Binding MenuModel}" />
 
-        <tb:TaskbarIcon x:Name="TaskbarIcon" 
+        <tb:TaskbarIcon x:Name="TaskbarIcon"
                         DataContext="{Binding IconBehaviorModel}"
-                        DoubleClickCommand="{Binding ShowWindowCommand}"
-                        DoubleClickCommandParameter="{Binding Mode=OneWay,
-                                                              RelativeSource={RelativeSource FindAncestor,
-                                                                                             AncestorType={x:Type Window}}}" 
                         IconSource="icons/tray.ico"
+                        LeftClickCommand="{Binding ShowWindowCommand}"
+                        LeftClickCommandParameter="{Binding Mode=OneWay,
+                                                            RelativeSource={RelativeSource FindAncestor,
+                                                                                           AncestorType={x:Type Window}}}"
+                        MenuActivation="DoubleClick"
+                        PopupActivation="RightClick"
                         ToolTipText="Twill">
 
             <tb:TaskbarIcon.TrayToolTip>
                 <tray:ToolTip TrayToolTipModel="{Binding TrayToolTipModel}" />
             </tb:TaskbarIcon.TrayToolTip>
 
-            <tb:TaskbarIcon.TrayPopup >
-                <tray:Popup  TrayPopupModel="{Binding TrayPopupModel}" />
+            <tb:TaskbarIcon.TrayPopup>
+                <tray:Popup TrayPopupModel="{Binding TrayPopupModel}" />
             </tb:TaskbarIcon.TrayPopup>
+            
         </tb:TaskbarIcon>
 
     </Grid>

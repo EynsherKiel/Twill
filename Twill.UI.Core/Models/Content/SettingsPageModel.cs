@@ -17,19 +17,22 @@ namespace Twill.UI.Core.Models.Content
             if (IsInDesignMode)
             {
                 GeneralPageModel = new GeneralPageModel();
+                ActionPlannerPageModel = new ActionPlannerPageModel();
             }
             else
             {
                 GeneralPageModel = StorageHelperManager.Load<GeneralPageModel>();
+                ActionPlannerPageModel = StorageHelperManager.Load<ActionPlannerPageModel>();
             }
 
-            currentViewModel = GeneralPageModel;
+            currentViewModel = ActionPlannerPageModel;
         }
 
         private StorageHelper.Manager StorageHelperManager = new StorageHelper.Manager();
 
 
         public ICommand GeneralPageViewCommand => new RelayCommand(() => CurrentViewModel = GeneralPageModel);
+        public ICommand ActionPlannerPageViewCommand => new RelayCommand(() => CurrentViewModel = ActionPlannerPageModel);
 
         private GeneralPageModel generalPageModel;
         public GeneralPageModel GeneralPageModel
@@ -38,9 +41,15 @@ namespace Twill.UI.Core.Models.Content
             set { Set(ref generalPageModel, value); }
         }
 
+        private ActionPlannerPageModel actionPlannerPageModel;
+        public ActionPlannerPageModel ActionPlannerPageModel
+        {
+            get { return actionPlannerPageModel; }
+            set { Set(ref actionPlannerPageModel, value); }
+        }
 
-        private ViewModelBase currentViewModel;
-        public ViewModelBase CurrentViewModel
+        private ObservableObject currentViewModel;
+        public ObservableObject CurrentViewModel
         {
             get { return currentViewModel; }
             set { Set(ref currentViewModel, value); GC.Collect(); }

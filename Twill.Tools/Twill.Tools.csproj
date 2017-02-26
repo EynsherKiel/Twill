@@ -49,6 +49,7 @@
     <Compile Include="Architecture\EnumUtils.cs" />
     <Compile Include="Architecture\StaticType.cs" />
     <Compile Include="Architecture\UniversalMethods.cs" />
+    <Compile Include="Async\ActionPlanner.cs" />
     <Compile Include="Async\AsyncQueue.cs" />
     <Compile Include="Architecture\Singleton.cs" />
     <Compile Include="Architecture\Timer.cs" />

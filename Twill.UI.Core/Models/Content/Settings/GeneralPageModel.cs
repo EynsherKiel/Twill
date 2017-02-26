@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Twill.Storage.Enums; 
+using System.Windows;
+using Twill.Storage.Enums;
 
 namespace Twill.UI.Core.Models.Content.Settings
 {
-    public class GeneralPageModel : ViewModelBase
+    public class GeneralPageModel : ObservableObject
     {
-
+        public GeneralPageModel()
+        {
+        }
 
         private ToType toType = ToType.ToDoList;
         public ToType ToType
@@ -18,6 +21,7 @@ namespace Twill.UI.Core.Models.Content.Settings
             get { return toType; }
             set { Set(ref toType, value); }
         }
+
 
     }
 }

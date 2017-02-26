@@ -14,7 +14,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Twill.UI;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="/Twill.UI;component/Styles/ComboBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Combobox.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <converters:EnumToArrayConverter x:Key="EnumToArrayConverter" />
@@ -25,19 +25,25 @@
     <Grid d:DataContext="{d:DesignInstance settings:GeneralPageModel, IsDesignTimeCreatable=True}">
 
         <StackPanel Margin="15">
-            
-            <Border Margin="0,0,0,10" BorderBrush="Red" BorderThickness="0,0,0,1">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Conservation report format" />
 
-                    <ComboBox  SelectedItem="{Binding ToType, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" ItemsSource="{Binding ToType, Converter={StaticResource EnumToArrayConverter}}" Style="{DynamicResource ComboBoxMainStyle}" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
                 
-                </Grid>
-            </Border> 
+                <TextBlock VerticalAlignment="Center" Text="Conservation report format" />
+
+                <ComboBox Grid.Column="1"
+                          ItemsSource="{Binding ToType,
+                                                Converter={StaticResource EnumToArrayConverter}}"
+                          SelectedItem="{Binding ToType,
+                                                 Mode=TwoWay,
+                                                 UpdateSourceTrigger=PropertyChanged}"
+                          Style="{DynamicResource MaterialDesignComboBox}" />
+
+            </Grid>
 
         </StackPanel>
 
