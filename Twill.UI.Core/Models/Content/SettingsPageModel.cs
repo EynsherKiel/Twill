@@ -23,6 +23,7 @@ namespace Twill.UI.Core.Models.Content
             {
                 GeneralPageModel = StorageHelperManager.Load<GeneralPageModel>();
                 ActionPlannerPageModel = StorageHelperManager.Load<ActionPlannerPageModel>();
+                ActionPlannerPageModel.Sync();
             }
 
             currentViewModel = ActionPlannerPageModel;

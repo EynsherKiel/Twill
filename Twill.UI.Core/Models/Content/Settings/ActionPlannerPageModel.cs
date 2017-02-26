@@ -25,20 +25,9 @@ namespace Twill.UI.Core.Models.Content.Settings
                 ActionPlanner.Add(DayOfWeek.Thursday, TimeSpan.FromHours(15));
             }
 
-            if (Tasks.Count == 7)
-            {
-                foreach (var task in Tasks)
-                {
-                    foreach (var time in task.Value)
-                    {
-                        ActionPlanner.Add(task.Key, time);
-                    }
-                }
-            }
-            else
-            {
-                Tasks = ActionPlanner.GetPlanner();
-            }
+             
+             Set(nameof(Tasks), ref tasks, ActionPlanner.GetPlanner());
+            
 
             ActionPlanner.Start();
         }
@@ -73,7 +62,7 @@ namespace Twill.UI.Core.Models.Content.Settings
             if (!ActionPlanner.Remove(day, time))
                 return;
 
-            Tasks = ActionPlanner.GetPlanner();
+            Set(nameof(Tasks), ref tasks, ActionPlanner.GetPlanner());
 
             StorageHelperManager.Save(this);
         }
@@ -98,13 +87,25 @@ namespace Twill.UI.Core.Models.Content.Settings
             if (!ActionPlanner.Add(day, date.TimeOfDay))
                 return;
 
-            Tasks = ActionPlanner.GetPlanner();
+            Set(nameof(Tasks), ref tasks, ActionPlanner.GetPlanner());
 
             StorageHelperManager.Save(this);
         }
 
+        public void Sync()
+        {
+            ActionPlanner.Clear();
+            foreach (var task in Tasks)
+            {
+                foreach (var time in task.Value)
+                {
+                    ActionPlanner.Add(task.Key, time);
+                }
+            }
+        }
 
-        private Dictionary<DayOfWeek, ObservableCollection<TimeSpan>> tasks = new Dictionary<DayOfWeek, ObservableCollection<TimeSpan>>();
+
+        private Dictionary<DayOfWeek, ObservableCollection<TimeSpan>> tasks;
         public Dictionary<DayOfWeek, ObservableCollection<TimeSpan>> Tasks
         {
             get { return tasks; }
