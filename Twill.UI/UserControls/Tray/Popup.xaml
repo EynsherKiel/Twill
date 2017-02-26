@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Twill.UI.UserControls.Tray.Popup"
+<UserControl x:Class="Twill.UI.UserControls.Tray.Popup"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:content="clr-namespace:Twill.UI.Core.Models.Content;assembly=Twill.UI.Core"
