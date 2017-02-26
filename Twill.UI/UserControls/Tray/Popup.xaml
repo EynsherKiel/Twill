@@ -10,7 +10,7 @@
              xmlns:processesmodel="clr-namespace:Twill.UI.Core.Models.Controls.Processes;assembly=Twill.UI.Core"
              xmlns:traymodel="clr-namespace:Twill.UI.Core.Models.Tray;assembly=Twill.UI.Core"
              Width="443"
-             Height="400"
+             Height="500"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -51,8 +51,8 @@
 
             <Grid Background="{DynamicResource MainMenuTitleBrush}">
                 <Grid.RowDefinitions>
+                    <RowDefinition />
                     <RowDefinition Height="auto" />
-                    <RowDefinition Height="73*" />
                 </Grid.RowDefinitions>
                 <Grid.DataContext>
                     <content:MonitorPageModel />
@@ -60,6 +60,19 @@
 
                 <Border BorderBrush="{DynamicResource RulerBackgroundBrush}" BorderThickness="0,0,0,01">
                     <Grid Background="{DynamicResource MainMenuTitleBrush}">
+
+
+                <Grid Background="White">
+
+                    <processes:DayMonitor ContentHeight="20000" DayMonitorModel="{Binding DayMonitor, IsAsync=True}" /> 
+
+                </Grid>
+
+                <Border Grid.Row="1"
+                        BorderBrush="{DynamicResource RulerBackgroundBrush}"
+                        BorderThickness="0,1,0,0">
+                    <Grid Background="{DynamicResource MainMenuTitleBrush}">
+
 
                         <Button Margin="0,0,10,0"
                                 HorizontalAlignment="Right"

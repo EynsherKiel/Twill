@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Content\ReportsPageModel.cs" />
+    <Compile Include="Models\Content\Settings\ActionPlannerPageModel.cs" />
     <Compile Include="Models\Controls\Processes\Activity.cs" />
     <Compile Include="Models\Content\AboutPageModel.cs" />
     <Compile Include="Models\Content\MonitorPageModel.cs" />

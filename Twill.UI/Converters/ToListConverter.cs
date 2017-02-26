@@ -12,7 +12,10 @@ namespace Twill.UI.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            return values?.Select(value => value).ToList();
+            if (parameter == null)
+                return values?.Select(value => value).ToList();
+            else
+                return new List<object>(values?.Select(value => value)) { parameter };
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

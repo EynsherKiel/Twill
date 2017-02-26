@@ -29,6 +29,9 @@
                 <settingspages:GeneralPage />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type settings:ActionPlannerPageModel}">
+                <settingspages:ActionPlannerPage />
+            </DataTemplate>
 
 
         </ResourceDictionary>
@@ -40,7 +43,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <controls:Menu Title="Settings"
+        <controls:Menu Visibility="Collapsed" Title="Settings"
                        Width="200"
                        FontSize="16"
                        Style="{DynamicResource MainMenu}">
@@ -50,6 +53,12 @@
                       IsChecked="{Binding CurrentViewModel,
                                           Converter={StaticResource ResourceKey=EqualsTypesConverter},
                                           ConverterParameter=GeneralPageModel}" />
+
+            <MenuItem Command="{Binding ActionPlannerPageViewCommand}"
+                      Header="General"
+                      IsChecked="{Binding CurrentViewModel,
+                                          Converter={StaticResource ResourceKey=EqualsTypesConverter},
+                                          ConverterParameter=ActionPlannerPageModel}" />
 
 
 
