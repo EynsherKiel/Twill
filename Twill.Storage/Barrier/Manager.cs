@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Twill.Processes.Interfaces.Monitor;
 using Twill.Processes.Models.Monitor;
 using Twill.Processes.Tracking;
+using Twill.Storage.Interfaces.Settings;
 using Twill.Tools.Async;
 
 namespace Twill.Storage.Barrier
@@ -70,6 +71,12 @@ namespace Twill.Storage.Barrier
                 return new Files.Zip(Settings.Default.GetLaborFullPath(time ?? DateTime.Now));
             }
 
+
+            if (typeof(IActionPlanner).IsAssignableFrom(type))
+            {
+                return new Files.Ordinary(Settings.Default.GetActionPlannerSettingsFullPath());
+            }
+
             return null;
         }
 
@@ -88,6 +95,11 @@ namespace Twill.Storage.Barrier
             if(t == typeof(LightProcessMonitor))
             {
                 return typeof(LightProcessMonitor);
+            }
+
+            if(typeof(IActionPlanner).IsAssignableFrom(t))
+            {
+                return typeof(IActionPlanner);
             }
 
             return null;

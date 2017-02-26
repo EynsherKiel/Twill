@@ -57,6 +57,7 @@
     <Compile Include="Enums\ToType.cs" />
     <Compile Include="Files\Zip.cs" />
     <Compile Include="Interfaces\Reports\IReportFormatter.cs" />
+    <Compile Include="Interfaces\Settings\IActionPlanner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Files\Reports\To\ToDoList.cs" />
     <Compile Include="Settings\Default.cs" />

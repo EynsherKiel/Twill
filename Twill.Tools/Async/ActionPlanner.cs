@@ -53,28 +53,30 @@ namespace Twill.Tools.Async
         public Dictionary<DayOfWeek, ObservableCollection<TimeSpan>> GetPlanner()
             => Planners.ToDictionary(el => el.Key, val => new ObservableCollection<TimeSpan>(val.Value));
 
-        public void Add(DayOfWeek dayofweek, TimeSpan time)
+        public bool Add(DayOfWeek dayofweek, TimeSpan time)
         {
             if (time.TotalMinutes > Math.Position.MinutesInDay - 1.0)
-                return;
+                return false;
 
             if (Planners[dayofweek].Contains(time))
-                return;
+                return false;
 
             Planners[dayofweek].Add(time);
             Planners[dayofweek].Sort();
 
             Pulse();
+            return true;
         }
 
-        public void Remove(DayOfWeek dayofweek, TimeSpan time)
+        public bool Remove(DayOfWeek dayofweek, TimeSpan time)
         {
             if (!Planners[dayofweek].Contains(time))
-                return;
+                return false;
 
             Planners[dayofweek].Remove(time);
 
             Pulse();
+            return true;
         }
 
         private void Work()
@@ -92,8 +94,6 @@ namespace Twill.Tools.Async
                         var mill = (int)GetMillisecondsTimeWait(next.Item1, next.Item2);
 
                         var isgoodwait = !Monitor.Wait(SyncRoot, mill);
-
-                        var checknext = Next();
 
                         if (Planners[next.Item1].Contains(next.Item2))
                         { 

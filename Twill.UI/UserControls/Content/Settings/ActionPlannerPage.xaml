@@ -3,11 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:Twill.UI.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:Twill.UI.UserControls.Content.Settings"
+             xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:settings="clr-namespace:Twill.UI.Core.Models.Content.Settings;assembly=Twill.UI.Core"
              d:DesignHeight="300"
-             d:DesignWidth="300"
+             d:DesignWidth="600"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -15,29 +18,431 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Twill.UI;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="/Twill.UI;component/Styles/NullStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Combobox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <converters:EnumToArrayConverter x:Key="EnumToArrayConverter" />
+            <converters:ToListConverter x:Key="ToListConverter" />
 
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid d:DataContext="{d:DesignInstance settings:ActionPlannerPageModel, IsDesignTimeCreatable=True}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-        <ItemsControl ItemsSource="{Binding Tasks}"  Grid.IsSharedSizeScope="True">
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <ComboBox x:Name="day"
+                      Grid.Column="0"
+                      Margin="5,4,5,5"
+                      ItemsSource="{Binding Tasks.Keys}"
+                      SelectedIndex="0"
+                      Style="{DynamicResource MaterialDesignComboBox}" />
+
+            <material:TimePicker x:Name="time"
+                                 Grid.Column="1"
+                                 Margin="5,7,5,5"
+                                 VerticalAlignment="Center" />
+
+            <Button Grid.Column="2"
+                    IsDefault="True"
+                    Style="{DynamicResource MaterialDesignToolButton}">
+                <Viewbox>
+                    <Canvas Width="24" Height="24">
+                        <Path Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" Fill="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=Foreground}" />
+                    </Canvas>
+                </Viewbox>
+
+                <i:Interaction.Triggers>
+
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding AppendAction}">
+                            <i:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource ToListConverter}">
+                                    <Binding ElementName="day" Path="SelectedItem" />
+                                    <Binding ElementName="time" Path="SelectedTime" />
+                                </MultiBinding>
+                            </i:InvokeCommandAction.CommandParameter>
+                        </i:InvokeCommandAction>
+                    </i:EventTrigger>
+
+                    <i:EventTrigger EventName="Click">
+
+                        <ei:ChangePropertyAction PropertyName="SelectedIndex"
+                                                 TargetName="day"
+                                                 Value="0" />
+
+                        <ei:ChangePropertyAction PropertyName="SelectedTime"
+                                                 TargetName="time"
+                                                 Value="{x:Null}" />
+
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </Button>
+        </Grid>
+
+        <Grid Grid.Row="1"
+              MinWidth="500"
+              Margin="10">
+            <Grid.Resources>
+ 
+                <Style TargetType="ItemsControl">
+                    <Setter Property="Margin" Value="0,5,0,0" />
+                    <Setter Property="ItemsPanel">
+                        <Setter.Value>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </Setter.Value>
+                    </Setter>
+
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Border Background="{TemplateBinding Panel.Background}"
+                                        BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                        BorderThickness="{TemplateBinding Border.BorderThickness}"
+                                        Padding="{TemplateBinding Control.Padding}"
+                                        SnapsToDevicePixels="True">
+                                    <ScrollViewer Focusable="False"
+                                                  Padding="{TemplateBinding Control.Padding}"
+                                                  ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                    </ScrollViewer>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <Style x:Key="Header" TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="10" />
+                    <Setter Property="Foreground" Value="{StaticResource MainMenuTitleBrush}" />
+                    <Setter Property="Margin" Value="5" />
+                    <Setter Property="TextAlignment" Value="Center" />
+                </Style>
+
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.ColumnSpan="7"
+                    BorderBrush="{DynamicResource RulerBackgroundBrush}"
+                    BorderThickness="0,0,0,0.3" />
+
+            <TextBlock Grid.Column="0"
+                       Style="{DynamicResource Header}"
+                       Text="Monday" />
+            <TextBlock Grid.Column="1"
+                       Style="{DynamicResource Header}"
+                       Text="Tuesday" />
+            <TextBlock Grid.Column="2"
+                       Style="{DynamicResource Header}"
+                       Text="Wednesday" />
+            <TextBlock Grid.Column="3"
+                       Style="{DynamicResource Header}"
+                       Text="Thursday" />
+            <TextBlock Grid.Column="4"
+                       Style="{DynamicResource Header}"
+                       Text="Friday" />
+            <TextBlock Grid.Column="5"
+                       Style="{DynamicResource Header}"
+                       Text="Saturday" />
+            <TextBlock Grid.Column="6"
+                       Style="{DynamicResource Header}"
+                       Text="Sunday" />
+
+            <ItemsControl Grid.Row="1"
+                          Grid.Column="0"
+                          ItemsSource="{Binding Tasks[1]}" >
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate> 
+                        <Grid HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center"
+                                               Foreground="{DynamicResource MainMenuIsPressedTitleBrush}"
+                                               Text="{Binding}"
+                                               TextAlignment="Center" />
+
+                            <Button Grid.Column="1"
+                                            Width="20"
+                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                             AncestorType=UserControl},
+                                                              Path=DataContext.DeleteAction}"
+                                            Style="{DynamicResource MaterialDesignToolButton}">
+                                <Viewbox>
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z" Fill="{DynamicResource SelectedBrush}" />
+                                    </Canvas>
+                                </Viewbox>
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ToListConverter}" ConverterParameter="1">
+                                        <Binding  />
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button> 
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>    
+                
+            </ItemsControl>
             
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="Key" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Margin="2" Text="{Binding Key}" Grid.Column="0"/>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
             
-        </ItemsControl> 
+            <ItemsControl Grid.Row="1"
+                          Grid.Column="1"
+                          ItemsSource="{Binding Tasks[2]}" >
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center"
+                                               Foreground="{DynamicResource MainMenuIsPressedTitleBrush}"
+                                               Text="{Binding}"
+                                               TextAlignment="Center" />
+
+                            <Button Grid.Column="1"
+                                            Width="20"
+                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                             AncestorType=UserControl},
+                                                              Path=DataContext.DeleteAction}"
+                                            Style="{DynamicResource MaterialDesignToolButton}">
+                                <Viewbox>
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z" Fill="{DynamicResource SelectedBrush}" />
+                                    </Canvas>
+                                </Viewbox>
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ToListConverter}" ConverterParameter="2">
+                                        <Binding  />
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+            <ItemsControl Grid.Row="1"
+                          Grid.Column="2"
+                          ItemsSource="{Binding Tasks[3]}" >
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center"
+                                               Foreground="{DynamicResource MainMenuIsPressedTitleBrush}"
+                                               Text="{Binding}"
+                                               TextAlignment="Center" />
+
+                            <Button Grid.Column="1"
+                                            Width="20"
+                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                             AncestorType=UserControl},
+                                                              Path=DataContext.DeleteAction}"
+                                            Style="{DynamicResource MaterialDesignToolButton}">
+                                <Viewbox>
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z" Fill="{DynamicResource SelectedBrush}" />
+                                    </Canvas>
+                                </Viewbox>
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ToListConverter}" ConverterParameter="3">
+                                        <Binding  />
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+            <ItemsControl Grid.Row="1"
+                          Grid.Column="3"
+                          ItemsSource="{Binding Tasks[4]}" >
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center"
+                                               Foreground="{DynamicResource MainMenuIsPressedTitleBrush}"
+                                               Text="{Binding}"
+                                               TextAlignment="Center" />
+
+                            <Button Grid.Column="1"
+                                            Width="20"
+                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                             AncestorType=UserControl},
+                                                              Path=DataContext.DeleteAction}"
+                                            Style="{DynamicResource MaterialDesignToolButton}">
+                                <Viewbox>
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z" Fill="{DynamicResource SelectedBrush}" />
+                                    </Canvas>
+                                </Viewbox>
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ToListConverter}" ConverterParameter="4">
+                                        <Binding  />
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+            <ItemsControl Grid.Row="1"
+                          Grid.Column="4"
+                          ItemsSource="{Binding Tasks[5]}" >
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center"
+                                               Foreground="{DynamicResource MainMenuIsPressedTitleBrush}"
+                                               Text="{Binding}"
+                                               TextAlignment="Center" />
+
+                            <Button Grid.Column="1"
+                                            Width="20"
+                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                             AncestorType=UserControl},
+                                                              Path=DataContext.DeleteAction}"
+                                            Style="{DynamicResource MaterialDesignToolButton}">
+                                <Viewbox>
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z" Fill="{DynamicResource SelectedBrush}" />
+                                    </Canvas>
+                                </Viewbox>
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ToListConverter}" ConverterParameter="5">
+                                        <Binding  />
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+            <ItemsControl Grid.Row="1"
+                          Grid.Column="5"
+                          ItemsSource="{Binding Tasks[6]}" >
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center"
+                                               Foreground="{DynamicResource MainMenuIsPressedTitleBrush}"
+                                               Text="{Binding}"
+                                               TextAlignment="Center" />
+
+                            <Button Grid.Column="1"
+                                            Width="20"
+                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                             AncestorType=UserControl},
+                                                              Path=DataContext.DeleteAction}"
+                                            Style="{DynamicResource MaterialDesignToolButton}">
+                                <Viewbox>
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z" Fill="{DynamicResource SelectedBrush}" />
+                                    </Canvas>
+                                </Viewbox>
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ToListConverter}" ConverterParameter="6">
+                                        <Binding  />
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+            <ItemsControl Grid.Row="1"
+                          Grid.Column="6"
+                          ItemsSource="{Binding Tasks[0]}" >
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center"
+                                               Foreground="{DynamicResource MainMenuIsPressedTitleBrush}"
+                                               Text="{Binding}"
+                                               TextAlignment="Center" />
+
+                            <Button Grid.Column="1"
+                                            Width="20"
+                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                             AncestorType=UserControl},
+                                                              Path=DataContext.DeleteAction}"
+                                            Style="{DynamicResource MaterialDesignToolButton}">
+                                <Viewbox>
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z" Fill="{DynamicResource SelectedBrush}" />
+                                    </Canvas>
+                                </Viewbox>
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ToListConverter}" ConverterParameter="0">
+                                        <Binding  />
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+
+        </Grid>
 
     </Grid>
 </UserControl>

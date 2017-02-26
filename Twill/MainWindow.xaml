@@ -2,6 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:Twill"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:models="clr-namespace:Twill.UI.Core.Models;assembly=Twill.UI.Core"
@@ -16,7 +18,7 @@
         Icon="icons/tray.ico"
         Loaded="WindowLoadedEvent"
         StateChanged="StateChangedEvent"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterScreen" 
         mc:Ignorable="d">
 
     <Window.DataContext>
@@ -24,6 +26,12 @@
     </Window.DataContext>
 
     <Grid>
+        
+        <i:Interaction.Triggers>
+            <ei:PropertyChangedTrigger Binding="{Binding  MenuModel.SettingsPageModel.ActionPlannerPageModel.Message, Mode=OneWay}"  >
+                <ei:CallMethodAction MethodName="MessageRaiseEventHandler" TargetObject="{Binding ElementName=x}" />
+            </ei:PropertyChangedTrigger>
+        </i:Interaction.Triggers>
 
         <usercontrols:Menu MenuModel="{Binding MenuModel}" />
 
@@ -45,7 +53,7 @@
             <tb:TaskbarIcon.TrayPopup>
                 <tray:Popup TrayPopupModel="{Binding TrayPopupModel}" />
             </tb:TaskbarIcon.TrayPopup>
-            
+
         </tb:TaskbarIcon>
 
     </Grid>

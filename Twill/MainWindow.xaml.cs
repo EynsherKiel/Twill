@@ -40,5 +40,10 @@ namespace Twill
         {
             TaskbarIcon.HideBalloonTip();
         }
+
+        public void MessageRaiseEventHandler()
+        {
+            TaskbarIcon.ShowBalloonTip("Day reports", "You need fill report", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
+        }
     }
 }
