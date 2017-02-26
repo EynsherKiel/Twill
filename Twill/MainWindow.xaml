@@ -35,8 +35,9 @@
 
         <usercontrols:Menu MenuModel="{Binding MenuModel}" />
 
-        <tb:TaskbarIcon x:Name="TaskbarIcon"
+        <tb:TaskbarIcon x:Name="TaskbarIcon" 
                         DataContext="{Binding IconBehaviorModel}"
+
                         IconSource="icons/tray.ico"
                         LeftClickCommand="{Binding ShowWindowCommand}"
                         LeftClickCommandParameter="{Binding Mode=OneWay,
@@ -50,8 +51,8 @@
                 <tray:ToolTip TrayToolTipModel="{Binding TrayToolTipModel}" />
             </tb:TaskbarIcon.TrayToolTip>
 
-            <tb:TaskbarIcon.TrayPopup>
-                <tray:Popup TrayPopupModel="{Binding TrayPopupModel}" />
+            <tb:TaskbarIcon.TrayPopup >
+                <tray:Popup  TrayPopupModel="{Binding TrayPopupModel}" />
             </tb:TaskbarIcon.TrayPopup>
 
         </tb:TaskbarIcon>

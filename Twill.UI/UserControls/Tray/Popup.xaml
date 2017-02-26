@@ -58,6 +58,9 @@
                     <content:MonitorPageModel />
                 </Grid.DataContext>
 
+                <Border BorderBrush="{DynamicResource RulerBackgroundBrush}" BorderThickness="0,0,0,01">
+                    <Grid Background="{DynamicResource MainMenuTitleBrush}">
+
 
                 <Grid Background="White">
 
@@ -69,6 +72,7 @@
                         BorderBrush="{DynamicResource RulerBackgroundBrush}"
                         BorderThickness="0,1,0,0">
                     <Grid Background="{DynamicResource MainMenuTitleBrush}">
+
 
                         <Button Margin="0,0,10,0"
                                 HorizontalAlignment="Right"
@@ -94,6 +98,17 @@
                         </Button>
                     </Grid>
                 </Border>
+
+
+                <Grid Grid.Row="1" Background="White">
+
+                    <processes:DayMonitor Grid.Row="1"
+                                          ContentHeight="20000"
+                                          DayMonitorModel="{Binding DayMonitor,
+                                                                    IsAsync=True}" />
+
+
+                </Grid>
 
             </Grid>
         </Border>
