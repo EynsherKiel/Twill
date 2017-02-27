@@ -34,8 +34,10 @@ namespace Twill.Storage.Barrier
 
         public T GetAllActivities<T>() where T : ICollection<DateTime>, new()
         {
-
             var path = Settings.Default.LaborsPath;
+
+            if (!System.IO.Directory.Exists(path))
+                return new T();
 
             var dirs = System.IO.Directory.GetDirectories(path);
 
